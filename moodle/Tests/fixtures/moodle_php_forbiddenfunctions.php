@@ -16,5 +16,6 @@ goto a;
 a: echo 'Goto labels, oh my!'
 b:
 echo 'More goto labels, re-oh my!'
-// Fair enough.
+// Fair enough. Unserialize can be dangerous too, better catch it.
+$a = unserialize($b);
 
