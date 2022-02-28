@@ -224,7 +224,7 @@ abstract class MoodleUtil {
      * @return string|null a valid moodle component for the file or null if not found.
      */
     public static function getMoodleComponent(File $file, $selfPath = true) {
-        if (PHPUNIT_TEST && !empty(self::$mockedComponentMappings)) {
+        if (defined('PHPUNIT_TEST') && PHPUNIT_TEST && !empty(self::$mockedComponentMappings)) {
             $components = self::$mockedComponentMappings;
         } else {
             // Verify that we are able to find a valid moodle root.
