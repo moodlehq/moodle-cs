@@ -4,7 +4,6 @@
 
 [![Latest Stable Version](https://poser.pugx.org/moodlehq/moodle-cs/v/stable)](https://packagist.org/packages/moodlehq/moodle-cs)
 [![Release Date of the Latest Version](https://img.shields.io/github/release-date/moodlehq/moodle-cs.svg?maxAge=1800)](https://github.com/moodlehq/moodle-cs/releases)
-:construction:
 
 [![Unit Tests](https://github.com/moodlehq/moodle-cs/actions/workflows/phpcs.yml/badge.svg)](https://github.com/moodlehq/moodle-cs/actions/workflows/phpcs.yml)
 
