@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleCodeSniffer\moodle\Sniffs\PHPUnit;
+namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 
 // phpcs:disable moodle.NamingConventions
 
+use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
-use MoodleCodeSniffer\moodle\Util\MoodleUtil;
 
 /**
  * Checks that a test file has the @coversxxx annotations properly defined.

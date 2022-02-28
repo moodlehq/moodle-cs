@@ -14,14 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_codechecker;
+namespace MoodleHQ\MoodleCS\moodle\tests;
 
-use MoodleCodeSniffer\moodle\Util\MoodleUtil;
-
-defined('MOODLE_INTERNAL') || die();
-
-require_once(__DIR__ . '/../../tests/local_codechecker_testcase.php');
-require_once(__DIR__ . '/../Util/MoodleUtil.php');
+use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -33,9 +28,9 @@ require_once(__DIR__ . '/../Util/MoodleUtil.php');
  * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @covers \MoodleCodeSniffer\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
  */
-class phpunit_testcasenames_test extends local_codechecker_testcase {
+class phpunit_testcasenames_test extends local_codechecker_test {
 
     /**
      * Data provider for self::test_phpunit_testcasenames
@@ -151,13 +146,16 @@ class phpunit_testcasenames_test extends local_codechecker_testcase {
      * @param array $errors array of errors expected.
      * @param array $warnings array of warnings expected.
      * @dataProvider provider_phpunit_testcasenames
+     * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
      */
     public function test_phpunit_testcasenames(string $fixture, array $errors, array $warnings) {
-
         // Define the standard, sniff and fixture to use.
         $this->set_standard('moodle');
         $this->set_sniff('moodle.PHPUnit.TestCaseNames');
         $this->set_fixture(__DIR__ . '/' . $fixture);
+        $this->set_component_mapping([
+            'local_codechecker' => dirname(__DIR__),
+        ]);
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or

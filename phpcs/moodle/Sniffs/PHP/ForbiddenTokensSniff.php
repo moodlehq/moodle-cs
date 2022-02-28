@@ -25,7 +25,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace MoodleCodeSniffer\moodle\Sniffs\PHP;
+namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHP;
 
 // phpcs:disable moodle.NamingConventions
 

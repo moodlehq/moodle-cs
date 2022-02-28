@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleCodeSniffer\moodle\Util;
+namespace MoodleHQ\MoodleCS\moodle\Util;
 
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\DeepExitException;
@@ -48,6 +48,24 @@ abstract class MoodleUtil {
      * @var array Associative array, cached, of components as keys and paths as values.
      */
     protected static $moodleComponents = [];
+
+    /** @var array A list of mocked component mappings for use in unit tests */
+    protected static $mockedComponentMappings = [];
+
+    /**
+     * Mock component mappings for unit tests.
+     *
+     * @param array $mappings List of file path => component mappings
+     *
+     * @throws Exception
+     */
+    public static function setMockedComponentMappings(array $mappings): void {
+        if (!defined('PHPUNIT_TEST') || !PHPUNIT_TEST) {
+            throw new \Exception('Not running in a unit test');
+        }
+
+        self::$mockedComponentMappings = $mappings;
+    }
 
     /**
      * Load moodle core_component without needing an installed site.
@@ -100,11 +118,9 @@ abstract class MoodleUtil {
      * Calculate all the components installed in a site.
      *
      * @param string $moodleRoot Full path to a valid moodle.root
-     *
      * @return array Associative array of components as keys and paths as values or null if not found.
      */
     protected static function calculateAllComponents(string $moodleRoot) {
-
         // If we have calculated the components already, straight return them.
         if (!empty(self::$moodleComponents)) {
             return self::$moodleComponents;
@@ -208,17 +224,20 @@ abstract class MoodleUtil {
      * @return string|null a valid moodle component for the file or null if not found.
      */
     public static function getMoodleComponent(File $file, $selfPath = true) {
+        if (PHPUNIT_TEST && !empty(self::$mockedComponentMappings)) {
+            $components = self::$mockedComponentMappings;
+        } else {
+            // Verify that we are able to find a valid moodle root.
+            if (!$moodleRoot = self::getMoodleRoot($file, $selfPath)) {
+                return null;
+            }
 
-        // Verify that we are able to find a valid moodle root.
-        if (! $moodleRoot = self::getMoodleRoot($file, $selfPath)) {
-            return null;
-        }
-
-        // Load all components, associative array with keys as component and paths as values.
-        $components = self::calculateAllComponents($moodleRoot);
-        // Have been unable to load components, done.
-        if (empty($components)) {
-            return null;
+            // Load all components, associative array with keys as component and paths as values.
+            $components = self::calculateAllComponents($moodleRoot);
+            // Have been unable to load components, done.
+            if (empty($components)) {
+                return null;
+            }
         }
 
         // Let's find the first component that matches the file path.
@@ -313,7 +332,6 @@ abstract class MoodleUtil {
      * @return string|null the full path to moodle root or null if not found.
      */
     public static function getMoodleRoot(File $file = null, bool $selfPath = true) {
-
         // Return already calculated value if available.
         if (self::$moodleRoot !== false) {
             return self::$moodleRoot;

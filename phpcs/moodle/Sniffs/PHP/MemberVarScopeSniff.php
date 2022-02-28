@@ -27,7 +27,7 @@
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
  */
 
-namespace MoodleCodeSniffer\moodle\Sniffs\PHP;
+namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHP;
 
 // phpcs:disable moodle.NamingConventions
 

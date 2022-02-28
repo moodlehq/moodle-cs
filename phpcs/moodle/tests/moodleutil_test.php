@@ -14,19 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_codechecker;
+namespace MoodleHQ\MoodleCS\moodle\tests;
 
-use MoodleCodeSniffer\moodle\Util\MoodleUtil;
-use org\bovigo\vfs\vfsStream;
+use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\DeepExitException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Ruleset;
-
-defined('MOODLE_INTERNAL') || die();
-
-require_once(__DIR__ . '/../../tests/local_codechecker_testcase.php');
-require_once(__DIR__ . '/../Util/MoodleUtil.php');
+use org\bovigo\vfs\vfsStream;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -38,9 +33,9 @@ require_once(__DIR__ . '/../Util/MoodleUtil.php');
  * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @covers \MoodleCodeSniffer\moodle\Util\MoodleUtil
+ * @covers \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil
  */
-class moodleutil_test extends local_codechecker_testcase {
+class moodleutil_test extends local_codechecker_test {
 
     /**
      * Unit test for calculateAllComponents.
@@ -51,7 +46,8 @@ class moodleutil_test extends local_codechecker_testcase {
      */
     public function test_calculateAllComponents() {
         // Let's calculate moodleRoot.
-        $moodleRoot = MoodleUtil::getMoodleRoot();
+        $vfs = vfsStream::setup('root', null, []);
+        $moodleRoot = $vfs->url();
 
         // Let's prepare a components file, with some correct and incorrect entries.
         $components =
@@ -61,8 +57,9 @@ class moodleutil_test extends local_codechecker_testcase {
             "plugin,local_codechecker,{$moodleRoot}/local/codechecker\n" .// All ok.
             "plugin,mod_forum,{$moodleRoot}/mod/forum\n";                 // All ok.
 
-        // Let's use virtual filesystem instead of real one.
-        $vfs = vfsStream::setup('root', null, ['components.txt' => $components]);
+        vfsStream::create([
+            'components.txt' => $components,
+        ]);
 
         // Set codechecker config to point to it.
         Config::setConfigData('moodleComponentsListPath', $vfs->url() . '/components.txt', true);
@@ -111,36 +108,42 @@ class moodleutil_test extends local_codechecker_testcase {
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
+                'requireRealMoodle' => false,
             ],
             'moodleComponent_file_without_component_class' => [
                 'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/good/lib/lib.php'],
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
+                'requireRealMoodle' => false,
             ],
             'moodleComponent_file_valid' => [
                 'config' => ['file' => __FILE__],
                 'return' => ['value' => 'local_codechecker'],
                 'reset' => false, // Prevent resetting cached information to verify next works.
                 'selfPath' => false,
+                'requireRealMoodle' => true,
             ],
             'moodleComponent_file_already_cached' => [
                 'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/good/lib/lib.php'],
                 'return' => ['value' => 'local_codechecker'],
                 'reset' => true,
                 'selfPath' => false,
+                'requireRealMoodle' => true,
             ],
             'moodleComponent_file_cache_cleaned' => [
                 'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/good/lib/lib.php'],
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
+                'requireRealMoodle' => false,
             ],
             'moodleComponent_file_without_component' => [
                 'config' => ['file' => dirname(__FILE__, 5) . '/userpix/index.php'],
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
+                'requireRealMoodle' => false,
             ],
         ];
     }
@@ -152,10 +155,21 @@ class moodleutil_test extends local_codechecker_testcase {
      * @param array $return expected result of the test.
      * @param bool $reset to decide if static caches should be reset before the test.
      * @param bool $selfPath to decide if codechecker own path is good to find a valid moodle root.
+     * @param bool $requireRealMoodle Whether a real Moodle root is required for this test.
      *
      * @dataProvider getMoodleComponentProvider
      */
-    public function test_getMoodleComponent(array $config, array $return, bool $reset = true, bool $selfPath = true) {
+    public function test_getMoodleComponent(
+        array $config,
+        array $return,
+        bool $reset = true,
+        bool $selfPath = true,
+        bool $requireRealMoodle = false
+    ) {
+        if ($requireRealMoodle) {
+            $this->requireRealMoodleRoot();
+        }
+
         $file = null;
         // Set config options when passed.
         if ($config) {
@@ -308,39 +322,47 @@ class moodleutil_test extends local_codechecker_testcase {
             'moodleRoot_not_exists' => [
                 'config' => ['moodleRoot' => '/does/not/exist'],
                 'return' => ['exception' => DeepExitException::class, 'message' => 'does not exist or is not readable'],
+                'requireRealMoodle' => false,
             ],
             'moodleRoot_not_moodle' => [
                 'config' => ['moodleRoot' => sys_get_temp_dir()],
                 'return' => ['exception' => DeepExitException::class, 'message' => 'not a valid moodle root'],
+                'requireRealMoodle' => false,
             ],
             'moodleRoot_valid' => [
                 'config' => ['moodleRoot' => dirname(__FILE__, 5)],
                 'return' => ['value' => dirname(__FILE__, 5)],
+                'requireRealMoodle' => true,
                 'reset'  => false, // Prevent resetting cached information to verify next works.
             ],
             'moodleRoot_already_cached' => [
                 'config' => ['moodleRoot' => '/does/not/exist'],
                 'return' => ['value' => dirname(__FILE__, 5)],
+                'requireRealMoodle' => true,
             ],
             'moodleRoot_cache_cleaned' => [ // Verify that previous has cleaned cached information.
                 'config' => ['moodleRoot' => '/does/not/exist'],
                 'return' => ['exception' => DeepExitException::class, 'message' => 'does not exist or is not readable'],
+                'requireRealMoodle' => false,
             ],
             'moodleRoot_from_fixtures' => [
                 'config' => ['moodleRoot' => dirname(__FILE__) . '/fixtures/moodleutil/good'],
                 'return' => ['value' => dirname(__FILE__) . '/fixtures/moodleutil/good'],
+                'requireRealMoodle' => false,
             ],
 
             // Passing a file to check.
             'moodleRoot_pass_file' => [
                 'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/good/lib/lib.php'],
                 'return' => ['value' => dirname(__FILE__) . '/fixtures/moodleutil/good'],
+                'requireRealMoodle' => false,
             ],
 
             // Passing nothing, defaults to this file.
             'moodleRoot_pass_nothing' => [
                 'config' => [],
                 'return' => ['value' => dirname(__FILE__, 5)],
+                'requireRealMoodle' => true,
             ],
         ];
     }
@@ -352,10 +374,21 @@ class moodleutil_test extends local_codechecker_testcase {
      * @param array $return expected result of the test.
      * @param bool $reset to decide if static caches should be reset before the test.
      * @param bool $selfPath to decide if codechecker own path is good to find a valid moodle root.
+     * @param bool $requireRealMoodle Whether a real Moodle root is required for this test.
      *
      * @dataProvider getMoodleRootProvider
      */
-    public function test_getMoodleRoot(array $config, array $return, bool $reset = true, bool $selfPath = true) {
+    public function test_getMoodleRoot(
+      array $config,
+      array $return,
+      bool $requireRealMoodle = false,
+      bool $reset = true,
+      bool $selfPath = true
+    ) {
+        if ($requireRealMoodle) {
+            $this->requireRealMoodleRoot();
+        }
+
         $file = null;
         // Set config options when passed.
         if ($config) {

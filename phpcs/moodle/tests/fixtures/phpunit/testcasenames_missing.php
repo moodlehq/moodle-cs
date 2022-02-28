@@ -11,7 +11,7 @@ class testcasenames_notextending {
 /**
  * Class missing any test_ method
  */
-class testcasenames_notestmethod extends local_codechecker_testcase {
+class testcasenames_notestmethod extends local_codechecker_test {
     public function notest_something() {
         // This method is not a unit test.
     }

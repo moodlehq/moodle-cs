@@ -14,14 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_codechecker;
+namespace MoodleHQ\MoodleCS\moodle\tests;
 
-use MoodleCodeSniffer\moodle\Util\MoodleUtil;
-
-defined('MOODLE_INTERNAL') || die();
-
-require_once(__DIR__ . '/../../tests/local_codechecker_testcase.php');
-require_once(__DIR__ . '/../Util/MoodleUtil.php');
+use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -33,9 +28,9 @@ require_once(__DIR__ . '/../Util/MoodleUtil.php');
  * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @covers \MoodleCodeSniffer\moodle\Sniffs\PHPUnit\TestCaseCoversSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseCoversSniff
  */
-class phpunit_testcasecovers_test extends local_codechecker_testcase {
+class phpunit_testcasecovers_test extends local_codechecker_test {
 
     /**
      * Data provider for self::test_phpunit_testcasecovers

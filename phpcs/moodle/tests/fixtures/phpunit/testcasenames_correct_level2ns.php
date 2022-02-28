@@ -5,7 +5,7 @@ defined("MOODLE_INTERNAL") || die(); // Make this always the 1st line in all CS 
 /**
  * Correct class, using correct location matching sub-namespaces.
  */
-class testcasenames_correct_level2ns extends local_codechecker_testcase {
+class testcasenames_correct_level2ns extends local_codechecker_test {
     public function test_something() {
     }
 }

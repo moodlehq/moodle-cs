@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace MoodleCodeSniffer\moodle\Sniffs\Files;
+namespace MoodleHQ\MoodleCS\moodle\Sniffs\Files;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;

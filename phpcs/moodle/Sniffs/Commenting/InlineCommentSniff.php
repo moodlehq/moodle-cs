@@ -33,7 +33,7 @@
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace MoodleCodeSniffer\moodle\Sniffs\Commenting;
+namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -459,7 +459,7 @@ class InlineCommentSniff implements Sniff {
         // <rule ref="moddle.Commenting.InlineComment.SpacingAfter">
         // <severity>0</severity>
         // </rule>
-        // But it doesn't work anymore with PHPCS3.x (neither with "moodle" or "MoodleCodeSniffer"),
+        // But it doesn't work anymore with PHPCS3.x (neither with "moodle" or "MoodleHQ\MoodleCS\moodle"),
         // it seems tha there is a problem if the 2 names don't match.
         // Hence, unreachable. Ugly but ok, so far. Don't add any custom code below.
 

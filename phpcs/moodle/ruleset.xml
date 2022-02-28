@@ -2,7 +2,7 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd"
     name="moodle"
-    namespace="MoodleCodeSniffer\moodle">
+    namespace="MoodleHQ\MoodleCS\moodle">
 
     <description>The Moodle PHP CodeSniffer coding style standard</description>
 
@@ -42,8 +42,6 @@
     <rule ref="Squiz.Classes.SelfMemberReference"/>
 
     <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
-
-    <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
 
     <rule ref="Squiz.Commenting.DocCommentAlignment"/>
     <rule ref="Squiz.Commenting.EmptyCatchComment"/>

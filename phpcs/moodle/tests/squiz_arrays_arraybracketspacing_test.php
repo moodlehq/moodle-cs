@@ -14,11 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_codechecker;
-
-defined('MOODLE_INTERNAL') || die();
-
-require_once(__DIR__ . '/../../tests/local_codechecker_testcase.php');
+namespace MoodleHQ\MoodleCS\moodle\tests;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -32,7 +28,7 @@ require_once(__DIR__ . '/../../tests/local_codechecker_testcase.php');
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Arrays\ArrayBracketSpacingSniff
  */
-class squiz_arrays_arraybracketspacing_test extends local_codechecker_testcase {
+class squiz_arrays_arraybracketspacing_test extends local_codechecker_test {
 
     /**
      * Test the Squid.Arrays.ArrayBracketSpacing sniff

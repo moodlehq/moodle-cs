@@ -22,14 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace MoodleCodeSniffer\moodle\Sniffs\PHPUnit;
+namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 
 // phpcs:disable moodle.NamingConventions
 
+use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
-use MoodleCodeSniffer\moodle\Util\MoodleUtil;
 
 class TestCaseNamesSniff implements Sniff {
 
@@ -62,7 +62,6 @@ class TestCaseNamesSniff implements Sniff {
      * @param int $pointer The position in the stack.
      */
     public function process(File $file, $pointer) {
-
         // Before starting any check, let's look for various things.
 
         // Guess moodle component (from $file being processed).
