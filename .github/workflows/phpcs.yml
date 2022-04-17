@@ -22,7 +22,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ matrix.extensions }}
-          ini-values: pcov.directory=phpcs/moodle
+          ini-values: pcov.directory=moodle
           coverage: pcov
           tools: composer, phpcpd
 
@@ -38,7 +38,7 @@ jobs:
       - name: PHP Copy/Paste Detector
         continue-on-error: true # This step will show errors but will not fail
         if: ${{ always() }}
-        run: phpcpd --exclude phpcs/moodle/tests phpcs/moodle
+        run: phpcpd --exclude moodle/tests moodle
 
       - name: Run phpunit
         if: ${{ always() }}

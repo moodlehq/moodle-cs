@@ -48,7 +48,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MoodleHQ\\MoodleCS\\moodle\\": "phpcs/moodle/"
+            "MoodleHQ\\MoodleCS\\moodle\\": "moodle/"
         }
     }
 }

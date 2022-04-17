@@ -3,17 +3,17 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="lib/phpunit/phpunit.xsd"
     beStrictAboutTestsThatDoNotTestAnything="false"
-    bootstrap="phpcs/moodle/tests/bootstrap.php"
+    bootstrap="moodle/tests/bootstrap.php"
 >
   <testsuites>
     <testsuite name="PHP_CodeSniffer Test Suite">
-      <directory suffix="_test.php">phpcs/moodle/tests</directory>
+      <directory suffix="_test.php">moodle/tests</directory>
     </testsuite>
   </testsuites>
   <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
     <include>
-        <directory suffix=".php">phpcs/moodle/Sniffs</directory>
-        <directory suffix=".php">phpcs/moodle/Util</directory>
+        <directory suffix=".php">moodle/Sniffs</directory>
+        <directory suffix=".php">moodle/Util</directory>
     </include>
     <report>
       <clover outputFile="clover.xml" />
