@@ -15,7 +15,7 @@ if (!defined('PHPUNIT_TEST')) {
 }
 
 $ds = DIRECTORY_SEPARATOR;
-$root = dirname(dirname(dirname(__DIR__)));
+$root = dirname(dirname(__DIR__));
 
 require_once("{$root}/vendor/autoload.php");
 require_once("{$root}/vendor/squizlabs/php_codesniffer/tests/bootstrap.php");
