@@ -14,45 +14,41 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 // phpcs:disable moodle.NamingConventions
 
 /**
- * Test the PHP_CodeSniffer\Standards\Squiz\Sniffs\Arrays\ArrayBracketSpacingSniff sniff.
+ * Test the PHP_CodeSniffer\Standards\Squiz\Sniffs\Operators\ValidLogicalOperatorsSniff sniff.
  *
  * @package    local_codechecker
  * @category   test
  * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Arrays\ArrayBracketSpacingSniff
+ * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Operators\ValidLogicalOperatorsSniff
  */
-class squiz_arrays_arraybracketspacing_test extends local_codechecker_test {
+class SquizOperatorsValidLogicalOperatorsTest extends MoodleCSBaseTest {
 
     /**
-     * Test the Squid.Arrays.ArrayBracketSpacing sniff
+     * Test the Squid.Arrays.ValidLogicalOperators sniff
      */
-    public function test_squiz_arrays_arraybracketspacing() {
+    public function test_squiz_operators_validlogicaloperators() {
 
         // Define the standard, sniff and fixture to use.
         $this->set_standard('moodle');
-        $this->set_sniff('Squiz.Arrays.ArrayBracketSpacing');
-        $this->set_fixture(__DIR__ . '/fixtures/squiz_arrays_arraybracketspacing.php');
+        $this->set_sniff('Squiz.Operators.ValidLogicalOperators');
+        $this->set_fixture(__DIR__ . '/fixtures/squiz_operators_validlogicaloperators.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
         $this->set_errors([
-            4 => "expected \"\$arr[\" but found \"\$arr [\"",
-            5 => ["expected \"['wrong'\" but found \"[ 'wrong'\"", "expected \"'wrong']\" but found \"'wrong' ]\""],
-            17 => 3,
-            22 => 2,
-            25 => 2,
-            28 => 2,
-            31 => 2,
-            34 => 2,
+            21 => 'Logical operator "or" is prohibited; use "||" instead',
+            25 => 'Squiz.Operators.ValidLogicalOperators.NotAllowed',
+            29 => 2,
+            33 => 4,
         ]);
         $this->set_warnings([]);
 

@@ -3,11 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="lib/phpunit/phpunit.xsd"
     beStrictAboutTestsThatDoNotTestAnything="false"
-    bootstrap="moodle/tests/bootstrap.php"
+    bootstrap="moodle/Tests/bootstrap.php"
 >
   <testsuites>
     <testsuite name="PHP_CodeSniffer Test Suite">
-      <directory suffix="_test.php">moodle/tests</directory>
+      <directory suffix="Test.php">moodle/Tests</directory>
     </testsuite>
   </testsuites>
   <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
