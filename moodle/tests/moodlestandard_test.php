@@ -956,4 +956,29 @@ class moodlestandard_test extends local_codechecker_test {
 
         $this->verify_cs_results();
     }
+
+    /**
+     * Test the moodle.Access.DeprecatedCapabilitySniff sniff.
+     *
+     *
+     * @covers \MoodleCodeSniffer\moodle\Sniffs\Access\DeprecatedCapabilitySniff
+     */
+    public function test_moodle_deprecated_access() {
+
+        // Define the standard, sniff and fixture to use.
+        $this->set_standard('moodle');
+        $this->set_sniff('moodle.Access.DeprecatedCapability');
+        $this->set_fixture(__DIR__ . '/fixtures/moodle_access.php');
+        // Define expected results (errors and warnings). Format, array of:
+        // - line => problem.
+        $this->set_errors([
+            7 => 'The following capability \'moodle/site:useremail\' has been deprecated',
+        ]);
+        $this->set_warnings([
+            6 => 'The following capability \'moodle/course:useremail\' will be deprecated soon',
+        ]);
+
+        // Let's do all the hard work!
+        $this->verify_cs_results();
+    }
 }

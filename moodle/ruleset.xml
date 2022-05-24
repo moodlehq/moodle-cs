@@ -87,6 +87,15 @@
         <severity>0</severity>
     </rule>
 
+    <!-- Setup deprecated capability list -->
+    <rule ref="moodle.Access.DeprecatedCapability">
+        <properties>
+            <!--            <property name="capabilitiesWarningList"  type="array">-->
+            <!--                <element value="moodle/course:useremail"/>-->
+            <!--            </property>-->
+        </properties>
+    </rule>
+
     <!-- Let's add the complete PHPCompatibility standard -->
     <rule ref="PHPCompatibility" />
 
