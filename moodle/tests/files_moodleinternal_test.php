@@ -189,4 +189,44 @@ class files_moodleinternal_test extends local_codechecker_test {
 
         $this->verify_cs_results();
     }
+
+    public function test_moodle_files_moodleinternal_class_alias() {
+        // Contains class_alias, which is not a side-effect.
+        $this->set_standard('moodle');
+        $this->set_sniff('moodle.Files.MoodleInternal');
+        $this->set_fixture(__DIR__ . '/fixtures/files/moodleinternal/class_alias.php');
+
+        $this->set_errors([]);
+        $this->set_warnings([]);
+
+        $this->verify_cs_results();
+    }
+
+    public function test_moodle_files_moodleinternal_class_alias_with_additional_sideeffect() {
+        // Contains class_alias, which is not a side-effect.
+        $this->set_standard('moodle');
+        $this->set_sniff('moodle.Files.MoodleInternal');
+        $this->set_fixture(__DIR__ . '/fixtures/files/moodleinternal/class_alias_extra.php');
+
+        $this->set_errors([
+            25 => 'Expected MOODLE_INTERNAL check or config.php inclusion',
+        ]);
+        $this->set_warnings([]);
+
+        $this->verify_cs_results();
+    }
+
+    public function test_moodle_files_moodleinternal_class_alias_with_errant_define() {
+        // Contains class_alias, which is not a side-effect.
+        $this->set_standard('moodle');
+        $this->set_sniff('moodle.Files.MoodleInternal');
+        $this->set_fixture(__DIR__ . '/fixtures/files/moodleinternal/class_alias_defined.php');
+
+        $this->set_errors([]);
+        $this->set_warnings([
+            17 => 'MoodleInternalNotNeeded',
+        ]);
+
+        $this->verify_cs_results();
+    }
 }
