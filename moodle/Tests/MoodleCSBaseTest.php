@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 /**
  * Specialized test case for easy testing of "moodle" standard sniffs.
@@ -39,7 +39,7 @@ namespace MoodleHQ\MoodleCS\moodle\tests;
  * @copyright  2013 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class local_codechecker_test extends \PHPUnit\Framework\TestCase {
+abstract class MoodleCSBaseTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var string name of the standard to be tested.

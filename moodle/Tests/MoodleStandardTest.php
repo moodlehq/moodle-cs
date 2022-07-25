@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -23,9 +23,6 @@ namespace MoodleHQ\MoodleCS\moodle\tests;
  *
  * Each case covers one sniff. Self-explanatory
  *
- * To run these tests, you need to use:
- *     vendor/bin/phpunit local/codechecker/moodle/tests/moodlestandard_test.php
- *
  * @package    local_codechecker
  * @category   test
  * @copyright  2013 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
@@ -33,7 +30,7 @@ namespace MoodleHQ\MoodleCS\moodle\tests;
  *
  * @todo Complete coverage of all Sniffs.
  */
-class moodlestandard_test extends local_codechecker_test {
+class MoodleCsStandardTest extends MoodleCSBaseTest {
 
     /**
      * Test the PSR2.Methods.MethodDeclaration sniff.

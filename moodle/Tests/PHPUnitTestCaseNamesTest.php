@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 
@@ -30,7 +30,7 @@ use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
  */
-class phpunit_testcasenames_test extends local_codechecker_test {
+class PHPUnitTestCaseNamesTest extends MoodleCSBaseTest {
 
     /**
      * Data provider for self::test_phpunit_testcasenames

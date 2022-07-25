@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\tests;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\MoodleInternalSniff
  */
-class files_moodleinternal_test extends local_codechecker_test {
+class FilesMoodleInternalTest extends MoodleCSBaseTest {
 
     public function test_moodle_files_moodleinternal_problem() {
         $this->set_standard('moodle');

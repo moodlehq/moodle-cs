@@ -1,4 +1,4 @@
 path: ./
 exclude:
   - vendor
-  - moodle/tests/fixtures
+  - moodle/Tests/fixtures

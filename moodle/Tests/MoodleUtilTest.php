@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Config;
@@ -35,7 +35,7 @@ use org\bovigo\vfs\vfsStream;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil
  */
-class moodleutil_test extends local_codechecker_test {
+class MoodleUtilTest extends MoodleCSBaseTest {
 
     /**
      * Unit test for calculateAllComponents.
