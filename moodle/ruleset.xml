@@ -65,6 +65,58 @@
         </properties>
     </rule>
 
+    <!-- Check phpdoc comments for functions -->
+    <rule ref="Squiz.Commenting.FunctionComment"/>
+
+    <!-- We do not enforce specific formatting of @params with regards spacing -->
+    <rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamType">
+      <severity>0</severity>
+    </rule>
+    <rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamName">
+      <severity>0</severity>
+    </rule>
+    <rule ref="Squiz.Commenting.FunctionComment.ParamCommentAlignment">
+      <severity>0</severity>
+    </rule>
+    <rule ref="Squiz.Commenting.FunctionComment.ParamCommentAlignmentExceeded">
+      <severity>0</severity>
+    </rule>
+
+    <!-- Parameter comments are optional, but recommended -->
+    <rule ref="Squiz.Commenting.FunctionComment.MissingParamComment">
+      <type>warning</type>
+      <severity>2</severity>
+    </rule>
+
+    <!-- Parameter comments do not need to start with a capital letter -->
+    <rule ref="Squiz.Commenting.FunctionComment.ParamCommentNotCapital">
+      <severity>0</severity>
+    </rule>
+
+    <!-- Parameter comments do not need to end with a full stop -->
+    <rule ref="Squiz.Commenting.FunctionComment.ParamCommentFullStop">
+      <severity>0</severity>
+    </rule>
+
+    <!-- Type hints are optional, but strongly recommended -->
+    <rule ref="Squiz.Commenting.FunctionComment.TypeHintMissing">
+      <type>warning</type>
+    </rule>
+    <rule ref="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing">
+      <type>warning</type>
+    </rule>
+
+    <!--
+      Sadly this rule does not let you configure it to ignore missing returns if no return is present.
+      We do not recommend use of `@return void` but they mandate it.
+    -->
+    <rule ref="Squiz.Commenting.FunctionComment.MissingReturn">
+      <severity>0</severity>
+    </rule>
+
+
+    <rule ref="Squiz.Commenting.FunctionCommentThrowTag"/>
+
     <rule ref="Squiz.Scope.MethodScope"/>
     <rule ref="Squiz.Scope.StaticThisUsage"/>
 
