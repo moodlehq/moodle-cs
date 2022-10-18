@@ -15,7 +15,7 @@ jobs:
           - php: 7.4
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
@@ -24,7 +24,7 @@ jobs:
           extensions: ${{ matrix.extensions }}
           ini-values: pcov.directory=moodle
           coverage: pcov
-          tools: composer, phpcpd
+          tools: composer
 
       - name: Install composer dependencies
         run: |
@@ -36,9 +36,8 @@ jobs:
           ./vendor/bin/phplint
 
       - name: PHP Copy/Paste Detector
-        continue-on-error: true # This step will show errors but will not fail
         if: ${{ always() }}
-        run: phpcpd --exclude moodle/tests moodle
+        run: ./vendor/bin/phpcpd --exclude moodle/Tests moodle
 
       - name: Run phpunit
         if: ${{ always() }}
