@@ -9,6 +9,11 @@
     <!-- Extend the standard Moodle coding style -->
     <rule ref="moodle"/>
 
+    <!-- This is an error in moodle-extra. TODO: Remove as part of #58 -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax">
+        <type>error</type>
+    </rule>
+
     <!-- Include the PSR-12 ruleset with relevant Moodle exclusions -->
     <rule ref="PSR12">
 

@@ -224,6 +224,33 @@ class MoodleStandardTest extends MoodleCSBaseTestCase {
     }
 
     /**
+     * Test the Generic.Arrays.DisallowLongArraySyntax sniff.
+     *
+     * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
+     */
+    public function test_generic_array_disallowlongarraysyntax(): void {
+        // Define the standard, sniff and fixture to use.
+        $this->set_standard('moodle');
+        $this->set_sniff('Generic.Arrays.DisallowLongArraySyntax');
+        $this->set_fixture(__DIR__ . '/fixtures/generic_array_longarraysyntax.php');
+
+        // Define expected results (errors and warnings). Format, array of:
+        // - line => number of problems,  or
+        // - line => array of contents for message / source problem matching.
+        // - line => string of contents for message / source problem matching (only 1).
+        $this->set_errors([
+            3 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
+            5 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
+            9 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
+        ]);
+
+        $this->set_warnings(array());
+
+        // Let's do all the hard work!
+        $this->verify_cs_results();
+    }
+
+    /**
      * Test the Generic.Files.LineEndings sniff.
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineEndingsSniff
