@@ -9,6 +9,10 @@
     <arg name="extensions" value="php" />
     <arg name="encoding" value="utf-8" />
 
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax">
+        <type>warning</type>
+    </rule>
+
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="Generic.Classes.OpeningBraceSameLine"/>
 
