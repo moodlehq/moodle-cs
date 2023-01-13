@@ -16,8 +16,8 @@
     ],
     "require": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-        "squizlabs/php_codesniffer": "^3.6",
-        "phpcompatibility/php-compatibility": "^9.3"
+        "squizlabs/php_codesniffer": "^3.7.1",
+        "phpcompatibility/php-compatibility": "dev-develop#2fb82334"
     },
     "config": {
         "allow-plugins": {

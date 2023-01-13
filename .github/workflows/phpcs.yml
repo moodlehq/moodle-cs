@@ -22,7 +22,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ matrix.extensions }}
-          ini-values: pcov.directory=moodle
+          ini-values: pcov.directory=moodle, error_reporting=-1, display_errors=On
           coverage: pcov
           tools: composer
 
@@ -46,3 +46,17 @@ jobs:
 
       - name: Test coverage
         run: ./vendor/bin/phpunit-coverage-check -t 80 clover.xml
+
+      - name: Integration tests
+        if: ${{ always() }}
+        run: |
+          # There is one failure (exit with error)
+          vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt || [[ $? = 1 ]]
+          grep -q  "PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY" output.txt
+
+          # The failure is fixed (exit with error)
+          vendor/bin/phpcbf --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt || [[ $? = 1 ]]
+          grep -q "A TOTAL OF 1 ERROR WERE FIXED IN 1 FILE" output.txt
+
+          # So, there isn't any failure any more (exit without error)
+          vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt && [[ $? = 0 ]]
