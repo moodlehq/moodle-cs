@@ -5,4 +5,10 @@ class someclass {
     public function __magiclike() {
         echo 'hi';
     }
+    public function __invoke() {
+        echo 'hi';
+    }
+    public function __debuginfo() {
+        echo 'hi';
+    }
 }
