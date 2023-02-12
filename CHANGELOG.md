@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+### Added
+- Check for one (and only one) space before assignment operator @ `Squiz.WhiteSpace.OperatorSpacing`
 
 ## [v3.3.1] - 2023-01-19
 ### Fixed
