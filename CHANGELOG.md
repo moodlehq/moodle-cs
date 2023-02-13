@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+
+## [v3.3.2] - 2023-02-13
 ### Added
 - Check for one (and only one) space before assignment operator @ `Squiz.WhiteSpace.OperatorSpacing`
 
@@ -34,7 +36,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.1...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.2...main
+[v3.3.2]: https://github.com/moodlehq/moodle-cs/compare/v3.3.1...v3.3.2
 [v3.3.1]: https://github.com/moodlehq/moodle-cs/compare/v3.3.0...v3.3.1
 [v3.3.0]: https://github.com/moodlehq/moodle-cs/compare/v3.2.0...v3.3.0
 [Previous releases]: https://github.com/moodlehq/moodle-local_codechecker/blob/master/CHANGES.md#changes-in-version-400-20220825---welcome-moodle-cs
