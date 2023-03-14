@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+### Revert
+- Revert the check for the only one-space rule before the assignment operator @ `Squiz.WhiteSpace.OperatorSpacing` as an interim solution while we revisit MDLSITE-6594.
 
 ## [v3.3.2] - 2023-02-13
 ### Added
