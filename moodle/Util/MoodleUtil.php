@@ -88,7 +88,7 @@ abstract class MoodleUtil {
         if (!isset($CFG->dirroot)) { // No defined, let's start from scratch.
             $CFG = (object) [
                 'dirroot' => $moodleRoot,
-                'libdir' => "${moodleRoot}/lib",
+                'libdir' => "{$moodleRoot}/lib",
                 'admin' => 'admin',
             ];
         }
