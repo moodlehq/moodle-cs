@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- Update composer dependencies to current versions, notably PHPCompatibility (70e4ca24).
 
 ## [v3.3.3] - 2023-03-14
 ### Removed
