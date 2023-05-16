@@ -61,3 +61,34 @@ jobs:
 
           # So, there isn't any failure any more (exit without error)
           vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt && [[ $? = 0 ]]
+  coverage:
+    if: github.repository == 'moodlehq/moodle-cs'
+    name: Code coverage (codecov)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          ini-values: pcov.directory=moodle, error_reporting=-1, display_errors=On
+          coverage: pcov
+          tools: composer
+
+      - name: Install composer dependencies
+        run: |
+          composer install
+
+      - name: Run phpunit
+        if: ${{ always() }}
+        run: |
+          ./vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: clover.xml
+          verbose: true
