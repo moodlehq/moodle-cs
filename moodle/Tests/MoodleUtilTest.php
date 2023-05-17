@@ -155,7 +155,7 @@ class MoodleUtilTest extends MoodleCSBaseTest {
      * @param array $return expected result of the test.
      * @param bool $reset to decide if static caches should be reset before the test.
      * @param bool $selfPath to decide if codechecker own path is good to find a valid moodle root.
-     * @param bool $requireRealMoodle Whether a real Moodle root is required for this test.
+     * @param bool $requireMockMoodle Whether a mock Moodle root is required for this test.
      *
      * @dataProvider getMoodleComponentProvider
      */
@@ -164,9 +164,9 @@ class MoodleUtilTest extends MoodleCSBaseTest {
         array $return,
         bool $reset = true,
         bool $selfPath = true,
-        bool $requireRealMoodle = false
+        bool $requireMockMoodle = false
     ) {
-        if ($requireRealMoodle) {
+        if ($requireMockMoodle) {
             $this->requireRealMoodleRoot();
         }
 
@@ -330,14 +330,14 @@ class MoodleUtilTest extends MoodleCSBaseTest {
                 'requireRealMoodle' => false,
             ],
             'moodleRoot_valid' => [
-                'config' => ['moodleRoot' => dirname(__FILE__, 5)],
-                'return' => ['value' => dirname(__FILE__, 5)],
+                'config' => ['moodleRoot' => 'some_valid_moodle_root'],
+                'return' => ['value' => 'some_valid_moodle_root'],
                 'requireRealMoodle' => true,
                 'reset'  => false, // Prevent resetting cached information to verify next works.
             ],
             'moodleRoot_already_cached' => [
                 'config' => ['moodleRoot' => '/does/not/exist'],
-                'return' => ['value' => dirname(__FILE__, 5)],
+                'return' => ['value' => 'some_valid_moodle_root'],
                 'requireRealMoodle' => true,
             ],
             'moodleRoot_cache_cleaned' => [ // Verify that previous has cleaned cached information.
@@ -358,11 +358,11 @@ class MoodleUtilTest extends MoodleCSBaseTest {
                 'requireRealMoodle' => false,
             ],
 
-            // Passing nothing, defaults to this file.
+            // Passing nothing, defaults to this file, that leads to not valid moodle root.
             'moodleRoot_pass_nothing' => [
                 'config' => [],
-                'return' => ['value' => dirname(__FILE__, 5)],
-                'requireRealMoodle' => true,
+                'return' => ['value' => null],
+                'requireRealMoodle' => false,
             ],
         ];
     }
@@ -373,20 +373,33 @@ class MoodleUtilTest extends MoodleCSBaseTest {
      * @param array $config get the Config from provider.
      * @param array $return expected result of the test.
      * @param bool $reset to decide if static caches should be reset before the test.
-     * @param bool $selfPath to decide if codechecker own path is good to find a valid moodle root.
-     * @param bool $requireRealMoodle Whether a real Moodle root is required for this test.
+     * @param bool $selfPath to decide if moodle-cs own path is good to find a valid moodle root.
+     * @param bool $requireMockMoodle Whether a mock Moodle root is required for this test.
      *
      * @dataProvider getMoodleRootProvider
      */
     public function test_getMoodleRoot(
-      array $config,
-      array $return,
-      bool $requireRealMoodle = false,
-      bool $reset = true,
-      bool $selfPath = true
+        array $config,
+        array $return,
+        bool $requireMockMoodle = false,
+        bool $reset = true,
+        bool $selfPath = true
     ) {
-        if ($requireRealMoodle) {
-            $this->requireRealMoodleRoot();
+        if ($requireMockMoodle) {
+            if (isset($config['moodleRoot']) && isset($return['value'])) {
+                // We have to mock the passed moodleRoot.
+                $vfs = vfsStream::setup($config['moodleRoot'], null, [
+                    'version.php' => 'some version contents, not important for this test',
+                    'config-dist.php' => 'come config contents, not important for this test',
+                ]);
+                Config::setConfigData('moodleRoot', $vfs->url(), true);
+                unset($config['moodleRoot']); // We don't need this anymore.
+                $this->requireRealMoodleRoot();
+
+                // We also have to mock the passed expectation for the test.
+                $returnVfs = vfsStream::setup($return['value'], null, []);
+                $return['value'] = $returnVfs->url();
+            }
         }
 
         $file = null;
