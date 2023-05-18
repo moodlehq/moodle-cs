@@ -57,9 +57,10 @@ class MoodleUtilTest extends MoodleCSBaseTest {
             "plugin,local_codechecker,{$moodleRoot}/local/codechecker\n" .// All ok.
             "plugin,mod_forum,{$moodleRoot}/mod/forum\n";                 // All ok.
 
-        vfsStream::create([
-            'components.txt' => $components,
-        ]);
+        vfsStream::create(
+            ['components.txt' => $components,],
+            $vfs
+        );
 
         // Set codechecker config to point to it.
         Config::setConfigData('moodleComponentsListPath', $vfs->url() . '/components.txt', true);
@@ -108,42 +109,42 @@ class MoodleUtilTest extends MoodleCSBaseTest {
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
-                'requireRealMoodle' => false,
+                'requireMockMoodle' => false,
             ],
             'moodleComponent_file_without_component_class' => [
                 'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/good/lib/lib.php'],
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
-                'requireRealMoodle' => false,
+                'requireMockMoodle' => false,
             ],
             'moodleComponent_file_valid' => [
-                'config' => ['file' => __FILE__],
-                'return' => ['value' => 'local_codechecker'],
+                'config' => ['file' => 'local/invented/lib.php'],
+                'return' => ['value' => 'local_invented'],
                 'reset' => false, // Prevent resetting cached information to verify next works.
                 'selfPath' => false,
-                'requireRealMoodle' => true,
+                'requireMockMoodle' => true,
             ],
             'moodleComponent_file_already_cached' => [
-                'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/good/lib/lib.php'],
-                'return' => ['value' => 'local_codechecker'],
+                'config' => ['file' => 'lib/lib.php'],
+                'return' => ['value' => 'core'],
                 'reset' => true,
                 'selfPath' => false,
-                'requireRealMoodle' => true,
+                'requireMockMoodle' => true,
             ],
             'moodleComponent_file_cache_cleaned' => [
                 'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/good/lib/lib.php'],
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
-                'requireRealMoodle' => false,
+                'requireMockMoodle' => false,
             ],
             'moodleComponent_file_without_component' => [
                 'config' => ['file' => dirname(__FILE__, 5) . '/userpix/index.php'],
                 'return' => ['value' => null],
                 'reset' => true,
                 'selfPath' => false,
-                'requireRealMoodle' => false,
+                'requireMockMoodle' => false,
             ],
         ];
     }
@@ -167,7 +168,15 @@ class MoodleUtilTest extends MoodleCSBaseTest {
         bool $requireMockMoodle = false
     ) {
         if ($requireMockMoodle) {
+            // We have to mock the passed moodleRoot.
+            $vfs = vfsStream::setup('mocksite', null, []);
+            vfsStream::copyFromFileSystem(__DIR__ . '/fixtures/moodleutil/complete', $vfs);
+            $config['moodleRoot'] = $vfs->url(); // Let's add it to the standard config and immediately use it.
+            Config::setConfigData('moodleRoot', $config['moodleRoot'], true);
             $this->requireRealMoodleRoot();
+
+            // Also, we need to set the config['file'] to point to the vfs one.
+            $config['file'] = $vfs->url() . '/' . $config['file'];
         }
 
         $file = null;
@@ -176,9 +185,9 @@ class MoodleUtilTest extends MoodleCSBaseTest {
             foreach ($config as $key => $value) {
                 if ($key === 'file') {
                     // We are passing a real File, prepare it.
-                    $config = new Config();
-                    $ruleset = new Ruleset($config);
-                    $file = new File($value, $ruleset, $config);
+                    $phpcsConfig = new Config();
+                    $phpcsRuleset = new Ruleset($phpcsConfig);
+                    $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
                     // Normal config.
                     Config::setConfigData($key, $value, true);
@@ -208,9 +217,7 @@ class MoodleUtilTest extends MoodleCSBaseTest {
         // We need to unset all config options when passed.
         if ($config) {
             foreach ($config as $key => $value) {
-                if ($key !== 'file') {
-                    Config::setConfigData($key, null, true);
-                }
+                Config::setConfigData($key, null, true);
             }
         }
     }
@@ -274,9 +281,9 @@ class MoodleUtilTest extends MoodleCSBaseTest {
             foreach ($config as $key => $value) {
                 if ($key === 'file') {
                     // We are passing a real File, prepare it.
-                    $config = new Config();
-                    $ruleset = new Ruleset($config);
-                    $file = new File($value, $ruleset, $config);
+                    $phpcsConfig = new Config();
+                    $phpcsRuleset = new Ruleset($phpcsConfig);
+                    $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
                     // Normal config.
                     Config::setConfigData($key, $value, true);
@@ -306,9 +313,7 @@ class MoodleUtilTest extends MoodleCSBaseTest {
         // We need to unset all config options when passed.
         if ($config) {
             foreach ($config as $key => $value) {
-                if ($key !== 'file') {
-                    Config::setConfigData($key, null, true);
-                }
+                Config::setConfigData($key, null, true);
             }
         }
     }
@@ -392,8 +397,8 @@ class MoodleUtilTest extends MoodleCSBaseTest {
                     'version.php' => 'some version contents, not important for this test',
                     'config-dist.php' => 'come config contents, not important for this test',
                 ]);
-                Config::setConfigData('moodleRoot', $vfs->url(), true);
-                unset($config['moodleRoot']); // We don't need this anymore.
+                $config['moodleRoot'] = $vfs->url(); // Let's add it to the standard config and immediately use it.
+                Config::setConfigData('moodleRoot', $config['moodleRoot'], true);
                 $this->requireRealMoodleRoot();
 
                 // We also have to mock the passed expectation for the test.
@@ -408,9 +413,9 @@ class MoodleUtilTest extends MoodleCSBaseTest {
             foreach ($config as $key => $value) {
                 if ($key === 'file') {
                     // We are passing a real File, prepare it.
-                    $config = new Config();
-                    $ruleset = new Ruleset($config);
-                    $file = new File($value, $ruleset, $config);
+                    $phpcsConfig = new Config();
+                    $phpcsRuleset = new Ruleset($phpcsConfig);
+                    $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
                     // Normal config.
                     Config::setConfigData($key, $value, true);
@@ -440,9 +445,7 @@ class MoodleUtilTest extends MoodleCSBaseTest {
         // We need to unset all config options when passed.
         if ($config) {
             foreach ($config as $key => $value) {
-                if ($key !== 'file') {
-                    Config::setConfigData($key, null, true);
-                }
+                Config::setConfigData($key, null, true);
             }
         }
     }
