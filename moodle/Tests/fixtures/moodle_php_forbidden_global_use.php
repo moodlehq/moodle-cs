@@ -57,3 +57,7 @@ class block_html extends block_base {
         return $PAGE->url;
     }
 }
+
+class block_another extends block_base {
+    public $something;
+}

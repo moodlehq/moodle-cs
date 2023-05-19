@@ -42,5 +42,9 @@ define([], function() {
         alert('foo');
     };
 
+    var Watermelon = function(title) {
+        var self = this;
+    }; // End of code block comments.
+
     return Selector;
 });
