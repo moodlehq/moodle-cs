@@ -135,3 +135,14 @@ $something = 1; // @codeCoverageIgnore
 $something = 1;// @codeCoverageIgnoreStart
 $something = 1; // @codeCoverageIgnoreEnd
 $something = 1;  // @codeCoverageIgnoreAnythingInvented
+
+function blah() {
+} // End of code block comments.
+
+function dah() {
+    //	A tab in the comment is not nice.
+    //  Neither 2 spaces in the comment are.
+    $something = 1;
+    //
+
+    // Blank comments, like previous one, are ugly too.
