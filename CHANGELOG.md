@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- Update composer dependencies to current versions, notably PHPCompatibility (0a17f9ed).
+- Enforce the use of `&&` and `||` logical operators, **now erroring** (after a grace period of 1 year) with `and` and `or` uses: `Squiz.Operators.ValidLogicalOperators`
 
 ## [v3.3.4] - 2023-05-28
 ### Changed
