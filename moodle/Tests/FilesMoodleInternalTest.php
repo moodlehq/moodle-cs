@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\MoodleInternalSniff
  */
-class FilesMoodleInternalTest extends MoodleCSBaseTest {
+class FilesMoodleInternalTest extends MoodleCSBaseTestCase {
 
     public function test_moodle_files_moodleinternal_problem() {
         $this->set_standard('moodle');

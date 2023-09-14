@@ -30,7 +30,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @todo Complete coverage of all Sniffs.
  */
-class MoodleCsStandardTest extends MoodleCSBaseTest {
+class MoodleStandardTest extends MoodleCSBaseTestCase {
 
     /**
      * Test the PSR2.Methods.MethodDeclaration sniff.

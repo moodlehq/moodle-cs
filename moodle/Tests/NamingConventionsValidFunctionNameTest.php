@@ -30,7 +30,7 @@ use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\NamingConventions\ValidFunctionNameSniff
  */
-class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTest {
+class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase {
 
     /**
      * Data provider for self::test_namingconventions_validfunctionname

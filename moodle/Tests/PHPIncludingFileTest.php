@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\IncludingFileSniff
  */
-class PHPIncludingFileTest extends MoodleCSBaseTest {
+class PHPIncludingFileTest extends MoodleCSBaseTestCase {
 
     public function test_php_includingfile() {
         // Define the standard, sniff and fixture to use.

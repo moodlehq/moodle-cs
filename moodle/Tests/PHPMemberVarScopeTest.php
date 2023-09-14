@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\MemberVarScopeSniff
  */
-class PHPMemberVarScopeTest extends MoodleCSBaseTest {
+class PHPMemberVarScopeTest extends MoodleCSBaseTestCase {
 
     public function test_php_membervarscope() {
         // Define the standard, sniff and fixture to use.

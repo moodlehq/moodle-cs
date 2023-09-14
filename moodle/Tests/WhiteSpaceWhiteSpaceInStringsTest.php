@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\WhiteSpace\WhiteSpaceInStringsSniff
  */
-class WhiteSpaceWhiteSpaceInStringsTest extends MoodleCSBaseTest {
+class WhiteSpaceWhiteSpaceInStringsTest extends MoodleCSBaseTestCase {
 
     public function test_whitespace_whitespaceinstrings() {
         // Define the standard, sniff and fixture to use.
