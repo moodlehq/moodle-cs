@@ -35,7 +35,7 @@ use org\bovigo\vfs\vfsStream;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil
  */
-class MoodleUtilTest extends MoodleCSBaseTest {
+class MoodleUtilTest extends MoodleCSBaseTestCase {
 
     /**
      * Unit test for calculateAllComponents.

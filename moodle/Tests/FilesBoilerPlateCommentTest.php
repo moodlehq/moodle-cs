@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\BoilerplateCommentSniff
  */
-class FilesBoilerPlateCommentTest extends MoodleCSBaseTest {
+class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase {
 
     public function test_moodle_files_boilerplatecomment_ok() {
         $this->set_standard('moodle');

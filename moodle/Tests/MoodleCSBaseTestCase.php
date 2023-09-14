@@ -39,7 +39,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  * @copyright  2013 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class MoodleCSBaseTest extends \PHPUnit\Framework\TestCase {
+abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var string name of the standard to be tested.
