@@ -12,11 +12,16 @@
         {
             "name": "Andrew Lyons",
             "email": "andrew@nicols.co.uk"
+        },
+        {
+            "name": "Eloy Lafuente",
+            "email": "stronk7@moodle.com"
         }
     ],
     "require": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
         "squizlabs/php_codesniffer": "^3.7.2",
+        "phpcsstandards/phpcsextra": "^1.1.0",
         "phpcompatibility/php-compatibility": "dev-develop#0a17f9ed"
     },
     "config": {

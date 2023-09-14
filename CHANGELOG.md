@@ -7,6 +7,10 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+### Added
+
+- A new moodle-extra coding standard which moves towards a more PSR-12 compliant coding style
+
 ## [v3.3.5] - 2023-08-28
 ### Changed
 - Update composer dependencies to current versions, notably PHPCompatibility (0a17f9ed).
