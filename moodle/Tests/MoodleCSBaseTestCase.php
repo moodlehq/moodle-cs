@@ -80,7 +80,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
      *
      * @param string $standard name of the standard to be tested.
      */
-    protected function set_standard(string$standard) {
+    protected function set_standard(string $standard) {
         if (\PHP_CodeSniffer\Util\Standards::isInstalledStandard($standard) === false) {
             // They didn't select a valid coding standard, so help them
             // out by letting them know which standards are installed.

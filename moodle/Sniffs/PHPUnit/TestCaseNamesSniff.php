@@ -68,7 +68,7 @@ class TestCaseNamesSniff implements Sniff {
         $moodleComponent = MoodleUtil::getMoodleComponent($file);
 
         // Detect if we are running PHPUnit.
-        $runningPHPUnit = defined('PHPUNIT_TEST') && PHPUNIT_TEST;
+        $runningPHPUnit = MoodleUtil::isUnitTestRunning();
 
         // We have all we need from core, let's start processing the file.
 
@@ -81,17 +81,11 @@ class TestCaseNamesSniff implements Sniff {
             return; // @codeCoverageIgnore
         }
 
-        // If the file isn't under tests directory, nothing to check.
-        if (stripos($file->getFilename(), '/tests/') === false) {
+        // If the file is not a unit test file, nothing to check.
+        if (!MoodleUtil::isUnitTest($file) && !$runningPHPUnit) {
             return; // @codeCoverageIgnore
         }
-
-        // If the file isn't called, _test.php, nothing to check.
-        // Make an exception for codechecker own phpunit fixtures here, allowing any name for them.
         $fileName = basename($file->getFilename());
-        if (substr($fileName, -9) !== '_test.php' && !$runningPHPUnit) {
-            return; // @codeCoverageIgnore
-        }
 
         // In order to cover the duplicates detection, we need to set some
         // properties (caches) here. It's extremely hard to do

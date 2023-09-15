@@ -466,4 +466,200 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $moodleComponents->setAccessible(true);
         $moodleComponents->setValue([]);
     }
+
+    /**
+     * Data provider for testIsUnitTest.
+     *
+     * @return array 
+     */
+    public static function isUnitTestProvider(): array
+    {
+        return [
+            'Not in tests directory' => [
+                'value' => '/path/to/standard/file.php',
+                'return' => false,
+            ],
+            'In tests directory' => [
+                'value' => '/path/to/standard/tests/file.php',
+                'return' => true,
+            ],
+            'In test sub-directory' => [
+                'value' => '/path/to/standard/tests/sub/file.php',
+                'return' => true,
+            ],
+            'Generator' => [
+                'value' => '/path/to/standard/tests/generator/file.php',
+                'return' => false,
+            ],
+            'Fixture' => [
+                'value' => '/path/to/standard/tests/fixtures/file.php',
+                'return' => false,
+            ],
+            'Behat' => [
+                'value' => '/path/to/standard/tests/behat/behat_test_file.php',
+                'return' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isUnitTestProvider
+     */
+    public function testIsUnitTest(
+        string $filepath,
+        bool $expected
+    ): void
+    {
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File($filepath, $phpcsRuleset, $phpcsConfig);
+
+        $this->assertEquals($expected, MoodleUtil::isUnitTest($file));
+    }
+
+    /**
+     * Data provider for testMeetsMinimumMoodleVersion.
+     *
+     * @return array
+     */
+    public static function meetsMinimumMoodleVersionProvider(): array
+    {
+        return [
+            // Setting up moodleBranch config/runtime option.
+            'moodleBranch_not_integer' => [
+                'moodleVersion' => 'noint',
+                'minVersion' => 311,
+                'return' => ['exception' => DeepExitException::class, 'message' => 'Value in not an integer'],
+            ],
+            'moodleBranch_big' => [
+                'moodleVersion' => '10000',
+                'minVersion' => 311,
+                'return' => ['exception' => DeepExitException::class, 'message' => 'Value must be 4 digit max'],
+            ],
+            'moodleBranch_valid_meets_minimum' => [
+                'moodleVersion' => 999,
+                'minVersion' => 311,
+                'return' => ['value' => true],
+            ],
+            'moodleBranch_valid_equals_minimum' => [
+                'moodleVersion' => 311,
+                'minVersion' => 311,
+                'return' => ['value' => true],
+            ],
+            'moodleBranch_valid_does_not_meet_minimum' => [
+                'moodleVersion' => 311,
+                'minVersion' => 402,
+                'return' => ['value' => false],
+            ],
+            'moodleBranch_valid_but_empty' => [
+                'moodleVersion' => 0,
+                'minVersion' => 311,
+                'return' => ['value' => null],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider meetsMinimumMoodleVersionProvider
+     * @param string|int $moodleVersion
+     * @param int $minversion
+     * @param array $return
+     */
+    public function testMeetsMinimumMoodleVersion(
+        $moodleVersion,
+        int $minVersion,
+        array $return
+    ): void
+    {
+        Config::setConfigData('moodleBranch', $moodleVersion, true);
+
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File('/path/to/tests/file.php', $phpcsRuleset, $phpcsConfig);
+
+        // Exception is coming, let's verify it happens.
+        if (isset($return['exception'])) {
+            try {
+                MoodleUtil::getMoodleBranch($file);
+            } catch (\Exception $e) {
+                $this->assertInstanceOf($return['exception'], $e);
+                $this->assertStringContainsString($return['message'], $e->getMessage());
+            }
+        } else if (array_key_exists('value', $return)) {
+            // Normal asserting result.
+            $this->assertSame($return['value'], MoodleUtil::meetsMinimumMoodleVersion($file, $minVersion));
+        }
+
+        // Do we want to reset any information cached (by default we do).
+        $this->cleanMoodleUtilCaches();
+
+        // We need to unset all config options when passed.
+        Config::setConfigData('moodleBranch', null, true);
+    }
+
+    public static function findClassMethodPointerProvider(): array
+    {
+        return [
+            [
+                'instance_method',
+                true,
+            ],
+            [
+                'protected_method',
+                true,
+            ],
+            [
+                'private_method',
+                true,
+            ],
+            [
+                'static_method',
+                true,
+            ],
+            [
+                'protected_static_method',
+                true,
+            ],
+            [
+                'private_static_method',
+                true,
+            ],
+            [
+                'not_found_method',
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider findClassMethodPointerProvider
+     */
+    public function testFindClassMethodPointer(
+        string $methodName,
+        bool $found
+    ): void
+    {
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
+            __DIR__ . '/fixtures/moodleutil/test_with_methods_to_find.php',
+            $phpcsRuleset,
+            $phpcsConfig
+        );
+
+        $phpcsFile->process();
+        $classPointer = $phpcsFile->findNext(T_CLASS, 0);
+
+        $pointer = MoodleUtil::findClassMethodPointer(
+            $phpcsFile,
+            $classPointer,
+            $methodName
+        );
+
+        if ($found) {
+            $this->assertGreaterThan(0, $pointer);
+        } else {
+            $this->assertNull($pointer);
+        }
+    }
 }
