@@ -7,9 +7,10 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+## [v3.3.6] - 2023-09-15
 ### Added
-
-- A new moodle-extra coding standard which moves towards a more PSR-12 compliant coding style
+- A new `moodle-extra` coding standard which moves towards a more PSR-12 compliant coding style.
+- Enforce the use of the short array syntax (`[]`), warning about the long alternative (`array()`): `Generic.Arrays.DisallowLongArraySyntax`. This will be raised from `warning` to `error` in 1 year.
 
 ## [v3.3.5] - 2023-08-28
 ### Changed
@@ -60,7 +61,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.5...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.6...main
+[v3.3.6]: https://github.com/moodlehq/moodle-cs/compare/v3.3.5...v3.3.6
 [v3.3.5]: https://github.com/moodlehq/moodle-cs/compare/v3.3.4...v3.3.5
 [v3.3.4]: https://github.com/moodlehq/moodle-cs/compare/v3.3.3...v3.3.4
 [v3.3.3]: https://github.com/moodlehq/moodle-cs/compare/v3.3.2...v3.3.3
