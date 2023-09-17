@@ -13,6 +13,16 @@
         <type>warning</type>
     </rule>
 
+    <!--
+        Trailing commas in multi-line Arrays.
+
+        Agreed in MDLSITE-5873 on 21 May 2020.
+        Affects all major branches since Moodle 3.9.
+
+        Require a comma after the last element in a multi-line array, but prevent in a single-line array definition
+    -->
+    <rule ref="NormalizedArrays.Arrays.CommaAfterLast"/>
+
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="Generic.Classes.OpeningBraceSameLine"/>
 
@@ -89,6 +99,8 @@
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
     <rule ref="Zend.Files.ClosingTag"/>
+
+
 
     <!-- Disable this exact error unless it's approved -->
     <rule ref="moodle.Commenting.InlineComment.SpacingAfter">
