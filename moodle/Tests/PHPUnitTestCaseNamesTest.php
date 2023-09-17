@@ -30,7 +30,7 @@ use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
  */
-class PHPUnitTestCaseNamesTest extends MoodleCSBaseTest {
+class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
 
     /**
      * Data provider for self::test_phpunit_testcasenames

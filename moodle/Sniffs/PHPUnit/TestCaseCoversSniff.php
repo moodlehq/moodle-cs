@@ -49,11 +49,16 @@ class TestCaseCoversSniff implements Sniff {
 
         // Before starting any check, let's look for various things.
 
-        // Get the moodle branch being analysed.
-        $moodleBranch = MoodleUtil::getMoodleBranch($file);
+        // If we aren't checking Moodle 4.0dev (400) and up, nothing to check.
+        // Make and exception for codechecker phpunit tests, so they are run always.
+        if (!MoodleUtil::meetsMinimumMoodleVersion($file, 400) && !MoodleUtil::isUnitTestRunning()) {
+            return; // @codeCoverageIgnore
+        }
 
-        // Detect if we are running PHPUnit.
-        $runningPHPUnit = defined('PHPUNIT_TEST') && PHPUNIT_TEST;
+        // If the file is not a unit test file, nothing to check.
+        if (!MoodleUtil::isUnitTest($file) && !MoodleUtil::isUnitTestRunning()) {
+            return; // @codeCoverageIgnore
+        }
 
         // We have all we need from core, let's start processing the file.
 
@@ -67,24 +72,6 @@ class TestCaseCoversSniff implements Sniff {
         // We only want to do this once per file.
         $prevopentag = $file->findPrevious(T_OPEN_TAG, $pointer - 1);
         if ($prevopentag !== false) {
-            return; // @codeCoverageIgnore
-        }
-
-        // If we aren't checking Moodle 4.0dev (400) and up, nothing to check.
-        // Make and exception for codechecker phpunit tests, so they are run always.
-        if (isset($moodleBranch) && $moodleBranch < 400 && !$runningPHPUnit) {
-            return; // @codeCoverageIgnore
-        }
-
-        // If the file isn't under tests directory, nothing to check.
-        if (stripos($file->getFilename(), '/tests/') === false) {
-            return; // @codeCoverageIgnore
-        }
-
-        // If the file isn't called, _test.php, nothing to check.
-        // Make an exception for codechecker own phpunit fixtures here, allowing any name for them.
-        $fileName = basename($file->getFilename());
-        if (substr($fileName, -9) !== '_test.php' && !$runningPHPUnit) {
             return; // @codeCoverageIgnore
         }
 

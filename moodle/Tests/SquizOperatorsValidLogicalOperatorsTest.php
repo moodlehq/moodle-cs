@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Operators\ValidLogicalOperatorsSniff
  */
-class SquizOperatorsValidLogicalOperatorsTest extends MoodleCSBaseTest {
+class SquizOperatorsValidLogicalOperatorsTest extends MoodleCSBaseTestCase {
 
     /**
      * Test the Squid.Arrays.ValidLogicalOperators sniff

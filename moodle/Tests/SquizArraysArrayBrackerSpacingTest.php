@@ -28,7 +28,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Arrays\ArrayBracketSpacingSniff
  */
-class SquizArraysArrayBrackerSpacingTest extends MoodleCSBaseTest {
+class SquizArraysArrayBrackerSpacingTest extends MoodleCSBaseTestCase {
 
     /**
      * Test the Squid.Arrays.ArrayBracketSpacing sniff

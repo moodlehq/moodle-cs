@@ -30,7 +30,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @todo Complete coverage of all Sniffs.
  */
-class MoodleCsStandardTest extends MoodleCSBaseTest {
+class MoodleStandardTest extends MoodleCSBaseTestCase {
 
     /**
      * Test the PSR2.Methods.MethodDeclaration sniff.
@@ -106,6 +106,9 @@ class MoodleCsStandardTest extends MoodleCSBaseTest {
           135 => 0,
           136 => 0,
           137 => 0,
+          143 => '@Message: Tab found before comment',
+          144 => '@Source: moodle.Commenting.InlineComment.SpacingBefore',
+          146 => '@Message: Blank comments are not allowed',
         ]);
         $this->set_warnings([
             4 => 0,
@@ -215,6 +218,33 @@ class MoodleCsStandardTest extends MoodleCSBaseTest {
             14 => 'exceeds 132 characters; contains 133 characters',
             17 => 'exceeds 132 characters; contains 180 characters',
             18 => 'exceeds 132 characters; contains 180 characters'));
+
+        // Let's do all the hard work!
+        $this->verify_cs_results();
+    }
+
+    /**
+     * Test the Generic.Arrays.DisallowLongArraySyntax sniff.
+     *
+     * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
+     */
+    public function test_generic_array_disallowlongarraysyntax(): void {
+        // Define the standard, sniff and fixture to use.
+        $this->set_standard('moodle');
+        $this->set_sniff('Generic.Arrays.DisallowLongArraySyntax');
+        $this->set_fixture(__DIR__ . '/fixtures/generic_array_longarraysyntax.php');
+
+        // Define expected results (errors and warnings). Format, array of:
+        // - line => number of problems,  or
+        // - line => array of contents for message / source problem matching.
+        // - line => string of contents for message / source problem matching (only 1).
+        $this->set_errors([
+            3 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
+            5 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
+            9 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
+        ]);
+
+        $this->set_warnings(array());
 
         // Let's do all the hard work!
         $this->verify_cs_results();
