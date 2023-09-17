@@ -48,9 +48,6 @@
     <!-- Detect duplicate array keys -->
     <rule ref="Universal.Arrays.DuplicateArrayKey"/>
 
-    <!-- Require a comma after the last element in a multi-line array, but prevent in a single-line array definition -->
-    <rule ref="NormalizedArrays.Arrays.CommaAfterLast"/>
-
     <!-- Disallow use of list() instead of [] -->
     <rule ref="Universal.Lists.DisallowLongListSyntax"/>
 
