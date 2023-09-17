@@ -80,53 +80,18 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
      *
      * @param string $standard name of the standard to be tested.
      */
-    protected function set_standard($standard) {
-        $installedStandards = \PHP_CodeSniffer\Util\Standards::getInstalledStandardDetails();
-
-        foreach (array_keys($installedStandards) as $standard) {
-            if (\PHP_CodeSniffer\Util\Standards::isInstalledStandard($standard) === false) {
-                // They didn't select a valid coding standard, so help them
-                // out by letting them know which standards are installed.
-                $error = 'ERROR: the "'.$standard.'" coding standard is not installed. ';
-                ob_start();
-                \PHP_CodeSniffer\Util\Standards::printInstalledStandards();
-                $error .= ob_get_contents();
-                ob_end_clean();
-                throw new \PHP_CodeSniffer\Exceptions\DeepExitException($error, 3);
-            }
+    protected function set_standard(string$standard) {
+        if (\PHP_CodeSniffer\Util\Standards::isInstalledStandard($standard) === false) {
+            // They didn't select a valid coding standard, so help them
+            // out by letting them know which standards are installed.
+            $error = "ERROR: the '{$standard}' coding standard is not installed.\n";
+            ob_start();
+            \PHP_CodeSniffer\Util\Standards::printInstalledStandards();
+            $error .= ob_get_contents();
+            ob_end_clean();
+            throw new \PHP_CodeSniffer\Exceptions\DeepExitException($error, 3);
         }
         $this->standard = $standard;
-        return;
-        // Since 2.9 arbitrary standard directories are not allowed by default,
-        // only those under the CodeSniffer/Standards dir are detected. Other base
-        // dirs containing standards can be added using CodeSniffer.conf or the
-        // PHP_CODESNIFFER_CONFIG_DATA global (installed_paths setting).
-        // We are using the global way here to avoid changes in the phpcs import.
-        // phpcs:disable
-        if (!isset($GLOBALS['PHP_CODESNIFFER_CONFIG_DATA']['installed_paths'])) {
-            $localcodecheckerpath = realpath(__DIR__ . '/../');
-            $GLOBALS['PHP_CODESNIFFER_CONFIG_DATA'] = ['installed_paths' => $localcodecheckerpath];
-        }
-        // phpcs:enable
-
-        // Basic search of standards in the allowed directories.
-        $stdsearch = array(
-            __DIR__ . '/../phpcs/src/Standards', // PHPCS standards dir.
-            __DIR__ . '/..',                     // Plugin local_codechecker dir, allowed above via global.
-        );
-
-        foreach ($stdsearch as $stdpath) {
-            $stdpath = realpath($stdpath . '/' . $standard);
-            $stdfile = $stdpath . '/ruleset.xml';
-            if (file_exists($stdfile)) {
-                $this->standard = $stdpath; // Need to pass the path here.
-                break;
-            }
-        }
-        // Standard not found, fail.
-        if ($this->standard === null) {
-            $this->fail('Standard "' . $standard . '" not found.');
-        }
     }
 
     /**
