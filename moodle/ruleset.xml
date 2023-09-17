@@ -107,6 +107,12 @@
         <severity>0</severity>
     </rule>
 
+    <!--
+        Namespace statements, and class imports (use statements) should not use a leading backslash.
+    -->
+    <rule ref="PSR12.Files.ImportStatement.LeadingSlash"/>
+    <rule ref="moodle.Namespaces.NamespaceStatement"/>
+
     <!-- Let's add the complete PHPCompatibility standard -->
     <rule ref="PHPCompatibility" />
 
