@@ -52,6 +52,11 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
                 ],
                 'warnings' => [],
             ],
+            'Abstract methods in a testcase' => [
+                'fixture' => 'fixtures/phpunit/testcasenames_with_abstract_test.php',
+                'errors' => [],
+                'warnings' => [],
+            ],
             'NoMatch' => [
                 'fixture' => 'fixtures/phpunit/testcasenames_nomatch.php',
                 'errors' => [],

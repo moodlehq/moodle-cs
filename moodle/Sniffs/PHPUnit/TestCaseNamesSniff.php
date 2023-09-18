@@ -29,7 +29,7 @@ namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\FunctionDeclarations;
 
 class TestCaseNamesSniff implements Sniff {
 
@@ -122,6 +122,16 @@ class TestCaseNamesSniff implements Sniff {
             $method = '';
             $methodFound = false;
             while ($mStart = $file->findNext(T_FUNCTION, $pointer, $tokens[$cStart]['scope_closer'])) {
+                $info = FunctionDeclarations::getProperties($file, $mStart);
+                if (!$info['has_body']) {
+                    // Some methods have no body (for example, abstract).
+                    // Therefore there is no scope_closer
+                    // There may be a parenthesis closer, or a semi-colon,
+                    // but there is no easy way to determine this.
+                    // Fall back to finding the next function based on the pointer position.
+                    $pointer = $mStart + 1;
+                    continue;
+                }
                 $pointer = $tokens[$mStart]['scope_closer']; // Next iteration look after the end of current method.
                 if (strpos($file->getDeclarationName($mStart), 'test_') === 0) {
                     $methodFound = true;
