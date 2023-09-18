@@ -22,6 +22,7 @@ use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Checks that a test file has the @coversxxx annotations properly defined.
@@ -46,7 +47,6 @@ class TestCaseCoversSniff implements Sniff {
      * @param int $pointer The position in the stack.
      */
     public function process(File $file, $pointer) {
-
         // Before starting any check, let's look for various things.
 
         // If we aren't checking Moodle 4.0dev (400) and up, nothing to check.
@@ -78,6 +78,12 @@ class TestCaseCoversSniff implements Sniff {
         // Iterate over all the classes (hopefully only one, but that's not this sniff problem).
         $cStart = $pointer;
         while ($cStart = $file->findNext(T_CLASS, $cStart + 1)) {
+            $classInfo = ObjectDeclarations::getClassProperties($file, $cStart);
+            if ($classInfo['is_abstract']) {
+                // Abstract classes are not tested.
+                // Coverage information belongs to the concrete classes that extend them.
+                continue;
+            }
             $class = $file->getDeclarationName($cStart);
             $classCovers = false; // To control when the class has a @covers tag.
             $classCoversNothing = false; // To control when the class has a @coversNothing tag.
