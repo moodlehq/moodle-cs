@@ -23,3 +23,10 @@ class something3_test extends base_test {
         // Nothing to test.
     }
 }
+
+// An abstract class is not inspected.
+abstract class some_abstract_testcase extends base_test {
+    public function test_something() {
+        // Nothing to test.
+    }
+}
