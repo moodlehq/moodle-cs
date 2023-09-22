@@ -476,27 +476,39 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
     {
         return [
             'Not in tests directory' => [
-                'value' => '/path/to/standard/file.php',
+                'value' => '/path/to/standard/file_test.php',
                 'return' => false,
             ],
             'In tests directory' => [
-                'value' => '/path/to/standard/tests/file.php',
+                'value' => '/path/to/standard/tests/file_test.php',
                 'return' => true,
+            ],
+            'In tests directory but missing _test suffix' => [
+                'value' => '/path/to/standard/tests/file.php',
+                'return' => false,
+            ],
+            'In tests directory but some idiot put a _test.php suffix on a directory' => [
+                'value' => '/path/to/standard/tests/some_test.php/file.php',
+                'return' => false,
             ],
             'In test sub-directory' => [
-                'value' => '/path/to/standard/tests/sub/file.php',
+                'value' => '/path/to/standard/tests/sub/file_test.php',
                 'return' => true,
             ],
+            'In test sub-directory but missing _test suffix' => [
+                'value' => '/path/to/standard/tests/sub/file.php',
+                'return' => false,
+            ],
             'Generator' => [
-                'value' => '/path/to/standard/tests/generator/file.php',
+                'value' => '/path/to/standard/tests/generator/file_test.php',
                 'return' => false,
             ],
             'Fixture' => [
-                'value' => '/path/to/standard/tests/fixtures/file.php',
+                'value' => '/path/to/standard/tests/fixtures/file_test.php',
                 'return' => false,
             ],
             'Behat' => [
-                'value' => '/path/to/standard/tests/behat/behat_test_file.php',
+                'value' => '/path/to/standard/tests/behat/behat_test_file_test.php',
                 'return' => false,
             ],
         ];
