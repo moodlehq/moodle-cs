@@ -6,6 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.3.7] - 2023-09-22
+### Added
+- Require trailing commas in multi-line arrays.
+- Verify that both `namespace` and `use` (class import) declarations don't use leading slashes (`\`).
+- Verify various aspects/common mistakes related with PHPUnit data providers:
+  - Private providers.
+  - Missing providers.
+  - Providers with incorrect names.
+  - Providers with wrong return types.
+  - Non-static providers.
+
+### Fixed
+- Fixed incorrect handling of abstract methods within PHPUnit sniffs.
+
 
 ## [v3.3.6] - 2023-09-15
 ### Added
@@ -61,7 +75,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.6...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.7...main
+[v3.3.7]: https://github.com/moodlehq/moodle-cs/compare/v3.3.6...v3.3.7
 [v3.3.6]: https://github.com/moodlehq/moodle-cs/compare/v3.3.5...v3.3.6
 [v3.3.5]: https://github.com/moodlehq/moodle-cs/compare/v3.3.4...v3.3.5
 [v3.3.4]: https://github.com/moodlehq/moodle-cs/compare/v3.3.3...v3.3.4
