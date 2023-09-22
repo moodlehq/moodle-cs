@@ -50,6 +50,14 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase {
                 'warnings' => [
                 ],
             ],
+            'Provider has Parenthesis' => [
+                'fixture' => 'fixtures/phpunit/provider/provider_parents_test.php',
+                'errors' => [
+                ],
+                'warnings' => [
+                    6 => 'Data provider should not end with "()". "provider()" provided.',
+                ],
+            ],
             'Provider Visibility' => [
                 'fixture' => 'fixtures/phpunit/provider/provider_visibility_test.php',
                 'errors' => [
