@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.3.9] - 2023-09-26
+### Added
+- Defined (via `.gitattributes`) which files must not be part of distribution (generated .zip & .gz in GitHub, `--prefer-dist` in Composer, ...) packages. This includes docs, ci files, tests... Note that it's still possible to download the complete packages (using `git clone`, `--prefer-source` with Composer, ...).
+
+### Fixed
+- Removed the `PSR1.Classes.ClassDeclaration.MissingNamespace` sniff from the `moodle-extra` standard because it was reporting some (for Moodle) false positives.
+
 ## [v3.3.8] - 2023-09-22
 ### Added
 - Detect PHPUnit data provider (`@dataProvider`) declarations using `()` after the function name.
@@ -82,7 +89,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.8...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.9...main
+[v3.3.9]: https://github.com/moodlehq/moodle-cs/compare/v3.3.8...v3.3.9
 [v3.3.8]: https://github.com/moodlehq/moodle-cs/compare/v3.3.7...v3.3.8
 [v3.3.7]: https://github.com/moodlehq/moodle-cs/compare/v3.3.6...v3.3.7
 [v3.3.6]: https://github.com/moodlehq/moodle-cs/compare/v3.3.5...v3.3.6
