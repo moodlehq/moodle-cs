@@ -28,7 +28,7 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  * @copyright  2023 Andrew Lyons <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Namespaces\NoLeadingSlashSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Namespaces\NamespaceStatementSniff
  */
 class NamespaceStatementSniffTest extends MoodleCSBaseTestCase
 {
