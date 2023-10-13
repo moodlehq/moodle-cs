@@ -124,4 +124,9 @@
     <!-- Let's add the complete PHPCompatibility standard -->
     <rule ref="PHPCompatibility" />
 
+    <!--
+        Detect duplicate array keys. This is useful for unit test providers in particular.
+    -->
+    <rule ref="Universal.Arrays.DuplicateArrayKey"/>
+
 </ruleset>
