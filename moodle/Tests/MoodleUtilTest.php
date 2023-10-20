@@ -22,6 +22,7 @@ use PHP_CodeSniffer\Exceptions\DeepExitException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Ruleset;
 use org\bovigo\vfs\vfsStream;
+use PHPCSUtils\Utils\ObjectDeclarations;
 
 // phpcs:disable moodle.NamingConventions
 
@@ -470,7 +471,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
     /**
      * Data provider for testIsUnitTest.
      *
-     * @return array 
+     * @return array
      */
     public static function isUnitTestProvider(): array
     {
@@ -527,6 +528,74 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $file = new File($filepath, $phpcsRuleset, $phpcsConfig);
 
         $this->assertEquals($expected, MoodleUtil::isUnitTest($file));
+    }
+
+    /**
+     * Data provider for testIsUnitTest.
+     *
+     * @return array
+     */
+    public static function isUnitTestCaseClassProvider(): array {
+        return [
+            'Not in tests directory' => [
+                'value' => '/path/to/standard/file_test.php',
+                'testClassName' => 'irrelevant',
+                'return' => false,
+            ],
+            'testcase in a test file' => [
+                'value' => __DIR__ . '/fixtures/moodleutil/istestcaseclass/multiple_classes_test.php',
+                'testClassName' => 'is_testcase',
+                'return' => true,
+            ],
+            'not a testcase in a test file' => [
+                'value' => __DIR__ . '/fixtures/moodleutil/istestcaseclass/multiple_classes_test.php',
+                'testClassName' => 'not_a_test_class',
+                'return' => false,
+            ],
+            'not a testcase with test in the name in a test file' => [
+                'value' => __DIR__ . '/fixtures/moodleutil/istestcaseclass/multiple_classes_test.php',
+                'testClassName' => 'some_other_class_with_test_in_name',
+                'return' => false,
+            ],
+            'not a testcase but extends a test class in a test file' => [
+                'value' => __DIR__ . '/fixtures/moodleutil/istestcaseclass/multiple_classes_test.php',
+                'testClassName' => 'some_other_class_with_test_in_name',
+                'return' => false,
+            ],
+            'looks like a test but does not extend a test class' => [
+                'value' => __DIR__ . '/fixtures/moodleutil/istestcaseclass/multiple_classes_test.php',
+                'testClassName' => 'some_other_class_with_test_in_name_not_extending_test',
+                'return' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isUnitTestCaseClassProvider
+     */
+    public function testIsUnitTestCaseClass(
+        string $filepath,
+        string $testClassName,
+        bool $expected
+    ): void
+    {
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+
+        if (file_exists($filepath)) {
+            $file = new \PHP_CodeSniffer\Files\LocalFile($filepath, $phpcsRuleset, $phpcsConfig);
+            $file->process();
+        } else {
+            $file = new File($filepath, $phpcsRuleset, $phpcsConfig);
+        }
+
+        $cStart = 0;
+        while ($cStart = $file->findNext(T_CLASS, $cStart + 1)) {
+            if (ObjectDeclarations::getName($file, $cStart) === $testClassName) {
+                $this->assertEquals($expected, MoodleUtil::isUnitTestCaseClass($file, $cStart));
+                break;
+            }
+        }
     }
 
     /**
