@@ -21,7 +21,9 @@
 
         Require a comma after the last element in a multi-line array, but prevent in a single-line array definition
     -->
-    <rule ref="NormalizedArrays.Arrays.CommaAfterLast"/>
+    <rule ref="NormalizedArrays.Arrays.CommaAfterLast">
+        <exclude name="NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine" />
+    </rule>
 
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="Generic.Classes.OpeningBraceSameLine"/>
