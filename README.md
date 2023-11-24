@@ -35,6 +35,7 @@ You can install these coding style rules using Composer to make them available g
 This will install the correct version of phpcs, with the Moodle rules, and their dependencies.
 
 ```shell
+composer global config minimum-stability dev
 composer global require moodlehq/moodle-cs
 ```
 
