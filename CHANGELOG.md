@@ -106,4 +106,4 @@ All the details about [previous releases] can be found in [local_codechecker](ht
 [v3.3.2]: https://github.com/moodlehq/moodle-cs/compare/v3.3.1...v3.3.2
 [v3.3.1]: https://github.com/moodlehq/moodle-cs/compare/v3.3.0...v3.3.1
 [v3.3.0]: https://github.com/moodlehq/moodle-cs/compare/v3.2.0...v3.3.0
-[Previous releases]: https://github.com/moodlehq/moodle-local_codechecker/blob/master/CHANGES.md#changes-in-version-400-20220825---welcome-moodle-cs
+[Previous releases]: https://github.com/moodlehq/moodle-local_codechecker/blob/main/CHANGES.md#changes-in-version-400-20220825---welcome-moodle-cs
