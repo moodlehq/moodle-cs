@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.3.11] - 2023-11-29
+### Changed
+- Amended the installation instructions to be able to use some dev dependencies.
+- Moved all links to "master" branches to their new "main" counterparts.
+
+### Fixed
+- Solved a problem with the `CommaAfterLast` Sniff that was causing some valid multi-line arrays to be identified as invalid, missing commas.
+
 ## [v3.3.10] - 2023-10-20
 ### Added
 - Detected various duplicate array keys cases (code smell).
@@ -94,7 +102,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.10...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.11...main
+[v3.3.11]: https://github.com/moodlehq/moodle-cs/compare/v3.3.10...v3.3.11
 [v3.3.10]: https://github.com/moodlehq/moodle-cs/compare/v3.3.9...v3.3.10
 [v3.3.9]: https://github.com/moodlehq/moodle-cs/compare/v3.3.8...v3.3.9
 [v3.3.8]: https://github.com/moodlehq/moodle-cs/compare/v3.3.7...v3.3.8
