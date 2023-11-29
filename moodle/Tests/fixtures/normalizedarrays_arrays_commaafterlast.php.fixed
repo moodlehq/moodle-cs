@@ -2,7 +2,7 @@
 defined('MOODLE_INTERNAL') || die(); // Make this always the 1st line in all CS fixtures.
 
 // Disabling this error as we do in our ruleset, so tests run the same.
-// phpcs:disable NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine
+// phpcs:disable moodle.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine
 
 // All these are good / valid code.
 
