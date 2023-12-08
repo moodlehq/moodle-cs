@@ -455,17 +455,20 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
      * Utility method to clean MoodleUtil own "caches" (class properties).
      */
     protected function cleanMoodleUtilCaches() {
-        $moodleRoot = new \ReflectionProperty(MoodleUtil::class, 'moodleRoot');
+        $moodleUtil = new \ReflectionClass(MoodleUtil::class);
+        $moodleRoot = $moodleUtil->getProperty('moodleRoot');
         $moodleRoot->setAccessible(true);
-        $moodleRoot->setValue(false);
+        $moodleUtil->setStaticPropertyValue('moodleRoot', false);
 
-        $moodleBranch = new \ReflectionProperty(MoodleUtil::class, 'moodleBranch');
+        $moodleUtil = new \ReflectionClass(MoodleUtil::class);
+        $moodleBranch = $moodleUtil->getProperty('moodleBranch');
         $moodleBranch->setAccessible(true);
-        $moodleBranch->setValue(false);
+        $moodleUtil->setStaticPropertyValue('moodleBranch', false);
 
-        $moodleComponents = new \ReflectionProperty(MoodleUtil::class, 'moodleComponents');
+        $moodleUtil = new \ReflectionClass(MoodleUtil::class);
+        $moodleComponents = $moodleUtil->getProperty('moodleComponents');
         $moodleComponents->setAccessible(true);
-        $moodleComponents->setValue([]);
+        $moodleUtil->setStaticPropertyValue('moodleComponents', []);
     }
 
     /**
