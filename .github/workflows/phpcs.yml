@@ -33,24 +33,25 @@ jobs:
           composer install
 
       - name: Run phplint
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
           ./vendor/bin/phplint
 
       - name: PHP Copy/Paste Detector
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: ./vendor/bin/phpcpd --exclude moodle/Tests moodle
 
       - name: Run phpunit
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
           ./vendor/bin/phpunit --coverage-text
 
       - name: Test coverage
+        if: ${{ !cancelled() }}
         run: ./vendor/bin/phpunit-coverage-check -t 80 clover.xml
 
       - name: Integration tests
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
           # There is one failure (exit with error)
           vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt || [[ $? = 1 ]]
@@ -62,6 +63,11 @@ jobs:
 
           # So, there isn't any failure any more (exit without error)
           vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt && [[ $? = 0 ]]
+
+      - name: Mark cancelled jobs as failed
+        if: ${{ cancelled() }}
+        run: exit 1
+
   coverage:
     if: github.repository == 'moodlehq/moodle-cs'
     name: Code coverage (codecov)
@@ -84,12 +90,17 @@ jobs:
           composer install
 
       - name: Run phpunit
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
           ./vendor/bin/phpunit --coverage-clover clover.xml
 
       - name: Upload coverage
+        if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v3
         with:
           files: clover.xml
           verbose: true
+
+      - name: Mark cancelled jobs as failed
+        if: ${{ cancelled() }}
+        run: exit 1
