@@ -6,6 +6,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.3.12] - 2023-12-19
+### Changed
+- Moved `PHP_CodeSniffer` from `squizlabs` (being abandoned) to `PHPCSStandars` (new repository). Everybody is welcome to [contribute](https://github.com/PHPCSStandards/PHP_CodeSniffer/blob/master/.github/CONTRIBUTING.md) or help [sponsoring](https://github.com/PHPCSStandards/PHP_CodeSniffer) the project!
+- Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.8.0) and `PHPCompatibility` (306cd263).
+- Applied various internal, coding and CI improvements:
+    - Ruleset fixes.
+    - PHP 8.3 compliance achieved.
+    - PHP 8.3 GitHub workflows support.
+
 ## [v3.3.11] - 2023-11-29
 ### Changed
 - Amended the installation instructions to be able to use some dev dependencies.
@@ -102,7 +111,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.11...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.12...main
+[v3.3.12]: https://github.com/moodlehq/moodle-cs/compare/v3.3.11...v3.3.12
 [v3.3.11]: https://github.com/moodlehq/moodle-cs/compare/v3.3.10...v3.3.11
 [v3.3.10]: https://github.com/moodlehq/moodle-cs/compare/v3.3.9...v3.3.10
 [v3.3.9]: https://github.com/moodlehq/moodle-cs/compare/v3.3.8...v3.3.9
