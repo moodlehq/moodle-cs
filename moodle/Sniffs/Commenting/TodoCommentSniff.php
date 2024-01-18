@@ -29,6 +29,7 @@ namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
 // phpcs:disable moodle.NamingConventions
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
@@ -71,6 +72,11 @@ class TodoCommentSniff implements Sniff
      * @return void
      */
     public function process(File $phpcsFile, $stackPtr): void {
+        // If specified, get the regular expression from the config.
+        if (($regex = Config::getConfigData('moodleTodoCommentRegex')) !== null) {
+            $this->commentRequiredRegex = $regex;
+        }
+
         // If the regular expression is empty, then we don't want to do anything.
         if (empty($this->commentRequiredRegex)) {
             return;
