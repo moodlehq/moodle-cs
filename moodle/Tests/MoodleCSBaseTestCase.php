@@ -16,6 +16,8 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Tests;
 
+use PHP_CodeSniffer\Config;
+
 /**
  * Specialized test case for easy testing of "moodle" standard sniffs.
  *
@@ -58,6 +60,11 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
     protected $fixture = null;
 
     /**
+     * @var array custom config elements to setup before running phpcs. name => value.
+     */
+    protected $customConfigs = [];
+
+    /**
      * @var array error expectations to ve verified against execution results.
      */
     protected $errors = null;
@@ -69,6 +76,10 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
 
     public function tearDown(): void {
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedComponentMappings([]);
+        // If there are custom configs setup, remove them.
+        foreach (array_keys($this->customConfigs) as $key) {
+            Config::setConfigData($key, null, true);
+        }
     }
 
     public function set_component_mapping(array $mapping): void {
@@ -150,6 +161,20 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
                 $this->errors[$line] = array($errordef);
             }
         }
+    }
+
+    /**
+     * Adds a custom config element to be setup before running phpcs.
+     *
+     * Note that those config elements will be automatically removed
+     * after each test case (by tearDown())
+     *
+     * @param string $key config key or name.
+     * @param string $value config value.
+     */
+    protected function add_custom_config(string $key, string $value): void {
+        $this->customConfigs[$key] = $value;
+        Config::setConfigData($key, $value, true);
     }
 
     /**
