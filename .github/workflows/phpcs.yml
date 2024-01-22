@@ -98,6 +98,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v3
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: clover.xml
           verbose: true
 
