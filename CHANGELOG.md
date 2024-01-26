@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.3.14] - 2024-01-26
+### Changed
+- Modified internal CI scripts towards better Codecov future support.
+
+### Fixed
+- Solved a problem with some `moodle.PHPUnit` Sniffs running an endless loop when processing abstract test methods.
+
 ## [v3.3.13] - 2024-01-19
 ### Changed
 - Applied various internal, coding and CI improvements:
@@ -14,7 +21,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - Updated composer dependencies to current versions, notably `PHP_CodeSniffer` (3.8.1).
 
 ### Added
-- New `moodle.Commenting.TodoComment` Sniff will be in charge to control that all the todo comments in core (both `// TODO` and `@todo` ones). Always come with a link to the [MDL project in the Tracker](https://tracker.moodle.org/projects/MDL).
+- New `moodle.Commenting.TodoComment` Sniff will be in charge to control that all the todo comments in core (both `// TODO` and `@todo` ones) always come with a link to the [MDL project in the Tracker](https://tracker.moodle.org/projects/MDL).
 
   Its behaviour can be controlled both by the `commentRequiredRegex` property in ruleset files or by the `moodleTodoCommentRegex` configuration option in `phpcs.xml` files and CLI invocations. Setting them to empty string disables the Sniff completely.
 
@@ -124,7 +131,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.13...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.14...main
+[v3.3.14]: https://github.com/moodlehq/moodle-cs/compare/v3.3.13...v3.3.14
 [v3.3.13]: https://github.com/moodlehq/moodle-cs/compare/v3.3.12...v3.3.13
 [v3.3.12]: https://github.com/moodlehq/moodle-cs/compare/v3.3.11...v3.3.12
 [v3.3.11]: https://github.com/moodlehq/moodle-cs/compare/v3.3.10...v3.3.11
