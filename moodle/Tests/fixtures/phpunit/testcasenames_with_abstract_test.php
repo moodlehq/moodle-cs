@@ -10,8 +10,5 @@ abstract class testcasenames_with_abstract_test extends base_test {
 
     abstract public function generate_example_data();
 
-    public function test_something(): void {
-        $data = $this->generate_test_data();
-        // Test something with the data.
-    }
+    abstract public function test_something(): void;
 }
