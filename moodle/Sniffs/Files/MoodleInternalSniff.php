@@ -294,7 +294,7 @@ class MoodleInternalSniff implements Sniff {
         $position = 0;
         $counter = 0;
         while ($position !== false) {
-            if ($position = $file->findNext([T_CLASS, T_INTERFACE, T_TRAIT], ($position + 1))) {
+            if ($position = $file->findNext([T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], ($position + 1))) {
                 $counter++;
             }
 
@@ -316,7 +316,13 @@ class MoodleInternalSniff implements Sniff {
      */
     private function code_changes_global_state(File $file, $start, $end) {
         $tokens = $file->getTokens();
-        $symbols = [T_CLASS => T_CLASS, T_INTERFACE => T_INTERFACE, T_TRAIT => T_TRAIT, T_FUNCTION => T_FUNCTION];
+        $symbols = [
+            T_CLASS => T_CLASS,
+            T_INTERFACE => T_INTERFACE,
+            T_TRAIT => T_TRAIT,
+            T_FUNCTION => T_FUNCTION,
+            T_ENUM => T_ENUM,
+        ];
         $conditions = [T_IF => T_IF, T_ELSE   => T_ELSE, T_ELSEIF => T_ELSEIF];
 
         for ($i = $start; $i <= $end; $i++) {
