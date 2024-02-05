@@ -82,6 +82,17 @@ class FilesMoodleInternalTest extends MoodleCSBaseTestCase {
         $this->verify_cs_results();
     }
 
+    public function test_moodle_files_moodleinternal_enum_ok() {
+        $this->set_standard('moodle');
+        $this->set_sniff('moodle.Files.MoodleInternal');
+        $this->set_fixture(__DIR__ . '/fixtures/files/moodleinternal/enum_ok.php');
+
+        $this->set_errors([]);
+        $this->set_warnings([]);
+
+        $this->verify_cs_results();
+    }
+
     public function test_moodle_files_moodleinternal_namespace_ok() {
         $this->set_standard('moodle');
         $this->set_sniff('moodle.Files.MoodleInternal');
