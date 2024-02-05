@@ -111,6 +111,20 @@ class InlineCommentSniff implements Sniff {
                 T_REQUIRE_ONCE,
             ];
 
+            if ($tokens[$nextToken]['code'] === T_ATTRIBUTE) {
+                // If the next token is an attribute, find the next non-attribute token.
+                // Note: It is possible for the next token to be another attribute, so we need to loop.
+                do {
+                    $token = $tokens[$nextToken];
+                    $nextToken = $phpcsFile->findNext(
+                        Tokens::$emptyTokens,
+                        ($token['attribute_closer'] + 1),
+                        null,
+                        true
+                    );
+                } while ($tokens[$nextToken]['code'] === T_ATTRIBUTE);
+            }
+
             if (in_array($tokens[$nextToken]['code'], $ignore, true) === true) {
                 return;
             }
