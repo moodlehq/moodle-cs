@@ -75,7 +75,7 @@ class BoilerplateCommentSniff implements Sniff {
         // Note that the opening PHP tag includes one newline.
         $numnewlines = 0;
         for ($i = $stackptr + 1; $i <= $stackptr + 5; ++$i) {
-            if ($tokens[$i]['code'] == T_WHITESPACE && $tokens[$i]['content'] == "\n") {
+            if (isset($tokens[$i]) && $tokens[$i]['code'] == T_WHITESPACE && $tokens[$i]['content'] == "\n") {
                 $numnewlines++;
             } else {
                 break;
