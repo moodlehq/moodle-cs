@@ -33,6 +33,63 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
 class MoodleStandardTest extends MoodleCSBaseTestCase {
 
     /**
+     * Test the PSR12.Functions.ReturnTypeDeclaration sniff.
+     *
+     * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Functions\ReturnTypeDeclarationSniff
+     */
+    public function test_psr12_functions_returntypedeclaration() {
+
+        // Define the standard, sniff and fixture to use.
+        $this->set_standard('moodle');
+        $this->set_sniff('PSR12.Functions.ReturnTypeDeclaration');
+        $this->set_fixture(__DIR__ . '/fixtures/psr12_functions_returntypedeclaration.php');
+
+        // Define expected results (errors and warnings). Format, array of:
+        // - line => number of problems,  or
+        // - line => array of contents for message / source problem matching.
+        // - line => string of contents for message / source problem matching (only 1).
+        $errors = [
+            30 => 'SpaceBeforeColon',
+            34 => 'SpaceBeforeReturnType',
+            38 => 'SpaceBeforeReturnType',
+        ];
+        $warnings = [];
+        $this->set_errors($errors);
+        $this->set_warnings($warnings);
+
+        // Let's do all the hard work!
+        $this->verify_cs_results();
+    }
+
+    /**
+     * Test the PSR12.Functions.NullableTypeDeclaration sniff.
+     *
+     * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Functions\NullableTypeDeclarationSniff
+     */
+    public function test_psr12_functions_nullabletypedeclaration() {
+
+        // Define the standard, sniff and fixture to use.
+        $this->set_standard('moodle');
+        $this->set_sniff('PSR12.Functions.NullableTypeDeclaration');
+        $this->set_fixture(__DIR__ . '/fixtures/psr12_functions_nullabletypedeclaration.php');
+
+        // Define expected results (errors and warnings). Format, array of:
+        // - line => number of problems,  or
+        // - line => array of contents for message / source problem matching.
+        // - line => string of contents for message / source problem matching (only 1).
+        $errors = [
+            17 => 'WhitespaceFound',
+            22 => 3,
+        ];
+        $warnings = [];
+        $this->set_errors($errors);
+        $this->set_warnings($warnings);
+
+        // Let's do all the hard work!
+        $this->verify_cs_results();
+    }
+
+    /**
      * Test the PSR2.Methods.MethodDeclaration sniff.
      *
      * @covers \PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\MethodDeclarationSniff
