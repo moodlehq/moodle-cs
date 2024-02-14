@@ -169,7 +169,7 @@ class TestCaseProviderSniff implements Sniff {
         if ($tokens[$pointer + 2]['code'] !== T_DOC_COMMENT_STRING) {
             $file->addError(
                 'Wrong @dataProvider tag specified for test %s, it must be followed by a space and a method name.',
-                $pointer + 2,
+                $pointer,
                 'dataProviderSyntaxMethodnameMissing',
                 [
                     $testName,
@@ -281,9 +281,10 @@ class TestCaseProviderSniff implements Sniff {
                 // All valid
                 break;
             default:
+                $returnPointer = $file->findNext(T_CLOSE_PARENTHESIS, $providerPointer + 1);
                 $file->addError(
                     'Data provider method "%s" must return an array, a Generator or an Iterable.',
-                    $pointer + 2,
+                    $returnPointer,
                     'dataProviderSyntaxMethodInvalidReturnType',
                     [
                         $methodName,
@@ -313,7 +314,7 @@ class TestCaseProviderSniff implements Sniff {
             if (!$supportAutomatedFix) {
                 $file->addWarning(
                     'Data provider method "%s" will need to be converted to static in future.',
-                    $pointer + 2,
+                    $providerPointer,
                     'dataProviderNotStatic',
                     [
                         $methodName,
@@ -322,7 +323,7 @@ class TestCaseProviderSniff implements Sniff {
             } else {
                 $fix = $file->addFixableWarning(
                     'Data provider method "%s" will need to be converted to static in future.',
-                    $pointer + 2,
+                    $providerPointer,
                     'dataProviderNotStatic',
                     [
                         $methodName,

@@ -66,7 +66,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase {
                     34 => 'Data provider method "static_provider_without_visibility" visibility should be specified.',
                 ],
                 'warnings' => [
-                    17 => 'Data provider method "provider_without_visibility" will need to be converted to static in future.',
+                    23 => 'Data provider method "provider_without_visibility" will need to be converted to static in future.',
                 ],
             ],
             'Provider Naming conflicts with test names' => [
@@ -82,9 +82,9 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase {
                 'errors' => [
                 ],
                 'warnings' => [
-                    12 => 'Data provider method "fixable_provider" will need to be converted to static in future.',
-                    23 => 'Data provider method "unfixable_provider" will need to be converted to static in future.',
-                    34 => 'Data provider method "partially_fixable_provider" will need to be converted to static in future.',
+                    18 => 'Data provider method "fixable_provider" will need to be converted to static in future.',
+                    29 => 'Data provider method "unfixable_provider" will need to be converted to static in future.',
+                    40 => 'Data provider method "partially_fixable_provider" will need to be converted to static in future.',
                 ],
             ],
             'Static Providers Applying fixes' => [
@@ -92,18 +92,18 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase {
                 'errors' => [
                 ],
                 'warnings' => [
-                    13 => 'Data provider method "fixable_provider" will need to be converted to static in future.',
-                    24 => 'Data provider method "unfixable_provider" will need to be converted to static in future.',
-                    35 => 'Data provider method "partially_fixable_provider" will need to be converted to static in future.',
+                    19 => 'Data provider method "fixable_provider" will need to be converted to static in future.',
+                    30 => 'Data provider method "unfixable_provider" will need to be converted to static in future.',
+                    41 => 'Data provider method "partially_fixable_provider" will need to be converted to static in future.',
                 ],
             ],
             'Provider Return Type checks' => [
                 'fixture' => 'fixtures/phpunit/provider/provider_returntype_test.php',
                 'errors' => [
-                    6 => 'Data provider method "provider_no_return" must return an array, a Generator or an Iterable.',
-                    17 => 'Data provider method "provider_wrong_return" must return an array, a Generator or an Iterable.',
-                    28 => 'Data provider method "provider_returns_generator" must return an array, a Generator or an Iterable.',
-                    41 => 'Data provider method "provider_returns_iterator" must return an array, a Generator or an Iterable.',
+                    12 => 'Data provider method "provider_no_return" must return an array, a Generator or an Iterable.',
+                    23 => 'Data provider method "provider_wrong_return" must return an array, a Generator or an Iterable.',
+                    34 => 'Data provider method "provider_returns_generator" must return an array, a Generator or an Iterable.',
+                    47 => 'Data provider method "provider_returns_iterator" must return an array, a Generator or an Iterable.',
                 ],
                 'warnings' => [
                 ],
@@ -112,7 +112,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase {
                 'fixture' => 'fixtures/phpunit/provider/provider_not_found_test.php',
                 'errors' => [
                     6 => 'Data provider method "provider" not found.',
-                    14 => 'Wrong @dataProvider tag specified for test test_two, it must be followed by a space and a method name.',
+                    13 => 'Wrong @dataProvider tag specified for test test_two, it must be followed by a space and a method name.',
                 ],
                 'warnings' => [
                 ],
@@ -123,7 +123,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase {
                     7 => 'Data provider method "provider" not found.',
                 ],
                 'warnings' => [
-                    14 => 'Data provider method "second_provider" will need to be converted to static in future.',
+                    20 => 'Data provider method "second_provider" will need to be converted to static in future.',
                 ],
             ],
         ];
