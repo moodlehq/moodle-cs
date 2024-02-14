@@ -708,7 +708,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase {
             16 => 0,
             17 => 'The \'var\' keyword is not permitted',
             20 => 'must be all lower-case',
-            21 => 'must not contain underscores',
+            21 => 2,
             22 => array('must be all lower-case', 'must not contain underscores'),
         ));
         $this->set_warnings(array());
