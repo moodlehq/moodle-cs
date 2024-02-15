@@ -6,6 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.3.15] - 2024-02-15
+### Added
+- Function declaration lines are verified to have correct whitespace separation (1 space or 0 spaces) between all their parts.
+
+### Changed
+- Modified own CI scripts, bumping them from NodeJS 16 to NodeJS 20 actions.
+
+### Fixed
+- PHP `enum` uses are not considered side-effects by some sniffs.
+- PHPDoc blocks are allowed before PHP attributes, that are immediately followed by the PHP structure.
+- The PHPUnit `dataProvider` sniff now reports the problematic lines properly.
+- The valid variable names sniff now detects properly escaped (`\$`) contents within double quoted strings and they aren't considered - for validation - anymore.
+- Avoided PHP error when checking empty PHP files.
+
 ## [v3.3.14] - 2024-01-26
 ### Changed
 - Modified internal CI scripts towards better Codecov future support.
@@ -131,7 +145,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.14...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.3.15...main
+[v3.3.15]: https://github.com/moodlehq/moodle-cs/compare/v3.3.14...v3.3.15
 [v3.3.14]: https://github.com/moodlehq/moodle-cs/compare/v3.3.13...v3.3.14
 [v3.3.13]: https://github.com/moodlehq/moodle-cs/compare/v3.3.12...v3.3.13
 [v3.3.12]: https://github.com/moodlehq/moodle-cs/compare/v3.3.11...v3.3.12
