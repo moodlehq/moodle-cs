@@ -92,6 +92,19 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase {
         $this->verify_cs_results();
     }
 
+    public function test_moodle_files_boilerplatecomment_short_empty() {
+        $this->set_standard('moodle');
+        $this->set_sniff('moodle.Files.BoilerplateComment');
+        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_empty.php');
+
+        $this->set_errors([
+            1 => 'FileTooShort',
+        ]);
+        $this->set_warnings([]);
+
+        $this->verify_cs_results();
+    }
+
     public function test_moodle_files_boilerplatecomment_wrongline() {
         $this->set_standard('moodle');
         $this->set_sniff('moodle.Files.BoilerplateComment');
