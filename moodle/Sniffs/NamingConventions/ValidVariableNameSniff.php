@@ -107,11 +107,13 @@ class ValidVariableNameSniff extends AbstractVariableSniff {
     protected function processVariableInString(File $phpcsfile, $stackptr) {
         $tokens = $phpcsfile->getTokens();
 
-        if (preg_match('/\$([A-Za-z0-9_]+)(\-\>([A-Za-z0-9_]+))?/i',
+        if (preg_match_all('/[^\\\\]\$([A-Za-z0-9_]+)(\-\>([A-Za-z0-9_]+))?/i',
                 $tokens[$stackptr]['content'], $matches)) {
-            $firstvar = $matches[1];
+            $captured = $matches[1];
 
-            $this->validate_moodle_variable_name($firstvar, $phpcsfile, $stackptr);
+            foreach ($captured as $varname) {
+                $this->validate_moodle_variable_name($varname, $phpcsfile, $stackptr);
+            }
         }
     }
 

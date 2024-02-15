@@ -18,6 +18,11 @@ class foo {
 }
 
 $result = "String: $badplaceholder1 is a badPlaceholder1";
-$result = "String: $badplaceholder2";
+$result = "String: $badplaceholder1 and $badplaceholder2";
 $result = "String: $reallybadplaceholder3";
 $result = "String: $goodplaceholder1";
+$result = "String: $goodplaceholder1 and $goodplaceholder2";
+$result = "String: \$THISISNOTAVARIABLE $strangeone";
+$result = "String: $strangeone \$THISISNOTAVARIABLE";
+$result = "String: \$THISISNOTAVARIABLE $buthisis \$NEITHERTHISIS $butthisistoo";
+$result = 'String: $THISISNOTAVARIABLE $NEITHERTHISIS';
