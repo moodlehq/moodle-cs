@@ -102,7 +102,7 @@ abstract class MoodleUtil {
      * @param string $moodleRoot Full path to a valid moodle.root
      * @return array Associative array of components as keys and paths as values or null if not found.
      */
-    protected static function calculateAllComponents(string $moodleRoot) {
+    protected static function calculateAllComponents(string $moodleRoot): ?array {
         // If we have calculated the components already, straight return them.
         if (!empty(self::$moodleComponents)) {
             return self::$moodleComponents;
@@ -205,7 +205,7 @@ abstract class MoodleUtil {
      *
      * @return string|null a valid moodle component for the file or null if not found.
      */
-    public static function getMoodleComponent(File $file, $selfPath = true) {
+    public static function getMoodleComponent(File $file, $selfPath = true): ?string {
         if (defined('PHPUNIT_TEST') && PHPUNIT_TEST && !empty(self::$mockedComponentMappings)) {
             $components = self::$mockedComponentMappings; // @codeCoverageIgnore
         } else {
@@ -252,7 +252,7 @@ abstract class MoodleUtil {
      *
      * @return int|null the numeric branch in moodle root version.php or null if not found
      */
-    public static function getMoodleBranch(File $file = null, bool $selfPath = true) {
+    public static function getMoodleBranch(?File $file = null, bool $selfPath = true): ?int {
 
         // Return already calculated value if available.
         if (self::$moodleBranch !== false) {
@@ -270,7 +270,7 @@ abstract class MoodleUtil {
                 throw new DeepExitException(
                     "ERROR: Incorrect 'moodleBranch' config/runtime option. Value must be 4 digit max.: '$branch'", 3);
             }
-            self::$moodleBranch = (int)$branch;
+            self::$moodleBranch = $branch;
             return self::$moodleBranch;
         }
 
@@ -288,7 +288,7 @@ abstract class MoodleUtil {
                 // Find the $branch value.
                 if ($valueToken = $versionFile->findNext(T_CONSTANT_ENCAPSED_STRING, $varToken)) {
                     $branch = trim($versionFile->getTokens()[$valueToken]['content'], "\"'");
-                    self::$moodleBranch = (int)$branch;
+                    self::$moodleBranch = $branch;
                     return self::$moodleBranch;
                 }
             }
@@ -313,7 +313,7 @@ abstract class MoodleUtil {
      *
      * @return string|null the full path to moodle root or null if not found.
      */
-    public static function getMoodleRoot(File $file = null, bool $selfPath = true) {
+    public static function getMoodleRoot(?File $file = null, bool $selfPath = true): ?string {
         // Return already calculated value if available.
         if (self::$moodleRoot !== false) {
             return self::$moodleRoot;
