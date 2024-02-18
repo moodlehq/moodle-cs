@@ -26,9 +26,9 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  * @copyright  2024 Andrew Lyons <andrew@nicols.co.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestcaseAbstractSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCasesAbstractSniff
  */
-class TestcaseAbstractSniffTest extends MoodleCSBaseTestCase {
+class TestCasesAbstractSniffTest extends MoodleCSBaseTestCase {
 
     /**
      * Data provider for self::provider_phpunit_data_returntypes
