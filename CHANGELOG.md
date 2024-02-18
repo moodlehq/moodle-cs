@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.9.0) and `PHPCompatibility` (e5cd2e24).
+
 ## [v3.3.15] - 2024-02-15
 ### Added
 - Function declaration lines are verified to have correct whitespace separation (1 space or 0 spaces) between all their parts.
