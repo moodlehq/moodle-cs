@@ -11,6 +11,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ### Added
 - Add new moodle.Commenting.Package sniffs to replace those present in moodle-local_moodlecheck.
+- Add new moodle.Commenting.Category sniffs to replace those present in moodle-local_moodlecheck.
 
 ### Fixed
 - The moodle.Files.MoodleInternal sniff no longer treats Attributes as side-effects.

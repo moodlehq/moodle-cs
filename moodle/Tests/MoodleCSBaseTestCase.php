@@ -86,6 +86,10 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedComponentMappings($mapping);
     }
 
+    public function set_api_mapping(array $mapping): void {
+        \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedApiMappings($mapping);
+    }
+
     /**
      * Set the name of the standard to be tested.
      *

@@ -51,12 +51,18 @@ abstract class MoodleUtil {
     /** @var array A list of mocked component mappings for use in unit tests */
     protected static $mockedComponentMappings = [];
 
+    /** @var array A cached list of APIs */
+    protected static $apis = [];
+
+    /** @var array A list of mocked API mappings for use in unit tests */
+    protected static $mockedApisList = [];
+
     /**
      * Mock component mappings for unit tests.
      *
      * @param array $mappings List of file path => component mappings
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public static function setMockedComponentMappings(array $mappings): void {
         if (!defined('PHPUNIT_TEST') || !PHPUNIT_TEST) {
@@ -64,6 +70,20 @@ abstract class MoodleUtil {
         }
 
         self::$mockedComponentMappings = $mappings;
+    }
+
+    /**
+     * Mock API mappings for unit tests.
+     *
+     * @param array $mappings
+     * @throws \Exception
+     */
+    public static function setMockedApiMappings(array $mappings): void {
+        if (!defined('PHPUNIT_TEST') || !PHPUNIT_TEST) {
+            throw new \Exception('Not running in a unit test'); // @codeCoverageIgnore
+        }
+
+        self::$mockedApisList = $mappings;
     }
 
     /**
@@ -237,6 +257,42 @@ abstract class MoodleUtil {
 
         // Not found.
         return null;
+    }
+
+    /**
+     * Get the list of Moodle APIs.
+     *
+     * @param File $file
+     * @param bool $selfPath
+     * @return null|array
+     */
+    public static function getMoodleApis(File $file, bool $selfPath = true): ?array {
+        if (defined('PHPUNIT_TEST') && PHPUNIT_TEST && !empty(self::$mockedApisList)) {
+            return array_keys(self::$mockedApisList); // @codeCoverageIgnore
+        }
+
+        if (empty(self::$apis)) {
+            // Verify that we are able to find a valid moodle root.
+            if (!$moodleRoot = self::getMoodleRoot($file, $selfPath)) {
+                return null;
+            }
+
+            // APIs are located in lib/apis.json.
+            $apisFile = $moodleRoot . '/lib/apis.json';
+
+            if (!is_readable($apisFile)) {
+                return null;
+            }
+
+            $data = json_decode(file_get_contents($apisFile), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return null;
+            }
+
+            self::$apis = $data;
+        }
+
+        return array_keys(self::$apis);
     }
 
     /**
