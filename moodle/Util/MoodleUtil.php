@@ -273,23 +273,31 @@ abstract class MoodleUtil {
 
         if (empty(self::$apis)) {
             // Verify that we are able to find a valid moodle root.
-            if (!$moodleRoot = self::getMoodleRoot($file, $selfPath)) {
-                return null;
+            if ($moodleRoot = self::getMoodleRoot($file, $selfPath)) {
+                // APIs are located in lib/apis.json.
+                $apisFile = $moodleRoot . '/lib/apis.json';
+
+                if (is_readable($apisFile)) {
+                    $data = json_decode(file_get_contents($apisFile), true);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        self::$apis = $data;
+                    }
+                }
             }
 
-            // APIs are located in lib/apis.json.
-            $apisFile = $moodleRoot . '/lib/apis.json';
+            if (empty(self::$apis)) {
+                // If there is no apis.json file, we can't load the current APIs.
+                // Load the version from the release of 4.2 when the file was introduced.
+                // TODO Remove after min requirement is >= Moodle 4.2 #115.
+                $apisFile = __DIR__ . '/apis.json';
 
-            if (!is_readable($apisFile)) {
-                return null;
+                $data = json_decode(file_get_contents($apisFile), true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    return null; // @codeCoverageIgnore
+                }
+
+                self::$apis = $data;
             }
-
-            $data = json_decode(file_get_contents($apisFile), true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                return null;
-            }
-
-            self::$apis = $data;
         }
 
         return array_keys(self::$apis);

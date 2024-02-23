@@ -839,7 +839,9 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 
-        $this->assertNull(
+        $apis = json_decode(file_get_contents(__DIR__ . '/../../Util/apis.json'));
+        $this->assertEquals(
+            array_keys((array) $apis),
             MoodleUtil::getMoodleApis($file)
         );
     }
@@ -865,7 +867,10 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 
-        $this->assertNull(
+        // Revert to the stored version if the file is not readable.
+        $apis = json_decode(file_get_contents(__DIR__ . '/../../Util/apis.json'));
+        $this->assertEquals(
+            array_keys((array) $apis),
             MoodleUtil::getMoodleApis($file)
         );
     }
@@ -907,7 +912,9 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 
-        $this->assertNull(
+        $apis = json_decode(file_get_contents(__DIR__ . '/../../Util/apis.json'));
+        $this->assertEquals(
+            array_keys((array) $apis),
             MoodleUtil::getMoodleApis($file)
         );
     }
