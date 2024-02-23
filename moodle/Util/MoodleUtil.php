@@ -499,4 +499,22 @@ abstract class MoodleUtil {
 
         return null;
     }
+
+    /**
+     * Get all tokens relating to a particular line.
+     *
+     * @param File $phpcsFile
+     * @param int $line
+     * @return array
+     */
+    public static function getTokensOnLine(
+        File $phpcsFile,
+        int $line
+    ): array {
+        return array_filter(
+            $phpcsFile->getTokens(),
+            fn($token) => $token['line'] === $line,
+            ARRAY_FILTER_USE_BOTH
+        );
+    }
 }

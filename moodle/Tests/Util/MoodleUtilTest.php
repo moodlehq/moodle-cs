@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\Tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests\Util;
 
+use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\DeepExitException;
@@ -745,5 +746,32 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         } else {
             $this->assertNull($pointer);
         }
+    }
+
+    public function testGetTokensOnLine(): void
+    {
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
+            __DIR__ . '/fixtures/moodleutil/test_with_methods_to_find.php',
+            $phpcsRuleset,
+            $phpcsConfig
+        );
+
+        $phpcsFile->process();
+        $allTokens = $phpcsFile->getTokens();
+
+        $expectedTokens = [];
+        foreach ($allTokens as $tokenPtr => $token) {
+            if ($token['line'] === 8) {
+                $expectedTokens[$tokenPtr] = $token;
+            }
+        }
+
+        // This line is:
+        // protected function protected_method(): array {
+        $tokens = MoodleUtil::getTokensOnLine($phpcsFile, 8);
+        $this->assertCount(count($expectedTokens), $tokens);
+        $this->assertEquals($expectedTokens, $tokens);
     }
 }
