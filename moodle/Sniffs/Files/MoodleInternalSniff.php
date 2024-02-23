@@ -166,6 +166,9 @@ class MoodleInternalSniff implements Sniff {
             } else if ($tokens[$pointer]['code'] === T_DECLARE && $tokens[$pointer]['content'] == 'declare') {
                 // Declare statements must be at start of file.
                 $pointer = $file->findEndOfStatement($pointer + 1);
+            } else if ($tokens[$pointer]['code'] === T_ATTRIBUTE) {
+                // Attribute statements may exist before code. Skip them.
+                $pointer = $tokens[$pointer]['attribute_closer'] + 1;
             } else {
                 $relevantcodefound = true;
             }

@@ -8,7 +8,12 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Changed
 - Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.9.0) and `PHPCompatibility` (e5cd2e24).
+
+### Added
 - Add new moodle.Commenting.Package sniffs to replace those present in moodle-local_moodlecheck.
+
+### Fixed
+- The moodle.Files.MoodleInternal sniff no longer treats Attributes as side-effects.
 
 ## [v3.3.15] - 2024-02-15
 ### Added

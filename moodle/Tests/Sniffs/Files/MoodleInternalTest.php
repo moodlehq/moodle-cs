@@ -150,6 +150,11 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
                 ],
                 [],
             ],
+            [
+                'attribute_ok',
+                [],
+                [],
+            ],
         ];
     }
 }
