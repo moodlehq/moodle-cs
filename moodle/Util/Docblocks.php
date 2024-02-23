@@ -44,6 +44,25 @@ abstract class Docblocks {
         int $stackPtr
     ): ?array {
         $tokens = $phpcsFile->getTokens();
+        $token = $tokens[$stackPtr];
+
+        // Check if the passed pointer was for a doc.
+        $midDocBlockTokens = [
+            T_DOC_COMMENT,
+            T_DOC_COMMENT_STAR,
+            T_DOC_COMMENT_WHITESPACE,
+            T_DOC_COMMENT_TAG,
+            T_DOC_COMMENT_STRING,
+        ];
+        if ($token['code'] === T_DOC_COMMENT_OPEN_TAG) {
+            return $token;
+        } else if ($token['code'] === T_DOC_COMMENT_CLOSE_TAG) {
+            return $tokens[$token['comment_opener']];
+        } else if (in_array($token['code'], $midDocBlockTokens)) {
+            $commentStart = $phpcsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPtr);
+            return $commentStart ? $tokens[$commentStart] : null;
+        }
+
         $find   = [
             T_ABSTRACT   => T_ABSTRACT,
             T_FINAL      => T_FINAL,
@@ -86,8 +105,7 @@ abstract class Docblocks {
                 }
 
                 if ($tokens[$stackPtr]['code'] === T_DOC_COMMENT_OPEN_TAG) {
-                    $commentEnd = $tokens[$stackPtr]['comment_closer'];
-                    $nextToken = $commentEnd;
+                    $nextToken = $tokens[$stackPtr]['comment_closer'];
                     while ($nextToken = $phpcsFile->findNext(T_WHITESPACE, $nextToken + 1, null, true)) {
                         if ($nextToken && $tokens[$nextToken]['code'] === T_ATTRIBUTE) {
                             $nextToken = $tokens[$nextToken]['attribute_closer'] + 1;
@@ -104,7 +122,6 @@ abstract class Docblocks {
 
             return null;
         }
-
 
         $previousContent = null;
         for ($commentEnd = ($stackPtr - 1); $commentEnd >= 0; $commentEnd--) {

@@ -77,6 +77,24 @@ class DocblocksTest extends MoodleCSBaseTestCase {
         $methodPointer = $phpcsFile->findNext(T_FUNCTION, $classPointer);
         $this->assertNull(Docblocks::getDocBlock($phpcsFile, $methodPointer));
         $this->assertCount(0, Docblocks::getMatchingDocTags($phpcsFile, $methodPointer, '@property'));
+
+        // Get the docblock from pointers at the start, middle, and end, of a docblock.
+        $tokens = $phpcsFile->getTokens();
+        $startDocPointer = $phpcsFile->findNext(T_DOC_COMMENT_OPEN_TAG, 0);
+        $endDocPointer = $phpcsFile->findNext(T_DOC_COMMENT_CLOSE_TAG, $startDocPointer);
+        $middleDocPointer = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $startDocPointer, $endDocPointer);
+
+        $docblock = Docblocks::getDocBlock($phpcsFile, $startDocPointer);
+        $this->assertIsArray($docblock);
+        $this->assertEquals($tokens[$startDocPointer], $docblock);
+
+        $docblock = Docblocks::getDocBlock($phpcsFile, $middleDocPointer);
+        $this->assertIsArray($docblock);
+        $this->assertEquals($tokens[$startDocPointer], $docblock);
+
+        $docblock = Docblocks::getDocBlock($phpcsFile, $endDocPointer);
+        $this->assertIsArray($docblock);
+        $this->assertEquals($tokens[$startDocPointer], $docblock);
     }
 
     public function testGetDocBlockClassOnly(): void {

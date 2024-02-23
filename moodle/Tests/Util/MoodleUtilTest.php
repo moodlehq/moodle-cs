@@ -470,6 +470,14 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $moodleComponents = $moodleUtil->getProperty('moodleComponents');
         $moodleComponents->setAccessible(true);
         $moodleUtil->setStaticPropertyValue('moodleComponents', []);
+
+        $apiCache = $moodleUtil->getProperty('apis');
+        $apiCache->setAccessible(true);
+        $apiCache->setValue(null, []);
+
+        $apiCache = $moodleUtil->getProperty('mockedApisList');
+        $apiCache->setAccessible(true);
+        $apiCache->setValue(null, []);
     }
 
     /**
@@ -773,5 +781,181 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $tokens = MoodleUtil::getTokensOnLine($phpcsFile, 8);
         $this->assertCount(count($expectedTokens), $tokens);
         $this->assertEquals($expectedTokens, $tokens);
+    }
+
+    public function testGetMoodleApis(): void {
+        $this->cleanMoodleUtilCaches();
+        // Let's calculate moodleRoot.
+        $vfs = vfsStream::setup('root', null, []);
+
+        $apis = [
+            'test' => [
+                'component' => 'core',
+                'allowlevel2' => false,
+                'allowspread' => false,
+            ],
+            'time' => [
+                'component' => 'core',
+                'allowlevel2' => false,
+                'allowspread' => false,
+            ],
+        ];
+
+        vfsStream::copyFromFileSystem(__DIR__ . '/fixtures/moodleutil/complete', $vfs);
+        vfsStream::create(
+            [
+                'lib' => [
+                    'apis.json' => json_encode(
+                        $apis,
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+                    ),
+                    'example.php' => ''
+                ],
+            ],
+            $vfs
+        );
+
+        // We are passing a real File, prepare it.
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
+
+        $this->assertEquals(
+            array_keys($apis),
+            MoodleUtil::getMoodleApis($file)
+        );
+    }
+
+    public function testGetMoodleApisNoApis(): void {
+        $this->cleanMoodleUtilCaches();
+
+        // Let's calculate moodleRoot.
+        $vfs = vfsStream::setup('root', null, []);
+
+        vfsStream::copyFromFileSystem(__DIR__ . '/fixtures/moodleutil/complete', $vfs);
+
+        // We are passing a real File, prepare it.
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
+
+        $apis = json_decode(file_get_contents(__DIR__ . '/../../Util/apis.json'));
+        $this->assertEquals(
+            array_keys((array) $apis),
+            MoodleUtil::getMoodleApis($file)
+        );
+    }
+
+    public function testGetMoodleApisInvalidJson(): void {
+        $this->cleanMoodleUtilCaches();
+        // Let's calculate moodleRoot.
+        $vfs = vfsStream::setup('root', null, []);
+
+        vfsStream::copyFromFileSystem(__DIR__ . '/fixtures/moodleutil/complete', $vfs);
+        vfsStream::create(
+            [
+                'lib' => [
+                    'apis.json' => 'invalid:"json"',
+                    'example.php' => ''
+                ],
+            ],
+            $vfs
+        );
+
+        // We are passing a real File, prepare it.
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
+
+        // Revert to the stored version if the file is not readable.
+        $apis = json_decode(file_get_contents(__DIR__ . '/../../Util/apis.json'));
+        $this->assertEquals(
+            array_keys((array) $apis),
+            MoodleUtil::getMoodleApis($file)
+        );
+    }
+
+
+    public function testGetMoodleApisNotAMoodle(): void {
+        $this->cleanMoodleUtilCaches();
+        // Let's calculate moodleRoot.
+        $vfs = vfsStream::setup('root', null, []);
+
+        $apis = [
+            'test' => [
+                'component' => 'core',
+                'allowlevel2' => false,
+                'allowspread' => false,
+            ],
+            'time' => [
+                'component' => 'core',
+                'allowlevel2' => false,
+                'allowspread' => false,
+            ],
+        ];
+
+        vfsStream::create(
+            [
+                'lib' => [
+                    'apis.json' => json_encode(
+                        $apis,
+                        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+                    ),
+                    'example.php' => ''
+                ],
+            ],
+            $vfs
+        );
+
+        // We are passing a real File, prepare it.
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
+
+        $apis = json_decode(file_get_contents(__DIR__ . '/../../Util/apis.json'));
+        $this->assertEquals(
+            array_keys((array) $apis),
+            MoodleUtil::getMoodleApis($file)
+        );
+    }
+
+    public function testGetMoodleApisMocked(): void {
+        $this->cleanMoodleUtilCaches();
+        // Let's calculate moodleRoot.
+        $apis = [
+            'test' => [
+                'component' => 'core',
+                'allowlevel2' => false,
+                'allowspread' => false,
+            ],
+            'time' => [
+                'component' => 'core',
+                'allowlevel2' => false,
+                'allowspread' => false,
+            ],
+        ];
+
+        $vfs = vfsStream::setup('root', null, []);
+        vfsStream::create(
+            [
+                'lib' => [
+                    'apis.json' => json_encode([]),
+                    'example.php' => ''
+                ],
+            ],
+            $vfs
+        );
+
+        $this->set_api_mapping($apis);
+
+        // We are passing a real File, prepare it.
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
+
+        $this->assertEquals(
+            array_keys($apis),
+            MoodleUtil::getMoodleApis($file)
+        );
     }
 }
