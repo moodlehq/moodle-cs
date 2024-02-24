@@ -1,17 +1,20 @@
 # Change log
 
 All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
+This project adheres to [Semantic Versioning](https://semver.org/).
 
-The format of this change log follows the advice given at [Keep a CHANGELOG](http://keepachangelog.com).
+The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Added
+- Add new `moodle.Commenting.Package` sniff to replace those present in moodle-local_moodlecheck.
+- Add new `moodle.Commenting.Category` sniffs to replace those present in moodle-local_moodlecheck.
+- New `phpcs.xml.dist` to enforce the coding style to follow by ´moodle-cs´ itself. Basically, PSR12 ruled. CI verified from now on.
+
 ### Changed
 - Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.9.0) and `PHPCompatibility` (e5cd2e24).
-
-### Added
-- Add new moodle.Commenting.Package sniffs to replace those present in moodle-local_moodlecheck.
-- Add new moodle.Commenting.Category sniffs to replace those present in moodle-local_moodlecheck.
+- As part of the move to be PSR12 compliant, all the methods used for testing have been converted, without deprecation, to camel case (`setStandard()`, `setSniff()`, ...).
+- ACTION REQUIRED: Any clone/fork using `moodle-cs` and having own tests will need to adapt them to the new method names.
 
 ### Fixed
 - The moodle.Files.MoodleInternal sniff no longer treats Attributes as side-effects.

@@ -41,6 +41,10 @@ jobs:
         if: ${{ !cancelled() }}
         run: ./vendor/bin/phpcpd --exclude moodle/Tests moodle
 
+      - name: Coding style
+        if: ${{ !cancelled() }}
+        run: ./vendor/bin/phpcs -ps .
+
       - name: Run phpunit
         if: ${{ !cancelled() }}
         run: |
