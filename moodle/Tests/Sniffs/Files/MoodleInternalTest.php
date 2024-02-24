@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,23 +13,20 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Tests\Files;
-
-// phpcs:disable moodle.NamingConventions
 
 /**
  * Test the MoodleInternalSniff sniff.
  *
- * @package    local_codechecker
- * @category   test
- * @copyright  2013 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2013 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\MoodleInternalSniff
  */
-class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase {
+class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase
+{
     /**
      * @dataProvider provider
      */

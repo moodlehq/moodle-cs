@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,30 +13,26 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 
-// phpcs:disable moodle.NamingConventions
-
 /**
  * Test the TestCaseCoversSniff sniff.
  *
- * @package    local_codechecker
- * @category   test
- * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseCoversSniff
  */
-class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase {
-
+class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
+{
     /**
-     * Data provider for self::test_phpunit_testcasecovers
+     * Data provider for self::testPHPUnitTestCaseCovers
      */
-    public function provider_phpunit_testcasecovers() {
+    public function phpunitTestCaseCoversProvider() {
         return [
             'Correct' => [
                 'fixture' => 'fixtures/phpunit/testcasecovers_correct.php',
@@ -124,9 +121,9 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase {
      * @param string $fixture relative path to fixture to use.
      * @param array $errors array of errors expected.
      * @param array $warnings array of warnings expected.
-     * @dataProvider provider_phpunit_testcasecovers
+     * @dataProvider phpunitTestCaseCoversProvider
      */
-    public function test_phpunit_testcasecovers(string $fixture, array $errors, array $warnings) {
+    public function testPHPUnitTestCaseCovers(string $fixture, array $errors, array $warnings) {
 
         // Define the standard, sniff and fixture to use.
         $this->set_standard('moodle');

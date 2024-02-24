@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,8 +18,6 @@
 namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Methods;
 
 use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
-
-// phpcs:disable moodle.NamingConventions
 
 /**
  * Test the MethodDeclarationSpacing sniff.

@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,12 +19,9 @@ namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Commenting;
 
 use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 
-// phpcs:disable moodle.NamingConventions
-
 /**
  * Test the TestCaseNamesSniff sniff.
  *
- * @category   test
  * @copyright  2024 onwards Andrew Lyons <andrew@nicols.co.uk>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *

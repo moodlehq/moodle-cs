@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Tests;
 
@@ -36,43 +37,41 @@ use PHP_CodeSniffer\Config;
  *
  * This file contains helper testcase for testing "moodle" CS Sniffs.
  *
- * @category   test
- * @package    MoodleHq\Moodle-Cs
- * @copyright  2013 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2013 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
-
+abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
+{
     /**
-     * @var string name of the standard to be tested.
+     * @var string|null name of the standard to be tested.
      */
-    protected $standard = null;
+    protected ?string $standard = null;
 
     /**
-     * @var string code of the sniff to be tested. Must be part of the standard definition.
+     * @var string|null code of the sniff to be tested. Must be part of the standard definition.
      *             See {@see ::set_sniff()} for more information.
      */
-    protected $sniff = null;
+    protected ?string $sniff = null;
 
     /**
-     * @var string full path to the file used as input (fixture).
+     * @var string|null full path to the file used as input (fixture).
      */
-    protected $fixture = null;
+    protected ?string $fixture = null;
 
     /**
      * @var array custom config elements to setup before running phpcs. name => value.
      */
-    protected $customConfigs = [];
+    protected array $customConfigs = [];
 
     /**
-     * @var array error expectations to ve verified against execution results.
+     * @var array|null error expectations to ve verified against execution results.
      */
-    protected $errors = null;
+    protected ?array $errors = null;
 
     /**
-     * @var array warning expectations to ve verified against execution results.
+     * @var array|null warning expectations to ve verified against execution results.
      */
-    protected $warnings = null;
+    protected ?array $warnings = null;
 
     public function tearDown(): void {
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedComponentMappings([]);
@@ -143,7 +142,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
      */
     protected function set_fixture($fixture) {
         if (!is_readable($fixture)) {
-            $this->fail('Unreadable fixture passed: '. $fixture);
+            $this->fail('Unreadable fixture passed: ' . $fixture);
         }
         $this->fixture = $fixture;
     }
@@ -157,12 +156,12 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
         $this->errors = $errors;
         // Let's normalize numeric, empty and string errors.
         foreach ($this->errors as $line => $errordef) {
-            if (is_int($errordef) and $errordef > 0) {
+            if (is_int($errordef) && $errordef > 0) {
                 $this->errors[$line] = array_fill(0, $errordef, $errordef);
-            } else if (empty($errordef)) {
-                $this->errors[$line] = array();
-            } else if (is_string($errordef)) {
-                $this->errors[$line] = array($errordef);
+            } elseif (empty($errordef)) {
+                $this->errors[$line] = [];
+            } elseif (is_string($errordef)) {
+                $this->errors[$line] = [$errordef];
             }
         }
     }
@@ -190,12 +189,12 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
         $this->warnings = $warnings;
         // Let's normalize numeric, empty and string warnings.
         foreach ($this->warnings as $line => $warningdef) {
-            if (is_int($warningdef) and $warningdef > 0) {
+            if (is_int($warningdef) && $warningdef > 0) {
                 $this->warnings[$line] = array_fill(0, $warningdef, $warningdef);
-            } else if (empty($warningdef)) {
-                $this->warnings[$line] = array();
-            } else if (is_string($warningdef)) {
-                $this->warnings[$line] = array($warningdef);
+            } elseif (empty($warningdef)) {
+                $this->warnings[$line] = [];
+            } elseif (is_string($warningdef)) {
+                $this->warnings[$line] = [$warningdef];
             }
         }
     }
@@ -226,13 +225,13 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
     protected function verify_cs_results() {
         $config = new \PHP_CodeSniffer\Config();
         $config->cache     = false;
-        $config->standards = array($this->standard);
-        $config->sniffs    = array($this->sniff);
-        $config->ignored   = array();
+        $config->standards = [$this->standard];
+        $config->sniffs    = [$this->sniff];
+        $config->ignored   = [];
         $ruleset = new \PHP_CodeSniffer\Ruleset($config);
 
         // We don't accept undefined errors and warnings.
-        if (is_null($this->errors) and is_null($this->warnings)) {
+        if (is_null($this->errors) && is_null($this->warnings)) {
             $this->fail('Error and warning expectations undefined. You must define at least one.');
         }
 
@@ -240,8 +239,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
         try {
             $phpcsfile = new \PHP_CodeSniffer\Files\LocalFile($this->fixture, $ruleset, $config);
             $phpcsfile->process();
-        } catch (Exception $e) {
-            $this->fail('An unexpected exception has been caught: '. $e->getMessage());
+        } catch (\Exception $e) {
+            $this->fail('An unexpected exception has been caught: ' . $e->getMessage());
         }
 
         // Capture results.
@@ -326,21 +325,30 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
                 $info .= PHP_EOL . 'Actual: ' . json_encode($results[$line]);
             }
             // Verify counts for a line are the same.
-            $this->assertSame(count($expectation), $countresults,
-                    'Failed number of ' . $type . ' for line ' . $line . '.' . $info);
+            $this->assertSame(
+                count($expectation),
+                $countresults,
+                'Failed number of ' . $type . ' for line ' . $line . '.' . $info
+            );
             // Now verify every expectation requiring matching.
             foreach ($expectation as $key => $expectedcontent) {
                 if (is_string($expectedcontent)) {
-                    $this->assertStringContainsString($expectedcontent, $results[$line][$key],
-                        'Failed contents matching of ' . $type . ' for element ' . ($key + 1) . ' of line ' . $line . '.');
+                    $this->assertStringContainsString(
+                        $expectedcontent,
+                        $results[$line][$key],
+                        'Failed contents matching of ' . $type . ' for element ' . ($key + 1) . ' of line ' . $line . '.'
+                    );
                 }
             }
             // Delete this line from results.
             unset($results[$line]);
         }
         // Ended looping, verify there aren't remaining results (errors, warnings).
-        $this->assertSame(array(), $results,
-                'Failed to verify that all the ' . $type . ' have been defined by expectations.');
+        $this->assertSame(
+            [],
+            $results,
+            'Failed to verify that all the ' . $type . ' have been defined by expectations.'
+        );
     }
 
     /**
@@ -354,14 +362,14 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase {
      * @return array normalized array.
      */
     private function normalize_cs_results($results) {
-        $normalized = array();
+        $normalized = [];
         foreach ($results as $line => $lineerrors) {
             foreach ($lineerrors as $errors) {
                 foreach ($errors as $error) {
                     if (isset($normalized[$line])) {
                         $normalized[$line][] = '@Message: ' . $error['message'] . ' @Source: ' . $error['source'];
                     } else {
-                        $normalized[$line] = array('@Message: ' . $error['message'] . ' @Source: ' . $error['source']);
+                        $normalized[$line] = ['@Message: ' . $error['message'] . ' @Source: ' . $error['source']];
                     }
                 }
             }
