@@ -150,10 +150,10 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
      */
     public function testPHPUnitTestCaseNames(string $fixture, array $errors, array $warnings) {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHPUnit.TestCaseNames');
-        $this->set_fixture(__DIR__ . '/' . $fixture);
-        $this->set_component_mapping([
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHPUnit.TestCaseNames');
+        $this->setFixture(__DIR__ . '/' . $fixture);
+        $this->setComponentMapping([
             'local_codechecker' => dirname(__DIR__),
         ]);
 
@@ -161,10 +161,10 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

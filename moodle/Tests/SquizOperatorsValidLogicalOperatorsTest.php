@@ -33,23 +33,23 @@ class SquizOperatorsValidLogicalOperatorsTest extends MoodleCSBaseTestCase
     public function testSquizOperatorsValidLogicalOperators() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Squiz.Operators.ValidLogicalOperators');
-        $this->set_fixture(__DIR__ . '/fixtures/squiz_operators_validlogicaloperators.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Squiz.Operators.ValidLogicalOperators');
+        $this->setFixture(__DIR__ . '/fixtures/squiz_operators_validlogicaloperators.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             21 => 'Logical operator "or" is prohibited; use "||" instead',
             25 => 'Squiz.Operators.ValidLogicalOperators.NotAllowed',
             29 => 2,
             33 => 4,
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

@@ -28,104 +28,104 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
 class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
 {
     public function testMoodleFilesBoilerplateCommentOk() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/ok.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/ok.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
 
         // Also try with the <?php line having some // phpcs:xxxx annotations.
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/ok2.php');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/ok2.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testMoodleFilesBoilerplateCommentNoPHP() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/nophp.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/nophp.php');
 
-        $this->set_errors([
+        $this->setErrors([
             1 => 'moodle.Files.BoilerplateComment.NoPHP',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testMoodleFilesBoilerplateCommentBlank() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/blank.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/blank.php');
 
-        $this->set_errors([
+        $this->setErrors([
             2 => 'followed by exactly one newline',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testMoodleFilesBoilerplateCommentShort() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/short.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short.php');
 
-        $this->set_errors([
+        $this->setErrors([
             14 => 'FileTooShort',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testMoodleFilesBoilerplateCommentShortEmpty() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_empty.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_empty.php');
 
-        $this->set_errors([
+        $this->setErrors([
             1 => 'FileTooShort',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testMoodleFilesBoilerplateCommentWrongLine() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/wrongline.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/wrongline.php');
 
-        $this->set_errors([
+        $this->setErrors([
             6 => 'version 3',
             11 => 'FITNESS',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testMoodleFilesBoilerplateCommentGnuHttp() {
 
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/gnu_http.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/gnu_http.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -133,13 +133,13 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
      */
     public function testMoodleFilesBoilerplateCommentGnuHttps() {
 
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.BoilerplateComment');
-        $this->set_fixture(__DIR__ . '/fixtures/files/boilerplatecomment/gnu_https.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/gnu_https.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

@@ -31,9 +31,9 @@ class TodoCommentSniffTest extends MoodleCSBaseTestCase
 {
     public function testComentingTodoComment(): void {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.TodoComment');
-        $this->set_fixture(__DIR__ . '/../../fixtures/Commenting/TodoComment.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.TodoComment');
+        $this->setFixture(__DIR__ . '/../../fixtures/Commenting/TodoComment.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -51,21 +51,21 @@ class TodoCommentSniffTest extends MoodleCSBaseTestCase
             33 => 'information in inline comment',
             34 => 'information in phpdoc comment',
         ];
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testEmptyConfigValue(): void {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.TodoComment');
-        $this->set_fixture(__DIR__ . '/../../fixtures/Commenting/TodoCommentEmptyConfig.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.TodoComment');
+        $this->setFixture(__DIR__ . '/../../fixtures/Commenting/TodoCommentEmptyConfig.php');
 
         // Try with an empty config value.
-        $this->add_custom_config('moodleTodoCommentRegex', '');
+        $this->addCustomConfig('moodleTodoCommentRegex', '');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -73,21 +73,21 @@ class TodoCommentSniffTest extends MoodleCSBaseTestCase
         // - line => string of contents for message / source problem matching (only 1).
         $errors = [];
         $warnings = [];
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public function testCustomConfigValue(): void {
             // Define the standard, sniff and fixture to use.
-            $this->set_standard('moodle');
-            $this->set_sniff('moodle.Commenting.TodoComment');
-            $this->set_fixture(__DIR__ . '/../../fixtures/Commenting/TodoCommentCustomConfig.php');
+            $this->setStandard('moodle');
+            $this->setSniff('moodle.Commenting.TodoComment');
+            $this->setFixture(__DIR__ . '/../../fixtures/Commenting/TodoCommentCustomConfig.php');
 
             // Try with an empty config value.
-            $this->add_custom_config('moodleTodoCommentRegex', 'CUSTOM-[0-9]+');
+            $this->addCustomConfig('moodleTodoCommentRegex', 'CUSTOM-[0-9]+');
 
             // Define expected results (errors and warnings). Format, array of:
             // - line => number of problems,  or
@@ -98,10 +98,10 @@ class TodoCommentSniffTest extends MoodleCSBaseTestCase
                 8 => 'Missing required "CUSTOM-[0-9]+"',
                 9 => 'Missing required "CUSTOM-[0-9]+"',
             ];
-            $this->set_errors($errors);
-            $this->set_warnings($warnings);
+            $this->setErrors($errors);
+            $this->setWarnings($warnings);
 
             // Let's do all the hard work!
-            $this->verify_cs_results();
+            $this->verifyCsResults();
     }
 }

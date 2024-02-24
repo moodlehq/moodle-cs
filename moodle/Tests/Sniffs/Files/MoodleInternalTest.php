@@ -36,13 +36,13 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
         array $errors
     ) {
         // Contains class_alias, which is not a side-effect.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.MoodleInternal');
-        $this->set_fixture(__DIR__ . '/fixtures/moodleinternal/' . $fixture . '.php');
-        $this->set_warnings($warnings);
-        $this->set_errors($errors);
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.MoodleInternal');
+        $this->setFixture(__DIR__ . '/fixtures/moodleinternal/' . $fixture . '.php');
+        $this->setWarnings($warnings);
+        $this->setErrors($errors);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**

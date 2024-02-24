@@ -37,16 +37,16 @@ class PackageSniffTest extends MoodleCSBaseTestCase
         array $errors,
         array $warnings
     ): void {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.Package');
-        $this->set_fixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
-        $this->set_warnings($warnings);
-        $this->set_errors($errors);
-        $this->set_component_mapping([
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.Package');
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
+        $this->setWarnings($warnings);
+        $this->setErrors($errors);
+        $this->setComponentMapping([
             'local_codechecker' => dirname(__DIR__),
         ]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public static function packageCorrectnessProvider(): array {

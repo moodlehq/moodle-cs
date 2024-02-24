@@ -29,20 +29,20 @@ class WhiteSpaceSpaceAfterCommaTest extends MoodleCSBaseTestCase
 {
     public function testWhitespaceSpaceAfterComma() {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.WhiteSpace.SpaceAfterComma');
-        $this->set_fixture(__DIR__ . '/fixtures/whitespace/spaceaftercomma.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.WhiteSpace.SpaceAfterComma');
+        $this->setFixture(__DIR__ . '/fixtures/whitespace/spaceaftercomma.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             5 => 2,
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

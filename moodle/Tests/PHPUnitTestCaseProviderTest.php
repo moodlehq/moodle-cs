@@ -138,18 +138,18 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
         array $warnings
     ): void {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHPUnit.TestCaseProvider');
-        $this->set_fixture(__DIR__ . '/' . $fixture);
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHPUnit.TestCaseProvider');
+        $this->setFixture(__DIR__ . '/' . $fixture);
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

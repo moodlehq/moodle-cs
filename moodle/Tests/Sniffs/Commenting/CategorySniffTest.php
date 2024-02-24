@@ -37,12 +37,12 @@ class CategorySniffTest extends MoodleCSBaseTestCase
         array $errors,
         array $warnings
     ): void {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.Category');
-        $this->set_fixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
-        $this->set_warnings($warnings);
-        $this->set_errors($errors);
-        $this->set_api_mapping([
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.Category');
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
+        $this->setWarnings($warnings);
+        $this->setErrors($errors);
+        $this->setApiMappings([
             'test' => [
                 'component' => 'core',
                 'allowspread' => true,
@@ -50,7 +50,7 @@ class CategorySniffTest extends MoodleCSBaseTestCase
             ],
         ]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     public static function provider(): array {

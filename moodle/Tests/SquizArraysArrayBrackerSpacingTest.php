@@ -33,15 +33,15 @@ class SquizArraysArrayBrackerSpacingTest extends MoodleCSBaseTestCase
     public function testSquizArrayaArrayBracketSpacing() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Squiz.Arrays.ArrayBracketSpacing');
-        $this->set_fixture(__DIR__ . '/fixtures/squiz_arrays_arraybracketspacing.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Squiz.Arrays.ArrayBracketSpacing');
+        $this->setFixture(__DIR__ . '/fixtures/squiz_arrays_arraybracketspacing.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             4 => "expected \"\$arr[\" but found \"\$arr [\"",
             5 => ["expected \"['wrong'\" but found \"[ 'wrong'\"", "expected \"'wrong']\" but found \"'wrong' ]\""],
             17 => 3,
@@ -51,9 +51,9 @@ class SquizArraysArrayBrackerSpacingTest extends MoodleCSBaseTestCase
             31 => 2,
             34 => 2,
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

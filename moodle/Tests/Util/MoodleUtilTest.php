@@ -941,7 +941,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
             $vfs
         );
 
-        $this->set_api_mapping($apis);
+        $this->setApiMappings($apis);
 
         // We are passing a real File, prepare it.
         $phpcsConfig = new Config();

@@ -37,9 +37,9 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testPSR12FunctionsReturnTypeDeclaration() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('PSR12.Functions.ReturnTypeDeclaration');
-        $this->set_fixture(__DIR__ . '/fixtures/psr12_functions_returntypedeclaration.php');
+        $this->setStandard('moodle');
+        $this->setSniff('PSR12.Functions.ReturnTypeDeclaration');
+        $this->setFixture(__DIR__ . '/fixtures/psr12_functions_returntypedeclaration.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -51,11 +51,11 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             38 => 'SpaceBeforeReturnType',
         ];
         $warnings = [];
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -66,9 +66,9 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testPSR12FunctionsNullableTypeDeclaration() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('PSR12.Functions.NullableTypeDeclaration');
-        $this->set_fixture(__DIR__ . '/fixtures/psr12_functions_nullabletypedeclaration.php');
+        $this->setStandard('moodle');
+        $this->setSniff('PSR12.Functions.NullableTypeDeclaration');
+        $this->setFixture(__DIR__ . '/fixtures/psr12_functions_nullabletypedeclaration.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -79,11 +79,11 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             22 => 3,
         ];
         $warnings = [];
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -94,15 +94,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testPSR2MethodsMethodDeclaration() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('PSR2.Methods.MethodDeclaration');
-        $this->set_fixture(__DIR__ . '/fixtures/psr2_methods_methoddeclaration.php');
+        $this->setStandard('moodle');
+        $this->setSniff('PSR2.Methods.MethodDeclaration');
+        $this->setFixture(__DIR__ . '/fixtures/psr2_methods_methoddeclaration.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             33 => 'The static declaration must come after the visibility',
             34 => 1,
             35 => 1,
@@ -117,10 +117,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             48 => ['AbstractAfterVisibility', 'StaticBeforeVisibility'],
             49 => 2,
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -131,15 +131,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodleCommentingInlineComment() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.InlineComment');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_comenting_inlinecomment.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.InlineComment');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_comenting_inlinecomment.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             4 => ['3 slashes comments are not allowed'],
             6 => 1,
             8 => 'No space found before comment text',
@@ -165,7 +165,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
           144 => '@Source: moodle.Commenting.InlineComment.SpacingBefore',
           146 => '@Message: Blank comments are not allowed',
         ]);
-        $this->set_warnings([
+        $this->setWarnings([
             4 => 0,
             6 => [null, 'Commenting.InlineComment.InvalidEndChar'],
            55 => ['19 found'],
@@ -185,7 +185,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
         ]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -201,25 +201,25 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodleCommentingInlineCommentJS() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.InlineComment');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_comenting_inlinecomment.js');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.InlineComment');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_comenting_inlinecomment.js');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             1 => ['3 slashes comments are not allowed'],
             3 => 1,
             5 => 'No space found before comment text',
         ]);
-        $this->set_warnings([
+        $this->setWarnings([
             3 => [null, 'Commenting.InlineComment.InvalidEndChar'],
         ]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -230,24 +230,24 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodleControlStructuresControlsignature() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.ControlStructures.ControlSignature');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_controlstructures_controlsignature.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.ControlStructures.ControlSignature');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_controlstructures_controlsignature.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             3 => 0,
             4 => ['found "if(...) {'],
             5 => 0,
             6 => '@Message: Expected "} else {\n"',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -258,19 +258,19 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodleFilesLineLength() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.LineLength');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_files_linelength.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.LineLength');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_files_linelength.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             21 => 'maximum limit of 180 characters; contains 181 characters',
             22 => 'maximum limit of 180 characters; contains 181 characters',
         ]);
-        $this->set_warnings([
+        $this->setWarnings([
             13 => 'exceeds 132 characters; contains 133 characters',
             14 => 'exceeds 132 characters; contains 133 characters',
             17 => 'exceeds 132 characters; contains 180 characters',
@@ -278,7 +278,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
         ]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -288,24 +288,24 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      */
     public function testGenericArraysDisallowLongArraySyntax(): void {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Generic.Arrays.DisallowLongArraySyntax');
-        $this->set_fixture(__DIR__ . '/fixtures/generic_array_longarraysyntax.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Generic.Arrays.DisallowLongArraySyntax');
+        $this->setFixture(__DIR__ . '/fixtures/generic_array_longarraysyntax.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             3 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
             5 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
             9 => 'Short array syntax must be used to define arrays @Source: Generic.Arrays.DisallowLongArraySyntax.Found',
         ]);
 
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -316,22 +316,22 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGeneriFilesLineEndings() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Generic.Files.LineEndings');
-        $this->set_fixture(__DIR__ . '/fixtures/generic_files_lineendings.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Generic.Files.LineEndings');
+        $this->setFixture(__DIR__ . '/fixtures/generic_files_lineendings.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             1 => 'line character is invalid; expected "\n" but found "\r\n" @Source: Generic.Files.LineEndings.InvalidEOLChar',
         ]);
 
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -342,22 +342,22 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGenericFilesEndFileNewLine() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Generic.Files.EndFileNewline');
-        $this->set_fixture(__DIR__ . '/fixtures/generic_files_endfilenewline.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Generic.Files.EndFileNewline');
+        $this->setFixture(__DIR__ . '/fixtures/generic_files_endfilenewline.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             4 => 'File must end with a newline character @Source: Generic.Files.EndFileNewline.NotFound',
         ]);
 
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -368,24 +368,24 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGenericWhiteSpaceDisalowTabIndent() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Generic.WhiteSpace.DisallowTabIndent');
-        $this->set_fixture(__DIR__ . '/fixtures/generic_whitespace_disallowtabindent.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Generic.WhiteSpace.DisallowTabIndent');
+        $this->setFixture(__DIR__ . '/fixtures/generic_whitespace_disallowtabindent.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             9 => 'Spaces must be used to indent lines; tabs are not allowed',
            10 => 1,
            11 => 1,
         ]);
 
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -396,15 +396,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGenericFunctionsOpeningFunctionBraceKernighanRitchie() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Generic.Functions.OpeningFunctionBraceKernighanRitchie');
-        $this->set_fixture(__DIR__ . '/fixtures/generic_functions_openingfunctionbracekerninghanritchie.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Generic.Functions.OpeningFunctionBraceKernighanRitchie');
+        $this->setFixture(__DIR__ . '/fixtures/generic_functions_openingfunctionbracekerninghanritchie.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             6 => 'Expected 1 space before opening brace; found 0',
             9 => 1,
            12 => 'Expected 1 space before opening brace; found 3',
@@ -414,10 +414,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
            26 => 'Expected 1 space before opening brace; found 3',
            29 => 1]);
 
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -428,15 +428,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGenericClassesOpeningBraceSameLine() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Generic.Classes.OpeningBraceSameLine');
-        $this->set_fixture(__DIR__ . '/fixtures/generic_classes_openingclassbrace.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Generic.Classes.OpeningBraceSameLine');
+        $this->setFixture(__DIR__ . '/fixtures/generic_classes_openingclassbrace.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             5 => 'Expected 1 space before opening brace; found 0',
             8 => 'Expected 1 space before opening brace; found 0',
             11 => 'Expected 1 space before opening brace; found 3',
@@ -444,10 +444,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             19 => 'Opening brace should be on the same line as the declaration for class test05',
         ]);
 
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -458,23 +458,23 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGenericWhiteSpaceScopeIndent() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Generic.WhiteSpace.ScopeIndent');
-        $this->set_fixture(__DIR__ . '/fixtures/generic_whitespace_scopeindent.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Generic.WhiteSpace.ScopeIndent');
+        $this->setFixture(__DIR__ . '/fixtures/generic_whitespace_scopeindent.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             7 => 'indented incorrectly; expected at least 4 spaces, found 2 @Source: Generic.WhiteSpace.ScopeIndent.Incorrect',
             19 => 'indented incorrectly; expected at least 4 spaces, found 2 @Source: Generic.WhiteSpace.ScopeIndent.Incorrect',
             44 => 'expected at least 8 spaces',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -485,23 +485,23 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodlePHPDeprecatedFunctions() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHP.DeprecatedFunctions');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_php_deprecatedfunctions.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHP.DeprecatedFunctions');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_php_deprecatedfunctions.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([]);
+        $this->setErrors([]);
         $warnings = [7 => 'print_error() has been deprecated; use throw new moodle_exception()'];
         if (PHP_VERSION_ID >= 70300 && PHP_VERSION_ID < 80000) {
             $warnings[10] = 'mbsplit() has been deprecated';
         }
-        $this->set_warnings($warnings);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -512,15 +512,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodlePHPForbiddenFunctions() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHP.ForbiddenFunctions');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_php_forbiddenfunctions.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHP.ForbiddenFunctions');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_php_forbiddenfunctions.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             5 => 'function sizeof() is forbidden; use count()',
             6 => 1,
             8 => 1,
@@ -532,10 +532,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             16 => 0,
             17 => 0,
             ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -545,15 +545,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      */
     public function testMoodlePHPForbiddenGlobalUse() {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHP.ForbiddenGlobalUse');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_php_forbidden_global_use.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHP.ForbiddenGlobalUse');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_php_forbidden_global_use.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
                 1 => 0,
                 2 => 0,
                 3 => 0,
@@ -616,10 +616,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
                 58 => 0,
                 59 => 0,
                 ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -630,24 +630,24 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodlePHPForbiddenTokens() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHP.ForbiddenTokens');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_php_forbiddentokens.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHP.ForbiddenTokens');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_php_forbiddentokens.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             5 => 'The use of function eval() is forbidden',
             6 => 'The use of operator goto is forbidden',
             8 => 'The use of goto labels is forbidden',
             11 => 1,
             13 => ['backticks', 'backticks']]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -658,15 +658,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodleStringsForbiddenStrings() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Strings.ForbiddenStrings');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_strings_forbiddenstrings.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Strings.ForbiddenStrings');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_strings_forbiddenstrings.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             8 => 'The use of the AS keyword to alias tables is bad for cross-db',
             10 => 1,
             11 => 'The use of the AS keyword to alias tables is bad for cross-db',
@@ -678,7 +678,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             23 => (version_compare(PHP_VERSION, '7.3.0', '<') ? 2 : 1),
             26 => 0,
             27 => 0]);
-        $this->set_warnings([
+        $this->setWarnings([
             19 => ['backticks in strings is not recommended'],
             20 => 1,
             23 => 1,
@@ -686,7 +686,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             37 => 1]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -697,21 +697,21 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testPHPCompatibilityFunctionUseRemovedFunctions() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('PHPCompatibility.FunctionUse.RemovedFunctions');
-        $this->set_fixture(__DIR__ . '/fixtures/phpcompatibility_php_deprecatedfunctions.php');
+        $this->setStandard('moodle');
+        $this->setSniff('PHPCompatibility.FunctionUse.RemovedFunctions');
+        $this->setFixture(__DIR__ . '/fixtures/phpcompatibility_php_deprecatedfunctions.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             5 => ['Function ereg_replace', 'Use call_user_func() instead', '@Source: PHPCompat'],
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -722,21 +722,21 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testPHPCompatibilitySyntaxForbiddenCallTimePassByReference() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('PHPCompatibility.Syntax.ForbiddenCallTimePassByReference');
-        $this->set_fixture(__DIR__ . '/fixtures/phpcompatibility_php_forbiddencalltimepassbyreference.php');
+        $this->setStandard('moodle');
+        $this->setSniff('PHPCompatibility.Syntax.ForbiddenCallTimePassByReference');
+        $this->setFixture(__DIR__ . '/fixtures/phpcompatibility_php_forbiddencalltimepassbyreference.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             6 => ['call-time pass-by-reference is deprecated'],
             7 => ['@Source: PHPCompat']]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -747,15 +747,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodleNamingConventionsValidVariableName() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.NamingConventions.ValidVariableName');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_namingconventions_variablename.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.NamingConventions.ValidVariableName');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_namingconventions_variablename.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             4 => 'must not contain underscores',
             5 => 'must be all lower-case',
             6 => 'must not contain underscores',
@@ -772,10 +772,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             21 => 2,
             22 => ['must be all lower-case', 'must not contain underscores'],
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -786,15 +786,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testSquizWhiteSpaceOperatorSpacing() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Squiz.WhiteSpace.OperatorSpacing');
-        $this->set_fixture(__DIR__ . '/fixtures/squiz_whitespace_operatorspacing.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Squiz.WhiteSpace.OperatorSpacing');
+        $this->setFixture(__DIR__ . '/fixtures/squiz_whitespace_operatorspacing.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
                                6 => 0,
                                7 => 'Expected 1 space before',
                                8 => 'Expected 1 space after',
@@ -854,10 +854,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
                                62 => 0,
                                63 => 0,
                           ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -868,19 +868,19 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testSquizWhiteSpaceObjectOperatorSpacing() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Squiz.WhiteSpace.ObjectOperatorSpacing');
-        $this->set_fixture(__DIR__ . '/fixtures/squiz_whitespace_objectoperatorspacing.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Squiz.WhiteSpace.ObjectOperatorSpacing');
+        $this->setFixture(__DIR__ . '/fixtures/squiz_whitespace_objectoperatorspacing.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -891,15 +891,15 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testPEARWhiteSpaceObjectOperatorIndent() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('PEAR.WhiteSpace.ObjectOperatorIndent');
-        $this->set_fixture(__DIR__ . '/fixtures/pear_whitespace_objectoperatorspacing.php');
+        $this->setStandard('moodle');
+        $this->setSniff('PEAR.WhiteSpace.ObjectOperatorIndent');
+        $this->setFixture(__DIR__ . '/fixtures/pear_whitespace_objectoperatorspacing.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             40 => 'not indented correctly; expected 4 spaces but found 2',
             41 => '@Source: PEAR.WhiteSpace.ObjectOperatorIndent.Incorrect',
             44 => 1,
@@ -915,10 +915,10 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             69 => 1,
             70 => 1,
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -929,22 +929,22 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testSquizPHPCommentedOutCode() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('Squiz.PHP.CommentedOutCode');
-        $this->set_fixture(__DIR__ . '/fixtures/squiz_php_commentedoutcode.php');
+        $this->setStandard('moodle');
+        $this->setSniff('Squiz.PHP.CommentedOutCode');
+        $this->setFixture(__DIR__ . '/fixtures/squiz_php_commentedoutcode.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([]);
-        $this->set_warnings([
+        $this->setErrors([]);
+        $this->setWarnings([
             5 => 'This comment is 72% valid code; is this commented out code',
             9 => '@Source: Squiz.PHP.CommentedOutCode.Found',
         ]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -953,16 +953,16 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
     public function testMoodleFilesRequireLoginProblem() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.RequireLogin');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_files_requirelogin/problem.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.RequireLogin');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/problem.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([
+        $this->setErrors([]);
+        $this->setWarnings([
             25 => ', require_course_login, require_admin, admin_externalpage_setup) following config inclusion. None found',
         ]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -971,14 +971,14 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
     public function testMoodleFilesRequireLoginOk() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.RequireLogin');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_files_requirelogin/require_login_ok.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.RequireLogin');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/require_login_ok.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -987,14 +987,14 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
     public function testMoodleFilesRequireLoginCourseOk() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.RequireLogin');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_files_requirelogin/require_course_login_ok.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.RequireLogin');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/require_course_login_ok.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -1003,14 +1003,14 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
     public function testMoodleFilesRequireLoginAdminExtenalPageOk() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.RequireLogin');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_files_requirelogin/admin_externalpage_setup_ok.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.RequireLogin');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/admin_externalpage_setup_ok.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -1019,14 +1019,14 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
     public function testMoodleFilesRequireLoginCLIScriptOk() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.RequireLogin');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_files_requirelogin/cliscript_ok.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.RequireLogin');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/cliscript_ok.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 
     /**
@@ -1035,13 +1035,13 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
     public function testMoodleFilesRequireLoginNoMoodlCookiesOk() {
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Files.RequireLogin');
-        $this->set_fixture(__DIR__ . '/fixtures/moodle_files_requirelogin/nomoodlecookies_ok.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.RequireLogin');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/nomoodlecookies_ok.php');
 
-        $this->set_errors([]);
-        $this->set_warnings([]);
+        $this->setErrors([]);
+        $this->setWarnings([]);
 
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

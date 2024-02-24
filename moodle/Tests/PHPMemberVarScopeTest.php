@@ -29,21 +29,21 @@ class PHPMemberVarScopeTest extends MoodleCSBaseTestCase
 {
     public function testPHPMemberVarScope() {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHP.MemberVarScope');
-        $this->set_fixture(__DIR__ . '/fixtures/php/membervarscope.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHP.MemberVarScope');
+        $this->setFixture(__DIR__ . '/fixtures/php/membervarscope.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             8 => '@Message: Scope modifier not specified for member variable "$missingprop"',
             9 => '@Source: moodle.PHP.MemberVarScope.Missing',
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

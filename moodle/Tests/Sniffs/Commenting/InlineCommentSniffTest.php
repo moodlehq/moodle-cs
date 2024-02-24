@@ -31,9 +31,9 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
 {
     public function testCommentBeforeAttribute(): void {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.InlineComment');
-        $this->set_fixture(__DIR__ . '/../../fixtures/Commenting/InlineCommentAttributeAfter.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.InlineComment');
+        $this->setFixture(__DIR__ . '/../../fixtures/Commenting/InlineCommentAttributeAfter.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -41,10 +41,10 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
         // - line => string of contents for message / source problem matching (only 1).
         $errors = [];
         $warnings = [];
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }
