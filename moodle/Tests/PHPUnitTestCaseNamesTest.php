@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,30 +13,24 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Tests;
-
-use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
-
-// phpcs:disable moodle.NamingConventions
 
 /**
  * Test the TestCaseNamesSniff sniff.
  *
- * @package    local_codechecker
- * @category   test
- * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
  */
-class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
-
+class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
+{
     /**
-     * Data provider for self::test_phpunit_testcasenames
+     * Data provider for self::testPHPUnitTestCaseNamesProvider
      */
-    public function provider_phpunit_testcasenames() {
+    public function phpunitTestCaseNamesProvider() {
         return [
             'Missing' => [
                 'fixture' => 'fixtures/phpunit/testcasenames_missing.php',
@@ -78,7 +73,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
                     8 => 1,
                 ],
                 'warnings' => [
-                    2 => 'does not match its expected location at "tests/level2/level3"'
+                    2 => 'does not match its expected location at "tests/level2/level3"',
                 ],
             ],
             'CorrectLevel2NS' => [
@@ -126,7 +121,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
                     ],
                 ],
                 'warnings' => [
-                    7 => 1
+                    7 => 1,
                 ],
             ],
             'ExistsProposed' => [
@@ -138,7 +133,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
                     ],
                 ],
                 'warnings' => [
-                    7 => 1
+                    7 => 1,
                 ],
             ],
         ];
@@ -150,15 +145,15 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
      * @param string $fixture relative path to fixture to use.
      * @param array $errors array of errors expected.
      * @param array $warnings array of warnings expected.
-     * @dataProvider provider_phpunit_testcasenames
+     * @dataProvider phpunitTestCaseNamesProvider
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
      */
-    public function test_phpunit_testcasenames(string $fixture, array $errors, array $warnings) {
+    public function testPHPUnitTestCaseNames(string $fixture, array $errors, array $warnings) {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.PHPUnit.TestCaseNames');
-        $this->set_fixture(__DIR__ . '/' . $fixture);
-        $this->set_component_mapping([
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHPUnit.TestCaseNames');
+        $this->setFixture(__DIR__ . '/' . $fixture);
+        $this->setComponentMapping([
             'local_codechecker' => dirname(__DIR__),
         ]);
 
@@ -166,10 +161,10 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase {
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

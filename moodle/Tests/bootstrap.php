@@ -1,12 +1,12 @@
-<?php
+<?php  //phpcs:ignore PSR1.Files.SideEffects
+
 /**
  * Moodle Coding Standards.
  *
  * Bootstrap file for running PHPUnit tests.
  *
- * @package   MoodleHQ\MoodleCS\moodle
  * @link      https://github.com/moodlehq/moodle-cs
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @copyright Andrew Lyons <andrew@nicols.co.uk>
  */
 

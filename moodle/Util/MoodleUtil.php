@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Util;
 
@@ -22,17 +23,14 @@ use PHP_CodeSniffer\Files\DummyFile;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Ruleset;
 
-// phpcs:disable moodle.NamingConventions
-
 /**
  * Various utility methods specific to Moodle stuff.
  *
- * @package    local_codechecker
- * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class MoodleUtil {
-
+abstract class MoodleUtil
+{
     /**
      * @var string Absolute path, cached, containing moodle root detected directory.
      */
@@ -139,7 +137,9 @@ abstract class MoodleUtil {
         if ($componentsFile = Config::getConfigData('moodleComponentsListPath')) {
             if (!is_readable($componentsFile)) {
                 throw new DeepExitException(
-                    "ERROR: Incorrect 'moodleComponentsListPath' config/runtime option. File not found: '$componentsFile'", 3);
+                    "ERROR: Incorrect 'moodleComponentsListPath' config/runtime option. File not found: '$componentsFile'",
+                    3
+                );
             }
             // Go processing the file.
             $handle = fopen($componentsFile, "r");
@@ -328,11 +328,15 @@ abstract class MoodleUtil {
             // Verify it's integer value and <= 9999 (4 digits max).
             if (filter_var($branch, FILTER_VALIDATE_INT) === false) {
                 throw new DeepExitException(
-                    "ERROR: Incorrect 'moodleBranch' config/runtime option. Value in not an integer: '$branch'", 3);
+                    "ERROR: Incorrect 'moodleBranch' config/runtime option. Value in not an integer: '$branch'",
+                    3
+                );
             }
             if ($branch > 9999) {
                 throw new DeepExitException(
-                    "ERROR: Incorrect 'moodleBranch' config/runtime option. Value must be 4 digit max.: '$branch'", 3);
+                    "ERROR: Incorrect 'moodleBranch' config/runtime option. Value must be 4 digit max.: '$branch'",
+                    3
+                );
             }
             self::$moodleBranch = $branch;
             return self::$moodleBranch;
@@ -388,12 +392,16 @@ abstract class MoodleUtil {
             // Verify the path is exists and is readable.
             if (!is_dir($path) || !is_readable($path)) {
                 throw new DeepExitException(
-                    "ERROR: Incorrect 'moodleRoot' config/runtime option. Directory does not exist or is not readable: '$path'", 3);
+                    "ERROR: Incorrect 'moodleRoot' config/runtime option. Directory does not exist or is not readable: '$path'",
+                    3
+                );
             }
             // Verify the path has version.php and config-dist.php files. Very basic, but effective check.
             if (!is_readable($path . '/version.php') || !is_readable($path . '/config-dist.php')) {
                 throw new DeepExitException(
-                    "ERROR: Incorrect 'moodleRoot' config/runtime option. Directory is not a valid moodle root: '$path'", 3);
+                    "ERROR: Incorrect 'moodleRoot' config/runtime option. Directory is not a valid moodle root: '$path'",
+                    3
+                );
             }
             self::$moodleRoot = $path;
             return self::$moodleRoot;
@@ -441,8 +449,8 @@ abstract class MoodleUtil {
      *
      * Any file which is not correctly named will be ignored.
      *
-     * @param File $phpcsFile 
-     * @return bool 
+     * @param File $phpcsFile
+     * @return bool
      */
     public static function isUnitTest(File $phpcsFile): bool
     {
@@ -527,8 +535,7 @@ abstract class MoodleUtil {
     public static function meetsMinimumMoodleVersion(
         File $phpcsFile,
         int $version
-    ): ?bool
-    {
+    ): ?bool {
         $moodleBranch = self::getMoodleBranch($phpcsFile);
         if (!isset($moodleBranch)) {
             // We cannot determine the moodle branch, so we cannot determine if the version is met.
@@ -550,8 +557,7 @@ abstract class MoodleUtil {
         File $phpcsFile,
         int $classPtr,
         string $methodName
-    ): ?int
-    {
+    ): ?int {
         $mStart = $classPtr;
         $tokens = $phpcsFile->getTokens();
         while ($mStart = $phpcsFile->findNext(T_FUNCTION, $mStart + 1, $tokens[$classPtr]['scope_closer'])) {

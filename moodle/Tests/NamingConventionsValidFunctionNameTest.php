@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,30 +13,26 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Tests;
 
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 
-// phpcs:disable moodle.NamingConventions
-
 /**
  * Test the ValidFunctionName sniff.
  *
- * @package    local_codechecker
- * @category   test
- * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\NamingConventions\ValidFunctionNameSniff
  */
-class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase {
-
+class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase
+{
     /**
-     * Data provider for self::test_namingconventions_validfunctionname
+     * Data provider for self::testNamingConventionsValidFunctionName
      */
-    public function provider_namingconventions_validfunctionname() {
+    public function providerNamingConventionsValidFunctionName() {
         return [
             'Correct' => [
                 'fixture' => 'fixtures/namingconventions/validfunctionname_correct.php',
@@ -76,23 +73,23 @@ class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase {
      * @param string $fixture relative path to fixture to use.
      * @param array $errors array of errors expected.
      * @param array $warnings array of warnings expected.
-     * @dataProvider provider_namingconventions_validfunctionname
+     * @dataProvider providerNamingConventionsValidFunctionName
      */
-    public function test_namingconventions_validfunctionname(string $fixture, array $errors, array $warnings) {
+    public function testNamingConventionsValidFunctionName(string $fixture, array $errors, array $warnings) {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.NamingConventions.ValidFunctionName');
-        $this->set_fixture(__DIR__ . '/' . $fixture);
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.NamingConventions.ValidFunctionName');
+        $this->setFixture(__DIR__ . '/' . $fixture);
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

@@ -27,8 +27,6 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
-// phpcs:disable moodle.NamingConventions
-
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;

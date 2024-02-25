@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Tests\Util;
 
@@ -25,20 +26,16 @@ use PHP_CodeSniffer\Ruleset;
 use org\bovigo\vfs\vfsStream;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
-// phpcs:disable moodle.NamingConventions
-
 /**
  * Test the MoodleUtil specific moodle utilities class
  *
- * @package    local_codechecker
- * @category   test
- * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2021 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil
  */
-class MoodleUtilTest extends MoodleCSBaseTestCase {
-
+class MoodleUtilTest extends MoodleCSBaseTestCase
+{
     /**
      * Unit test for calculateAllComponents.
      *
@@ -46,21 +43,21 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
      * and it's already indirectly tested by {@see test_getMoodleComponent()}
      * but it has some feature that we need to test individually here.
      */
-    public function test_calculateAllComponents() {
+    public function testCalculateAllComponents() {
         // Let's calculate moodleRoot.
         $vfs = vfsStream::setup('root', null, []);
         $moodleRoot = $vfs->url();
 
         // Let's prepare a components file, with some correct and incorrect entries.
         $components =
-            "nonono,mod_forum,{$moodleRoot}/mod_forum\n" .                // Wrong type.
-            "plugin,mod__nono,{$moodleRoot}/mod_forum\n" .                // Wrong component.
-            "plugin,mod_forum,/no/no/no/no//mod_forum\n" .                // Wrong path.
-            "plugin,local_codechecker,{$moodleRoot}/local/codechecker\n" .// All ok.
-            "plugin,mod_forum,{$moodleRoot}/mod/forum\n";                 // All ok.
+            "nonono,mod_forum,{$moodleRoot}/mod_forum\n" .                 // Wrong type.
+            "plugin,mod__nono,{$moodleRoot}/mod_forum\n" .                 // Wrong component.
+            "plugin,mod_forum,/no/no/no/no//mod_forum\n" .                 // Wrong path.
+            "plugin,local_codechecker,{$moodleRoot}/local/codechecker\n" . // All ok.
+            "plugin,mod_forum,{$moodleRoot}/mod/forum\n";                  // All ok.
 
         vfsStream::create(
-            ['components.txt' => $components,],
+            ['components.txt' => $components],
             $vfs
         );
 
@@ -78,10 +75,16 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         $loadedComponents = $property->getValue();
 
         $this->assertCount(2, $loadedComponents);
-        $this->assertSame(['mod_forum', 'local_codechecker'],
-            array_keys($loadedComponents)); // Verify they are ordered in ascending order.
-        $this->assertSame(["{$moodleRoot}/mod/forum", "{$moodleRoot}/local/codechecker"],
-            array_values($loadedComponents)); // Verify component paths are also the expected ones.
+        // Verify they are ordered in ascending order.
+        $this->assertSame(
+            ['mod_forum', 'local_codechecker'],
+            array_keys($loadedComponents)
+        );
+        // Verify component paths are also the expected ones.
+        $this->assertSame(
+            ["{$moodleRoot}/mod/forum", "{$moodleRoot}/local/codechecker"],
+            array_values($loadedComponents)
+        );
 
         // Now be evil and try with an unreadable file, it must throw an exception.
 
@@ -162,7 +165,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
      *
      * @dataProvider getMoodleComponentProvider
      */
-    public function test_getMoodleComponent(
+    public function testGetMoodleComponent(
         array $config,
         array $return,
         bool $reset = true,
@@ -205,8 +208,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
                 $this->assertInstanceOf($return['exception'], $e);
                 $this->assertStringContainsString($return['message'], $e->getMessage());
             }
-
-        } else if (array_key_exists('value', $return)) {
+        } elseif (array_key_exists('value', $return)) {
             // Normal asserting result.
             $this->assertSame($return['value'], MoodleUtil::getMoodleComponent($file, $selfPath));
         }
@@ -276,7 +278,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
      *
      * @dataProvider getMoodleBranchProvider
      */
-    public function test_getMoodleBranch(array $config, array $return, bool $reset = true, bool $selfPath = true) {
+    public function testGetMoodleBranch(array $config, array $return, bool $reset = true, bool $selfPath = true) {
         $file = null;
         // Set config options when passed.
         if ($config) {
@@ -301,8 +303,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
                 $this->assertInstanceOf($return['exception'], $e);
                 $this->assertStringContainsString($return['message'], $e->getMessage());
             }
-
-        } else if (array_key_exists('value', $return)) {
+        } elseif (array_key_exists('value', $return)) {
             // Normal asserting result.
             $this->assertSame($return['value'], MoodleUtil::getMoodleBranch($file, $selfPath));
         }
@@ -385,7 +386,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
      *
      * @dataProvider getMoodleRootProvider
      */
-    public function test_getMoodleRoot(
+    public function testGetMoodleRoot(
         array $config,
         array $return,
         bool $requireMockMoodle = false,
@@ -433,8 +434,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
                 $this->assertInstanceOf($return['exception'], $e);
                 $this->assertStringContainsString($return['message'], $e->getMessage());
             }
-
-        } else if (array_key_exists('value', $return)) {
+        } elseif (array_key_exists('value', $return)) {
             // Normal asserting result.
             $this->assertSame($return['value'], MoodleUtil::getMoodleRoot($file), $selfPath);
         }
@@ -533,8 +533,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
     public function testIsUnitTest(
         string $filepath,
         bool $expected
-    ): void
-    {
+    ): void {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($filepath, $phpcsRuleset, $phpcsConfig);
@@ -589,8 +588,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         string $filepath,
         string $testClassName,
         bool $expected
-    ): void
-    {
+    ): void {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
 
@@ -655,15 +653,14 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
     /**
      * @dataProvider meetsMinimumMoodleVersionProvider
      * @param string|int $moodleVersion
-     * @param int $minversion
+     * @param int $minVersion
      * @param array $return
      */
     public function testMeetsMinimumMoodleVersion(
         $moodleVersion,
         int $minVersion,
         array $return
-    ): void
-    {
+    ): void {
         Config::setConfigData('moodleBranch', $moodleVersion, true);
 
         $phpcsConfig = new Config();
@@ -678,7 +675,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
                 $this->assertInstanceOf($return['exception'], $e);
                 $this->assertStringContainsString($return['message'], $e->getMessage());
             }
-        } else if (array_key_exists('value', $return)) {
+        } elseif (array_key_exists('value', $return)) {
             // Normal asserting result.
             $this->assertSame($return['value'], MoodleUtil::meetsMinimumMoodleVersion($file, $minVersion));
         }
@@ -730,8 +727,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
     public function testFindClassMethodPointer(
         string $methodName,
         bool $found
-    ): void
-    {
+    ): void {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -756,8 +752,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
         }
     }
 
-    public function testGetTokensOnLine(): void
-    {
+    public function testGetTokensOnLine(): void {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -809,7 +804,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
                         $apis,
                         JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
                     ),
-                    'example.php' => ''
+                    'example.php' => '',
                 ],
             ],
             $vfs
@@ -856,7 +851,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
             [
                 'lib' => [
                     'apis.json' => 'invalid:"json"',
-                    'example.php' => ''
+                    'example.php' => '',
                 ],
             ],
             $vfs
@@ -901,7 +896,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
                         $apis,
                         JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
                     ),
-                    'example.php' => ''
+                    'example.php' => '',
                 ],
             ],
             $vfs
@@ -940,13 +935,13 @@ class MoodleUtilTest extends MoodleCSBaseTestCase {
             [
                 'lib' => [
                     'apis.json' => json_encode([]),
-                    'example.php' => ''
+                    'example.php' => '',
                 ],
             ],
             $vfs
         );
 
-        $this->set_api_mapping($apis);
+        $this->setApiMappings($apis);
 
         // We are passing a real File, prepare it.
         $phpcsConfig = new Config();

@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +19,6 @@ namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Methods;
 
 use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 
-// phpcs:disable moodle.NamingConventions
-
 /**
  * Test the MethodDeclarationSpacing sniff.
  *
@@ -32,9 +31,9 @@ class MethodDeclarationSpacingSniffTest extends MoodleCSBaseTestCase
 {
     public function testMethodDeclarationSpacing(): void {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Methods.MethodDeclarationSpacing');
-        $this->set_fixture(__DIR__ . '/../../fixtures/Methods/MethodDeclarationSpacing.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Methods.MethodDeclarationSpacing');
+        $this->setFixture(__DIR__ . '/../../fixtures/Methods/MethodDeclarationSpacing.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -57,10 +56,10 @@ class MethodDeclarationSpacingSniffTest extends MoodleCSBaseTestCase
             61 => 3,
         ];
         $warnings = [];
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

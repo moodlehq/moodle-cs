@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,12 +19,9 @@ namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Commenting;
 
 use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 
-// phpcs:disable moodle.NamingConventions
-
 /**
  * Test the TestCaseNamesSniff sniff.
  *
- * @category   test
  * @copyright  2024 onwards Andrew Lyons <andrew@nicols.co.uk>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
@@ -33,9 +31,9 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
 {
     public function testCommentBeforeAttribute(): void {
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('moodle.Commenting.InlineComment');
-        $this->set_fixture(__DIR__ . '/../../fixtures/Commenting/InlineCommentAttributeAfter.php');
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.InlineComment');
+        $this->setFixture(__DIR__ . '/../../fixtures/Commenting/InlineCommentAttributeAfter.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -43,10 +41,10 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
         // - line => string of contents for message / source problem matching (only 1).
         $errors = [];
         $warnings = [];
-        $this->set_errors($errors);
-        $this->set_warnings($warnings);
+        $this->setErrors($errors);
+        $this->setWarnings($warnings);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }

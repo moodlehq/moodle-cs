@@ -1,5 +1,6 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,19 +13,15 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace MoodleHQ\MoodleCS\moodle\Tests;
-
-// phpcs:disable moodle.NamingConventions
 
 /**
  * Test the \PHPCSExtra\NormalizedArrays\Sniffs\Arrays\CommaAfterLastSniff sniff.
  *
- * @package    local_codechecker
- * @category   test
- * @copyright  2023 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2023 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \PHPCSExtra\NormalizedArrays\Sniffs\Arrays\CommaAfterLastSniff
  */
@@ -36,24 +33,24 @@ class NormalizedArraysArraysCommaAfterLastTest extends MoodleCSBaseTestCase
     public function testNormalizedArraysArraysCommaAfterLast() {
 
         // Define the standard, sniff and fixture to use.
-        $this->set_standard('moodle');
-        $this->set_sniff('NormalizedArrays.Arrays.CommaAfterLast');
-        $this->set_fixture(__DIR__ . '/fixtures/normalizedarrays_arrays_commaafterlast.php');
+        $this->setStandard('moodle');
+        $this->setSniff('NormalizedArrays.Arrays.CommaAfterLast');
+        $this->setFixture(__DIR__ . '/fixtures/normalizedarrays_arrays_commaafterlast.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
         // - line => array of contents for message / source problem matching.
         // - line => string of contents for message / source problem matching (only 1).
-        $this->set_errors([
+        $this->setErrors([
             79 => '@Source: NormalizedArrays.Arrays.CommaAfterLast.FoundSingleLine',
             82 => '@Source: NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLine',
             87 => 1,
             95 => 1,
             97 => 1,
         ]);
-        $this->set_warnings([]);
+        $this->setWarnings([]);
 
         // Let's do all the hard work!
-        $this->verify_cs_results();
+        $this->verifyCsResults();
     }
 }
