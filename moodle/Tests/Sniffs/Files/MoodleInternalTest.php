@@ -28,9 +28,9 @@ namespace MoodleHQ\MoodleCS\moodle\Tests\Files;
 class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase
 {
     /**
-     * @dataProvider provider
+     * @dataProvider moodleFilesMoodleInternalProvider
      */
-    public function testFromProvider(
+    public function testMoodleFilesMoodleInternal(
         string $fixture,
         array $warnings,
         array $errors
@@ -46,10 +46,10 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
     }
 
     /**
-     * Data provider for MoodleInternal tests.
+     * Data provider for testMoodleFilesMoodleInternal tests.
      * @return array
      */
-    public static function provider(): array {
+    public static function moodleFilesMoodleInternalProvider(): array {
         return [
             [
                 'problem',
