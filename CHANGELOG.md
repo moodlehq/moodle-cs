@@ -6,13 +6,17 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.4.1] - 2024-03-08
+### Fixed
+- Solved a problem with the `moodle.Commenting.Package` sniff when running against arbitrary (not Moodle based) directories.
+
 ## [v3.4.0] - 2024-03-07
 ### Added
 - Add new `moodle.PHPUnit.TestCasesAbstract` sniff to check that testcase classes are declared abstract.
 - Add new `moodle.PHPUnit.TestClassesFinal` sniff to check that test classes are declared final.
 - Add new `moodle.Commenting.Package` sniff to replace those present in moodle-local_moodlecheck.
 - Add new `moodle.Commenting.Category` sniffs to replace those present in moodle-local_moodlecheck.
-- New `phpcs.xml.dist` to enforce the coding style to follow by ´moodle-cs´ itself. Basically, PSR12 ruled. CI verified from now on.
+- New `phpcs.xml.dist` to enforce the coding style to follow by `moodle-cs` itself. Basically, PSR12 ruled. CI verified from now on.
 
 ### Changed
 - Modified own CI scripts, updating various GH actions.
@@ -163,7 +167,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.0...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.1...main
+[v3.4.1]: https://github.com/moodlehq/moodle-cs/compare/v3.4.0...v3.4.1
 [v3.4.0]: https://github.com/moodlehq/moodle-cs/compare/v3.3.15...v3.4.0
 [v3.3.15]: https://github.com/moodlehq/moodle-cs/compare/v3.3.14...v3.3.15
 [v3.3.14]: https://github.com/moodlehq/moodle-cs/compare/v3.3.13...v3.3.14
