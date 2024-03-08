@@ -30,6 +30,27 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 class PackageSniffTest extends MoodleCSBaseTestCase
 {
     /**
+     * Test that various checks are not performed when there isn't any component available.
+     */
+    public function testPackageOnMissingComponent(): void {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.Package');
+        $this->setFixture(__DIR__ . '/fixtures/package_tags_nocheck.php');
+        $this->setComponentMapping([]); // No components available.
+
+        $this->setWarnings([]);
+        $this->setErrors([
+            // These are still checked because this doesn't depend on the - missing - component mapping.
+            35 => 'Missing doc comment for class missing_docblock_in_class',
+            38 => 'Missing doc comment for interface missing_docblock_in_interface',
+            41 => 'Missing doc comment for trait missing_docblock_in_trait',
+            44 => 'Missing doc comment for function missing_docblock_in_function',
+        ]);
+
+        $this->verifyCsResults();
+    }
+
+    /**
      * @dataProvider packageCorrectnessProvider
      */
     public function testPackageCorrectness(

@@ -144,6 +144,12 @@ class PackageSniff implements Sniff
         $objectType = $this->getObjectType($phpcsFile, $stackPtr);
         $expectedPackage = MoodleUtil::getMoodleComponent($phpcsFile, true);
 
+        // Nothing to do if we have been unable to determine the package
+        // (all the following checks rely on this value).
+        if ($expectedPackage === null) {
+            return false;
+        }
+
         $packageTokens = Docblocks::getMatchingDocTags($phpcsFile, $stackPtr, '@package');
         if (empty($packageTokens)) {
             $fix = $phpcsFile->addFixableError(
