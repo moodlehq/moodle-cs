@@ -19,7 +19,7 @@ namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use MoodleHQ\MoodleCS\moodle\Util\Docblocks;
-use MoodleHQ\MoodleCS\moodle\Util\Tokens;
+use MoodleHQ\MoodleCS\moodle\Util\TokenUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 
@@ -78,10 +78,6 @@ class PackageSniff implements Sniff
             $docblock = Docblocks::getDocBlock($phpcsFile, $typePtr);
 
             if ($docblock === null) {
-                $objectName = $this->getObjectName($phpcsFile, $typePtr);
-                $objectType = $this->getObjectType($phpcsFile, $typePtr);
-                $phpcsFile->addError('Missing doc comment for %s %s', $typePtr, 'Missing', [$objectType, $objectName]);
-
                 continue;
             }
 
@@ -103,8 +99,8 @@ class PackageSniff implements Sniff
         array $docblock
     ): bool {
         $tokens = $phpcsFile->getTokens();
-        $objectName = Tokens::getObjectName($phpcsFile, $stackPtr);
-        $objectType = Tokens::getObjectType($phpcsFile, $stackPtr);
+        $objectName = TokenUtil::getObjectName($phpcsFile, $stackPtr);
+        $objectType = TokenUtil::getObjectType($phpcsFile, $stackPtr);
         $expectedPackage = MoodleUtil::getMoodleComponent($phpcsFile, true);
 
         // Nothing to do if we have been unable to determine the package

@@ -39,13 +39,7 @@ class PackageSniffTest extends MoodleCSBaseTestCase
         $this->setComponentMapping([]); // No components available.
 
         $this->setWarnings([]);
-        $this->setErrors([
-            // These are still checked because this doesn't depend on the - missing - component mapping.
-            35 => 'Missing doc comment for class missing_docblock_in_class',
-            38 => 'Missing doc comment for interface missing_docblock_in_interface',
-            41 => 'Missing doc comment for trait missing_docblock_in_trait',
-            44 => 'Missing doc comment for function missing_docblock_in_function',
-        ]);
+        $this->setErrors([]);
 
         $this->verifyCsResults();
     }
@@ -77,8 +71,6 @@ class PackageSniffTest extends MoodleCSBaseTestCase
                 'errors' => [
                     18 => 'DocBlock missing a @package tag for function package_missing. Expected @package local_codechecker',
                     31 => 'DocBlock missing a @package tag for class package_absent. Expected @package local_codechecker',
-                    34 => 'Missing doc comment for function missing_docblock_in_function',
-                    38 => 'Missing doc comment for class missing_docblock_in_class',
                     42 => '@package tag for function package_wrong_in_function. Expected local_codechecker, found wrong_package.',
                     48 => '@package tag for class package_wrong_in_class. Expected local_codechecker, found wrong_package.',
                     57 => 'More than one @package tag found in function package_multiple_in_function',
@@ -87,10 +79,8 @@ class PackageSniffTest extends MoodleCSBaseTestCase
                     78 => 'More than one @package tag found in class package_multiple_in_class_all_wrong',
                     85 => 'More than one @package tag found in interface package_multiple_in_interface_all_wrong',
                     92 => 'More than one @package tag found in trait package_multiple_in_trait_all_wrong',
-                    95 => 'Missing doc comment for interface missing_docblock_interface',
                     101 => 'missing a @package tag for interface missing_package_interface. Expected @package',
                     106 => '@package tag for interface incorrect_package_interface. Expected local_codechecker, found',
-                    118 => 'Missing doc comment for trait missing_docblock_trait',
                     124 => 'DocBlock missing a @package tag for trait missing_package_trait. Expected @package',
                     129 => 'Incorrect @package tag for trait incorrect_package_trait. Expected local_codechecker, found',
                 ],
