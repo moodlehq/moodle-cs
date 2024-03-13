@@ -19,9 +19,9 @@ namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use MoodleHQ\MoodleCS\moodle\Util\Docblocks;
+use MoodleHQ\MoodleCS\moodle\Util\Tokens;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
-use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Checks that all test classes and global functions have appropriate @package tags.
@@ -90,43 +90,6 @@ class PackageSniff implements Sniff
     }
 
     /**
-     * Get the human-readable object type.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return string
-     */
-    protected function getObjectType(
-        File $phpcsFile,
-        int $stackPtr
-    ): string {
-        $tokens = $phpcsFile->getTokens();
-        if ($tokens[$stackPtr]['code'] === T_OPEN_TAG) {
-            return 'file';
-        }
-        return $tokens[$stackPtr]['content'];
-    }
-
-    /**
-     * Get the human readable object name.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return string
-     */
-    protected function getObjectName(
-        File $phpcsFile,
-        int $stackPtr
-    ): string {
-        $tokens = $phpcsFile->getTokens();
-        if ($tokens[$stackPtr]['code'] === T_OPEN_TAG) {
-            return basename($phpcsFile->getFilename());
-        }
-
-        return ObjectDeclarations::getName($phpcsFile, $stackPtr);
-    }
-
-    /**
      * Check the docblock for a @package tag.
      *
      * @param File $phpcsFile
@@ -140,8 +103,8 @@ class PackageSniff implements Sniff
         array $docblock
     ): bool {
         $tokens = $phpcsFile->getTokens();
-        $objectName = $this->getObjectName($phpcsFile, $stackPtr);
-        $objectType = $this->getObjectType($phpcsFile, $stackPtr);
+        $objectName = Tokens::getObjectName($phpcsFile, $stackPtr);
+        $objectType = Tokens::getObjectType($phpcsFile, $stackPtr);
         $expectedPackage = MoodleUtil::getMoodleComponent($phpcsFile, true);
 
         // Nothing to do if we have been unable to determine the package
