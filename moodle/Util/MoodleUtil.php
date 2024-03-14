@@ -443,6 +443,28 @@ abstract class MoodleUtil
     }
 
     /**
+     * Whether this file is a lang file.
+     *
+     * @param File $phpcsFile
+     * @return bool
+     */
+    public static function isLangFile(File $phpcsFile): bool
+    {
+        // If the file is not under a /lang/[a-zA-Z0-9_-]+/ directory, nothing to check.
+        // (note that we are using that regex because it's what PARAM_LANG does).
+        if (preg_match('~/lang/[a-zA-Z0-9_-]+/~', $phpcsFile->getFilename()) === 0) {
+            return false;
+        }
+
+        // If the file is not a PHP file, nothing to check.
+        if (substr($phpcsFile->getFilename(), -4) !== '.php') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Whether this file is a unit test file.
      *
      * This does not include test fixtures, generators, or behat files.

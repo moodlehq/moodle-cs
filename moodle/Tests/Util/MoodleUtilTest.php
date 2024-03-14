@@ -481,6 +481,55 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     }
 
     /**
+     * Data provider for testIsLangFile.
+     *
+     * @return array
+     */
+    public static function isLangFileProvider(): array
+    {
+        return [
+            'Not in lang directory' => [
+                'value' => '/path/to/standard/file.php',
+                'return' => false,
+            ],
+            'In lang/en directory' => [
+                'value' => '/path/to/standard/lang/en/file.php',
+                'return' => true,
+            ],
+            'In lang directory but missing en' => [
+                'value' => '/path/to/standard/lang/file.php',
+                'return' => false,
+            ],
+            'In lang/en directory but missing .php' => [
+                'value' => '/path/to/standard/lang/en/file',
+                'return' => false,
+            ],
+            'In lang/en directory but another extension' => [
+                'value' => '/path/to/standard/lang/en/file.md',
+                'return' => false,
+            ],
+            'In lang sub-directory with not allowed chars' => [
+                'value' => '/path/to/standard/lang/@@@/file.php',
+                'return' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isLangFileProvider
+     */
+    public function testIsLangFile(
+        string $filepath,
+        bool $expected
+    ): void {
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $file = new File($filepath, $phpcsRuleset, $phpcsConfig);
+
+        $this->assertEquals($expected, MoodleUtil::isLangFile($file));
+    }
+
+    /**
      * Data provider for testIsUnitTest.
      *
      * @return array
