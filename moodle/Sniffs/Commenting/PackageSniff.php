@@ -19,9 +19,9 @@ namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use MoodleHQ\MoodleCS\moodle\Util\Docblocks;
+use MoodleHQ\MoodleCS\moodle\Util\TokenUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
-use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
  * Checks that all test classes and global functions have appropriate @package tags.
@@ -78,52 +78,11 @@ class PackageSniff implements Sniff
             $docblock = Docblocks::getDocBlock($phpcsFile, $typePtr);
 
             if ($docblock === null) {
-                $objectName = $this->getObjectName($phpcsFile, $typePtr);
-                $objectType = $this->getObjectType($phpcsFile, $typePtr);
-                $phpcsFile->addError('Missing doc comment for %s %s', $typePtr, 'Missing', [$objectType, $objectName]);
-
                 continue;
             }
 
             $this->checkDocblock($phpcsFile, $typePtr, $docblock);
         }
-    }
-
-    /**
-     * Get the human-readable object type.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return string
-     */
-    protected function getObjectType(
-        File $phpcsFile,
-        int $stackPtr
-    ): string {
-        $tokens = $phpcsFile->getTokens();
-        if ($tokens[$stackPtr]['code'] === T_OPEN_TAG) {
-            return 'file';
-        }
-        return $tokens[$stackPtr]['content'];
-    }
-
-    /**
-     * Get the human readable object name.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return string
-     */
-    protected function getObjectName(
-        File $phpcsFile,
-        int $stackPtr
-    ): string {
-        $tokens = $phpcsFile->getTokens();
-        if ($tokens[$stackPtr]['code'] === T_OPEN_TAG) {
-            return basename($phpcsFile->getFilename());
-        }
-
-        return ObjectDeclarations::getName($phpcsFile, $stackPtr);
     }
 
     /**
@@ -140,8 +99,8 @@ class PackageSniff implements Sniff
         array $docblock
     ): bool {
         $tokens = $phpcsFile->getTokens();
-        $objectName = $this->getObjectName($phpcsFile, $stackPtr);
-        $objectType = $this->getObjectType($phpcsFile, $stackPtr);
+        $objectName = TokenUtil::getObjectName($phpcsFile, $stackPtr);
+        $objectType = TokenUtil::getObjectType($phpcsFile, $stackPtr);
         $expectedPackage = MoodleUtil::getMoodleComponent($phpcsFile, true);
 
         // Nothing to do if we have been unable to determine the package

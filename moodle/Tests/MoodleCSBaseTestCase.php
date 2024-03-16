@@ -58,6 +58,9 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected ?string $fixture = null;
 
+    /** @var string|null Fixture file content */
+    protected ?string $fixtureContent = null;
+
     /**
      * @var array custom config elements to setup before running phpcs. name => value.
      */
@@ -143,10 +146,20 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * @param string $fixture full path to the file used as input (fixture).
      */
     protected function setFixture($fixture) {
+        if ($this->fixtureContent !== null) {
+            $this->fail('Fixture file content already set, cannot set it again.');
+        }
         if (!is_readable($fixture)) {
             $this->fail('Unreadable fixture passed: ' . $fixture);
         }
         $this->fixture = $fixture;
+    }
+
+    protected function setFixtureFileContent(string $content): void {
+        if ($this->fixture !== null) {
+            $this->fail('Fixture file content already set, cannot set it again.');
+        }
+        $this->fixtureContent = $content;
     }
 
     /**
@@ -210,7 +223,11 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
 
         // Let's process the fixture.
         try {
-            $phpcsfile = new \PHP_CodeSniffer\Files\LocalFile($this->fixture, $ruleset, $config);
+            if ($this->fixtureContent !== null) {
+                $phpcsfile = new \PHP_CodeSniffer\Files\DummyFile($this->fixtureContent, $ruleset, $config);
+            } else {
+                $phpcsfile = new \PHP_CodeSniffer\Files\LocalFile($this->fixture, $ruleset, $config);
+            }
             $phpcsfile->process();
         } catch (\Exception $e) {
             $this->fail('An unexpected exception has been caught: ' . $e->getMessage());
@@ -237,8 +254,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         }
 
         // Now, if there is a file, with the same name than the
-        // fixture + .fix, use it to verify that the fixed does its job too.
-        if (is_readable($this->fixture . '.fixed')) {
+        // fixture + .fix, use it to verify that the fixed does its job too.)
+        if ($this->fixture !== null && is_readable($this->fixture . '.fixed')) {
             $diff = $phpcsfile->fixer->generateDiff($this->fixture . '.fixed');
             if (trim($diff) !== '') {
                 $filename = basename($this->fixture);
