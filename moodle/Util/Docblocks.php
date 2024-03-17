@@ -17,12 +17,7 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Util;
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Exceptions\DeepExitException;
-use PHP_CodeSniffer\Files\DummyFile;
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Ruleset;
-use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Utilities related to PHP DocBlocks.
@@ -32,6 +27,110 @@ use PHP_CodeSniffer\Util\Tokens;
  */
 abstract class Docblocks
 {
+    /**
+     * List of valid, well known, phpdoc tags, always accepted.
+     *
+     * @var array<string, bool>
+     * @link http://manual.phpdoc.org/HTMLSmartyConverter/HandS/ */
+    public static array $validTags = [
+        // Behat tags.
+        'Given' => true,
+        'Then' => true,
+        'When' => true,
+
+        // PHPUnit tags.
+        'codeCoverageIgnore' => true,
+        'codeCoverageIgnoreStart' => true,
+        'codeCoverageIgnoreEnd' => true,
+        'covers' => true,
+        'coversDefaultClass' => true,
+        'coversNothing' => true,
+        'dataProvider' => true,
+        'depends' => true,
+        'group' => true,
+        'requires' => true,
+        'runTestsInSeparateProcesses' => true,
+        'runInSeparateProcess' => true,
+        'testWith' => true,
+
+        // PHPDoc tags.
+        'abstract' => false,
+        'access' => false,
+        'author' => true,
+        'category' => true,
+        'copyright' => true,
+        'deprecated' => true,
+        'example' => false,
+        'final' => false,
+        'filesource' => false,
+        'global' => false,
+        'ignore' => false,
+        'internal' => false,
+        'license' => true,
+        'link' => true,
+        'method' => false,
+        'name' => false,
+        'package' => true,
+        'param' => true,
+        'property' => true,
+        'property-read' => true,
+        'property-write' => true,
+        'return' => true,
+        'see' => true,
+        'since' => true,
+        'static' => false,
+        'staticvar' => false,
+        'subpackage' => true,
+        'throws' => true,
+        'todo' => true,
+        'tutorial' => false,
+        'uses' => true, // Also used by PHPUnit.
+        'var' => true,
+        'version' => false,
+    ];
+
+    /**
+     * List of invalid tags that should be removed.
+     *
+     * @var string[]
+     */
+    public static array $invalidTagsToRemove = [
+        'void',
+    ];
+
+    /**
+     * List of tags that should be renamed.
+     *
+     * @var string[string]
+     */
+    public static array $renameTags = [
+        // Rename returns to return.
+        'returns' => 'return',
+    ];
+
+    /**
+     * A list of phpdoc tags allowed to be used under certain directories.
+     * keys are tags, values are arrays of allowed paths (regexp patterns).
+     *
+     * @var array(string => array(string))
+     */
+    public static array $pathRestrictedTags = [
+        'Given' => ['#.*/tests/behat/.*#'],
+        'Then' => ['#.*/tests/behat/.*#'],
+        'When' => ['#.*/tests/behat/.*#'],
+        'covers' => ['#.*/tests/.*_test.php#'],
+        'coversDefaultClass' => ['#.*/tests/.*_test.php#'],
+        'coversNothing' => ['#.*/tests/.*_test.php#'],
+        'dataProvider' => ['#.*/tests/.*_test.php#'],
+        'depends' => ['#.*/tests/.*_test.php#'],
+        'group' => ['#.*/tests/.*_test.php#'],
+        'requires' => ['#.*/tests/.*_test.php#'],
+        'runTestsInSeparateProcesses' => ['#.*/tests/.*_test.php#'],
+        'runInSeparateProcess' => ['#.*/tests/.*_test.php#'],
+        'testWith' => ['#.*/tests/.*_test.php#'],
+        // Commented out: 'uses' => ['#.*/tests/.*_test.php#'], can also be out from tests (Coding style dixit).
+    ];
+
     /**
      * Get the docblock for a file, class, interface, trait, or method.
      *
@@ -205,5 +304,73 @@ abstract class Docblocks
         }
 
         return $matchingTags;
+    }
+
+    /**
+     * Whether this a valid tag.
+     *
+     * @param File $phpcsFile
+     * @param int $tagPtr
+     * @return bool
+     */
+    public static function isValidTag(
+        File $phpcsFile,
+        int $tagPtr
+    ): bool {
+        $tokens = $phpcsFile->getTokens();
+        $tag = ltrim($tokens[$tagPtr]['content'], '@');
+        if (array_key_exists($tag, self::$validTags)) {
+            if (array_key_exists($tag, self::$pathRestrictedTags)) {
+                $file = $phpcsFile->getFilename();
+                foreach (self::$pathRestrictedTags[$tag] as $path) {
+                    if (preg_match($path, $file)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if a tag is recommended.
+     *
+     * @param string $tagname
+     * @return bool
+     */
+    public static function isRecommendedTag(
+        string $tagname
+    ): bool {
+        return array_key_exists($tagname, self::$validTags) && self::$validTags[$tagname];
+    }
+
+    /**
+     * Check if a tag should be removed.
+     *
+     * @param string $tagname
+     * @return bool
+     */
+    public static function shouldRemoveTag(
+        string $tagname
+    ): bool {
+        return in_array($tagname, self::$invalidTagsToRemove);
+    }
+
+    /**
+     * Get the tag name to rename to.
+     *
+     * @param string $tagname
+     * @return string|null
+     */
+    public static function getRenameTag(
+        string $tagname
+    ): ?string {
+        if (array_key_exists($tagname, self::$renameTags)) {
+            return self::$renameTags[$tagname];
+        }
+        return null;
     }
 }

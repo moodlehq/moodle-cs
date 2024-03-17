@@ -20,6 +20,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests\Util;
 use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 use MoodleHQ\MoodleCS\moodle\Util\Docblocks;
 use PHP_CodeSniffer\Config;
+use PHP_CodeSniffer\Files\DummyFile;
 use PHP_CodeSniffer\Ruleset;
 
 /**
@@ -120,5 +121,144 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $methodPointer = $phpcsFile->findNext(T_FUNCTION, $classPointer);
         $this->assertNull(Docblocks::getDocBlock($phpcsFile, $methodPointer));
         $this->assertCount(0, Docblocks::getMatchingDocTags($phpcsFile, $methodPointer, '@property'));
+    }
+
+    /**
+     * @dataProvider validTagsProvider
+     */
+    public function testIsValidTag(
+        string $filename,
+        string $content,
+        bool $expected
+    ): void {
+        $config = new Config([]);
+        $ruleset = new Ruleset($config);
+        $content = <<<EOF
+        phpcs_input_file: {$filename}
+        {$content}
+        EOF;
+
+        $phpcsFile = new DummyFile($content, $ruleset, $config);
+        $phpcsFile->process();
+
+        $tokens = $phpcsFile->getTokens();
+        $docPtr = $phpcsFile->findNext(T_DOC_COMMENT_OPEN_TAG, 0);
+        $docblock = $tokens[$docPtr];
+        $testPtr = reset($docblock['comment_tags']);
+
+        $this->assertEquals($expected, Docblocks::isValidTag($phpcsFile, $testPtr));
+    }
+
+    public static function validTagsProvider(): array {
+        return [
+            'Regular file: Valid' => [
+                'lib/classes/example.php',
+                '<?php
+                /**
+                 * @param string $param
+                 */
+                function exampleFunction(string $param): void {}',
+                true,
+            ],
+            'Regular file: Not valid' => [
+                'lib/classes/example.php',
+                '<?php
+                /**
+                 * @invalid
+                 */
+                function exampleFunction(string $param): void {}',
+                false,
+            ],
+            'Regular file: not recommended' => [
+                'lib/classes/example.php',
+                '<?php
+                /**
+                 * @abstract
+                 */
+                function exampleFunction(string $param): void {}',
+                true,
+            ],
+            'Regular file: Only valid for unit test' => [
+                'lib/classes/example.php',
+                '<?php
+                /**
+                 * @dataProvider example
+                 */
+                function exampleFunction(string $param): void {}',
+                false,
+            ],
+            'Unit test file: Valid' => [
+                'lib/tests/example_test.php',
+                '<?php
+                /**
+                 * @dataProvider example
+                 */
+                function exampleFunction(string $param): void {}',
+                true,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isRecommendedTagProvider
+     */
+    public function testIsRecommendedTag(
+        string $tagName,
+        bool $expected
+    ): void {
+        $this->assertEquals($expected, Docblocks::isRecommendedTag($tagName));
+    }
+
+    public static function isRecommendedTagProvider(): array {
+        return [
+            ['uses', true],
+            ['abstract', false],
+            ['package', true],
+            ['category', true],
+            ['version', false],
+            ['global', false],
+        ];
+    }
+
+    /**
+     * @dataProvider shouldRemoveTagProvider
+     */
+    public function testShouldRemoveTag(
+        string $tagName,
+        bool $expected
+    ): void {
+        $this->assertEquals($expected, Docblocks::shouldRemoveTag($tagName));
+    }
+
+    public static function shouldRemoveTagProvider(): array {
+        return [
+            ['uses', false],
+            ['abstract', false],
+            ['package', false],
+            ['category', false],
+            ['version', false],
+            ['global', false],
+            ['void', true],
+        ];
+    }
+
+    /**
+     * @dataProvider getRenameTagProvider
+     */
+    public function testGetRenameTag(
+        string $tagName,
+        ?string $renameTo
+    ): void {
+        $this->assertEquals($renameTo, Docblocks::getRenameTag($tagName));
+    }
+
+    public static function getRenameTagProvider(): array {
+        return [
+            ['returns', 'return'],
+            ['inheritdoc', null],
+            ['void', null],
+            ['small', null],
+            ['zzzing', null],
+        ];
     }
 }
