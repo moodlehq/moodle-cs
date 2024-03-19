@@ -37,12 +37,13 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
      */
     public function testMissingDocblockSniff(
         string $fixture,
+        ?string $fixtureFilename,
         array $errors,
         array $warnings
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.MissingDocblock');
-        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
+        $this->setFixture(sprintf("%s/fixtures/MissingDocblock/%s.php", __DIR__, $fixture), $fixtureFilename);
         $this->setWarnings($warnings);
         $this->setErrors($errors);
         $this->setComponentMapping([
@@ -55,9 +56,10 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
     public static function docblockCorrectnessProvider(): array {
         $cases = [
             'Multiple artifacts in a file' => [
-                'fixture' => 'missing_docblock_multiple_artifacts',
+                'fixture' => 'multiple_artifacts',
+                'fixtureFilename' => null,
                 'errors' => [
-                    1 => 'Missing docblock for file missing_docblock_multiple_artifacts.php',
+                    1 => 'Missing docblock for file multiple_artifacts.php',
                     34 => 'Missing docblock for function missing_docblock_in_function',
                     38 => 'Missing docblock for class missing_docblock_in_class',
                     95 => 'Missing docblock for interface missing_docblock_interface',
@@ -74,96 +76,80 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 ],
             ],
             'File level tag, no class' => [
-                'fixture' => 'missing_docblock_class_without_docblock',
+                'fixture' => 'class_without_docblock',
+                'fixtureFilename' => null,
                 'errors' => [
                     11 => 'Missing docblock for class class_without_docblock',
                 ],
                 'warnings' => [],
             ],
             'Class only (incorrect whitespace)' => [
-                'fixture' => 'missing_docblock_class_only_with_incorrect_whitespace',
+                'fixture' => 'class_only_with_incorrect_whitespace',
+                'fixtureFilename' => null,
                 'errors' => [
                     11 => 'Missing docblock for class class_only_with_incorrect_whitespace',
                 ],
                 'warnings' => [],
             ],
             'Class only (correct)' => [
-                'fixture' => 'missing_docblock_class_only',
+                'fixture' => 'class_only',
+                'fixtureFilename' => null,
                 'errors' => [],
                 'warnings' => [],
             ],
             'Class only with attributes (correct)' => [
-                'fixture' => 'missing_docblock_class_only_with_attributes',
+                'fixture' => 'class_only_with_attributes',
+                'fixtureFilename' => null,
                 'errors' => [],
                 'warnings' => [],
             ],
             'Class only with attributes and incorrect whitespace' => [
-                'fixture' => 'missing_docblock_class_only_with_attributes_incorrect_whitespace',
+                'fixture' => 'class_only_with_attributes_incorrect_whitespace',
+                'fixtureFilename' => null,
                 'errors' => [
                     13 => 'Missing docblock for class class_only_with_attributes_incorrect_whitespace',
                 ],
                 'warnings' => [],
             ],
             'Class and file (correct)' => [
-                'fixture' => 'missing_docblock_class_and_file',
+                'fixture' => 'class_and_file',
+                'fixtureFilename' => null,
                 'errors' => [],
                 'warnings' => [],
             ],
             'Interface only (correct)' => [
-                'fixture' => 'missing_docblock_interface_only',
+                'fixture' => 'interface_only',
+                'fixtureFilename' => null,
                 'errors' => [],
                 'warnings' => [],
             ],
             'Trait only (correct)' => [
-                'fixture' => 'missing_docblock_trait_only',
+                'fixture' => 'trait_only',
+                'fixtureFilename' => null,
                 'errors' => [],
                 'warnings' => [],
+            ],
+            'Testcase' => [
+                'fixture' => 'testcase_class',
+                'fixtureFilename' => '/lib/tests/example_test.php',
+                'errors' => [
+                    3 => 'Missing docblock for class example_test',
+                ],
+                'warnings' => [
+                    12 => 'Missing docblock for function test_the_thing',
+                ],
             ],
         ];
 
         if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
             $cases['Enum only (correct)'] = [
-                'fixture' => 'missing_docblock_enum_only',
+                'fixture' => 'enum_only',
+                'fixtureFilename' => null,
                 'errors' => [],
                 'warnings' => [],
             ];
         }
 
         return $cases;
-    }
-
-    public function testMissingDocblockSniffWithTest(): void {
-        $content = <<<EOF
-        phpcs_input_file: /lib/tests/example_test.php
-        <?php
-
-        class example_test extends advanced_testcase {
-            public function setUp(): void {
-            }
-            public function tearDown(): void {
-            }
-            public static function setUpBeforeClass(): void {
-            }
-            public static function tearDownAfterClass(): void {
-            }
-            public function test_the_thing(): void {
-            }
-        }
-        EOF;
-
-        $this->setStandard('moodle');
-        $this->setSniff('moodle.Commenting.MissingDocblock');
-        $this->setFixtureFileContent($content);
-        $this->setWarnings([
-            12 => 'Missing docblock for function test_the_thing',
-        ]);
-        $this->setErrors([
-            3 => 'Missing docblock for class example_test',
-        ]);
-        $this->setComponentMapping([
-            'local_codechecker' => dirname(__DIR__),
-        ]);
-
-        $this->verifyCsResults();
     }
 }
