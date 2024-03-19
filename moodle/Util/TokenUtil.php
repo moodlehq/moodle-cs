@@ -18,6 +18,7 @@
 namespace MoodleHQ\MoodleCS\moodle\Util;
 
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
 class TokenUtil
@@ -57,5 +58,33 @@ class TokenUtil
         }
 
         return ObjectDeclarations::getName($phpcsFile, $stackPtr);
+    }
+
+    /**
+     * Count the number of global scopes in a file.
+     *
+     * @param File $phpcsFile
+     * @return int
+     */
+    public static function countGlobalScopesInFile(
+        File $phpcsFile
+    ): int {
+        $tokens = $phpcsFile->getTokens();
+        $artifactCount = 0;
+        $find = Tokens::$ooScopeTokens;
+        $find[] = T_FUNCTION;
+
+        $typePtr = 0;
+        while ($typePtr = $phpcsFile->findNext($find, $typePtr + 1)) {
+            $token = $tokens[$typePtr];
+            if ($token['code'] === T_FUNCTION && !empty($token['conditions'])) {
+                // Skip methods of classes, traits and interfaces.
+                continue;
+            }
+
+            $artifactCount++;
+        }
+
+        return $artifactCount;
     }
 }
