@@ -196,6 +196,46 @@ class DocblocksTest extends MoodleCSBaseTestCase
                 function exampleFunction(string $param): void {}',
                 true,
             ],
+            'Behat test file: Valid' => [
+                'lib/tests/behat/behat_example.php',
+                '<?php
+                class behat_example {
+                    /**
+                     * @BeforeScenario
+                     * @AfterScenario
+                     * @BeforeFeature
+                     * @AfterFeature
+                     * @BeforeStep
+                     * @AfterStep
+                     * @Given
+                     * @When
+                     * @Then
+                     * @Given
+                     */
+                    function exampleFunction(string $param): void {}
+                }',
+                true,
+            ],
+            'Unit test file: Contains Behat' => [
+                'lib/tests/test_behat.php',
+                '<?php
+                class test_behat {
+                    /**
+                     * @BeforeScenario
+                     * @AfterScenario
+                     * @BeforeFeature
+                     * @AfterFeature
+                     * @BeforeStep
+                     * @AfterStep
+                     * @Given
+                     * @When
+                     * @Then
+                     * @Given
+                     */
+                    function exampleFunction(string $param): void {}
+                }',
+                false,
+            ],
         ];
     }
 

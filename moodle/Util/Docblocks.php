@@ -37,6 +37,12 @@ abstract class Docblocks
         'Given' => true,
         'Then' => true,
         'When' => true,
+        'BeforeFeature' => true,
+        'BeforeScenario' => true,
+        'BeforeStep' => true,
+        'AfterFeature' => true,
+        'AfterScenario' => true,
+        'AfterStep' => true,
 
         // PHPUnit tags.
         'codeCoverageIgnore' => true,
@@ -118,6 +124,13 @@ abstract class Docblocks
         'Given' => ['#.*/tests/behat/.*#'],
         'Then' => ['#.*/tests/behat/.*#'],
         'When' => ['#.*/tests/behat/.*#'],
+        'BeforeFeature' => ['#.*/tests/behat/.*#'],
+        'BeforeScenario' => ['#.*/tests/behat/.*#'],
+        'BeforeStep' => ['#.*/tests/behat/.*#'],
+        'AfterFeature' => ['#.*/tests/behat/.*#'],
+        'AfterScenario' => ['#.*/tests/behat/.*#'],
+        'AfterStep' => ['#.*/tests/behat/.*#'],
+
         'covers' => ['#.*/tests/.*_test.php#'],
         'coversDefaultClass' => ['#.*/tests/.*_test.php#'],
         'coversNothing' => ['#.*/tests/.*_test.php#'],
