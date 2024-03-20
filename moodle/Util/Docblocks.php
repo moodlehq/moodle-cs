@@ -144,6 +144,15 @@ abstract class Docblocks
         // Commented out: 'uses' => ['#.*/tests/.*_test.php#'], can also be out from tests (Coding style dixit).
     ];
 
+    /** @var int[]|string[] A list of tokens which are within a docblock */
+    protected static array $midDocBlockTokens = [
+        T_DOC_COMMENT,
+        T_DOC_COMMENT_STAR,
+        T_DOC_COMMENT_WHITESPACE,
+        T_DOC_COMMENT_TAG,
+        T_DOC_COMMENT_STRING,
+    ];
+
     /**
      * Get the docblock for a file, class, interface, trait, or method.
      *
@@ -164,6 +173,42 @@ abstract class Docblocks
     }
 
     /**
+     * Get the start pointer for a token which is in a docblock.
+     *
+     * @param File $phpcsFile
+     * @param int $stackPtr The token to check
+     * @return null|int The docblock start token if the stackPtr is in a docblock, null otherwise.
+     */
+    public static function getStartOfCurrentDocblock(
+        File $phpcsFile,
+        int $stackPtr
+    ): ?int {
+        $tokens = $phpcsFile->getTokens();
+        if (!array_key_exists($stackPtr, $tokens)) {
+            // This _should_ not happen unless it is called incorrectly, like in the LineLength sniff.
+            return null; // @codeCoverageIgnore
+        }
+        $token = $tokens[$stackPtr];
+
+        if ($token['code'] === T_DOC_COMMENT_OPEN_TAG) {
+            return $stackPtr;
+        }
+
+        if ($token['code'] === T_DOC_COMMENT_CLOSE_TAG) {
+            // The pointer was for a close tag. Fetch the corresponding open tag.
+            return $token['comment_opener'];
+        }
+
+        if (in_array($token['code'], self::$midDocBlockTokens)) {
+            // The pointer was for a token inside the docblock. Fetch the corresponding open tag.
+            $commentStart = $phpcsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPtr);
+            return $commentStart ?: null;
+        }
+
+        return null;
+    }
+
+    /**
      * Get the docblock pointer for a file, class, interface, trait, or method.
      *
      * @param File $phpcsFile
@@ -178,22 +223,8 @@ abstract class Docblocks
         $token = $tokens[$stackPtr];
 
         // Check if the passed pointer was for a doc.
-        $midDocBlockTokens = [
-            T_DOC_COMMENT,
-            T_DOC_COMMENT_STAR,
-            T_DOC_COMMENT_WHITESPACE,
-            T_DOC_COMMENT_TAG,
-            T_DOC_COMMENT_STRING,
-        ];
-        if ($token['code'] === T_DOC_COMMENT_OPEN_TAG) {
-            return $stackPtr;
-        } elseif ($token['code'] === T_DOC_COMMENT_CLOSE_TAG) {
-            // The pointer was for a close tag. Fetch the corresponding open tag.
-            return $token['comment_opener'];
-        } elseif (in_array($token['code'], $midDocBlockTokens)) {
-            // The pointer was for a token inside the docblock. Fetch the corresponding open tag.
-            $commentStart = $phpcsFile->findPrevious(T_DOC_COMMENT_OPEN_TAG, $stackPtr);
-            return $commentStart ?: null;
+        if ($docblockPtr = self::getStartOfCurrentDocblock($phpcsFile, $stackPtr)) {
+            return $docblockPtr;
         }
 
         // If the pointer was for a file, fetch the doc tag from the open tag.
