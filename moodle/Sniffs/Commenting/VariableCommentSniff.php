@@ -17,6 +17,7 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
+use MoodleHQ\MoodleCS\moodle\Util\TypeUtil;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use PHPCSUtils\Tokens\Collections;
@@ -34,23 +35,6 @@ use PHPCSUtils\Utils\ObjectDeclarations;
  */
 class VariableCommentSniff extends AbstractVariableSniff
 {
-    /**
-     * An array of variable types for param/var we will check.
-     *
-     * @var string[]
-     */
-    protected static $allowedTypes = [
-        'array',
-        'bool',
-        'float',
-        'int',
-        'mixed',
-        'object',
-        'string',
-        'resource',
-        'callable',
-    ];
-
     /**
      * Called to process class member vars.
      *
@@ -150,17 +134,7 @@ class VariableCommentSniff extends AbstractVariableSniff
         preg_match('`^((?:\|?(?:array\([^\)]*\)|[\\\\a-z0-9\[\]]+))*)( .*)?`i', $tokens[($foundVar + 2)]['content'], $varParts);
         $varType = $varParts[1];
 
-        // Check var type (can be multiple, separated by '|').
-        $typeNames = explode('|', $varType);
-        $suggestedNames = [];
-        foreach ($typeNames as $i => $typeName) {
-            $suggestedName = self::suggestType($typeName);
-            if (in_array($suggestedName, $suggestedNames, true) === false) {
-                $suggestedNames[] = $suggestedName;
-            }
-        }
-
-        $suggestedType = implode('|', $suggestedNames);
+        $suggestedType = TypeUtil::getValidatedType($phpcsFile, $string, $varType);
         if ($varType !== $suggestedType) {
             $error = 'Expected "%s" but found "%s" for @var tag in member variable comment';
             $data = [
@@ -207,82 +181,6 @@ class VariableCommentSniff extends AbstractVariableSniff
         if ($method['parenthesis_opener'] < $stackPtr && $method['parenthesis_closer'] > $stackPtr) {
             $this->processMemberVar($phpcsFile, $stackPtr);
             return;
-        }
-    }
-
-    /**
-     * Returns a valid variable type for param/var tags.
-     *
-     * If type is not one of the standard types, it must be a custom type.
-     * Returns the correct type name suggestion if type name is invalid.
-     *
-     * @param string $varType The variable type to process.
-     *
-     * @return string
-     */
-    protected static function suggestType(string $varType): string {
-        if (in_array($varType, self::$allowedTypes, true) === true) {
-            return $varType;
-        } elseif (substr($varType, -2) === '[]') {
-            return sprintf(
-                '%s[]',
-                self::suggestType(substr($varType, 0, -2))
-            );
-        } else {
-            $lowerVarType = strtolower($varType);
-            switch ($lowerVarType) {
-                case 'bool':
-                case 'boolean':
-                    return 'bool';
-                case 'double':
-                case 'real':
-                case 'float':
-                    return 'float';
-                case 'int':
-                case 'integer':
-                    return 'int';
-                case 'array()':
-                case 'array':
-                    return 'array';
-            }
-
-            if (strpos($lowerVarType, 'array(') !== false) {
-                // Valid array declaration:
-                // array, array(type), array(type1 => type2).
-                $matches = [];
-                $pattern = '/^array\(\s*([^\s^=^>]*)(\s*=>\s*(.*))?\s*\)/i';
-                if (preg_match($pattern, $varType, $matches) !== 0) {
-                    $type1 = '';
-                    if (isset($matches[1]) === true) {
-                        $type1 = $matches[1];
-                    }
-
-                    $type2 = '';
-                    if (isset($matches[3]) === true) {
-                        $type2 = $matches[3];
-                    }
-
-                    $type1 = self::suggestType($type1);
-                    $type2 = self::suggestType($type2);
-
-                    // Note: The phpdoc array syntax only allows you to describe the array value type.
-                    // https://docs.phpdoc.org/latest/guide/guides/types.html#arrays
-                    if ($type1 && !$type2) {
-                        // This is an array of [type2, type2, type2].
-                        return "{$type1}[]";
-                    }
-                    // This is an array of [type1 => type2, type1 => type2, type1 => type2].
-                    return "{$type2}[]";
-                } else {
-                    return 'array';
-                }
-            } elseif (in_array($lowerVarType, self::$allowedTypes, true) === true) {
-                // A valid type, but not lower cased.
-                return $lowerVarType;
-            } else {
-                // Must be a custom type name.
-                return $varType;
-            }
         }
     }
 
