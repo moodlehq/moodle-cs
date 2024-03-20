@@ -35,11 +35,14 @@ class TypeUtil
     protected static array $allowedTypes = [
         'array',
         'bool',
+        'false',
         'float',
         'int',
         'mixed',
+        'null',
         'object',
         'string',
+        'true',
         'resource',
         'callable',
     ];

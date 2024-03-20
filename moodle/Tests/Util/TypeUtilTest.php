@@ -66,6 +66,9 @@ final class TypeUtilTest extends MoodleCSBaseTestCase
             ['ARRAY()', 'array'],
             ['INT', 'int'],
             ['Boolean', 'bool'],
+            ['NULL', 'null'],
+            ['FALSE', 'false'],
+            ['true', 'true'],
 
             // Various array syntaxes.
             ['string[]', 'string[]'],
