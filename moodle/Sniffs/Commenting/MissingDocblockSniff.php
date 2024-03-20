@@ -180,7 +180,14 @@ class MissingDocblockSniff implements Sniff
             $objectName = TokenUtil::getObjectName($phpcsFile, $typePtr);
             $objectType = TokenUtil::getObjectType($phpcsFile, $typePtr);
 
-            if ($extendsOrImplements) {
+            if ($isUnitTestFile) {
+                $phpcsFile->addWarning(
+                    'Missing unit test docblock for %s %s',
+                    $typePtr,
+                    'MissingTestDescription',
+                    [$objectType, $objectName]
+                );
+            } elseif ($extendsOrImplements) {
                 $phpcsFile->addWarning('Missing docblock for %s %s', $typePtr, 'Missing', [$objectType, $objectName]);
             } else {
                 $phpcsFile->addError('Missing docblock for %s %s', $typePtr, 'Missing', [$objectType, $objectName]);
