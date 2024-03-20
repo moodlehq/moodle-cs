@@ -136,7 +136,8 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                     3 => 'Missing docblock for class example_test',
                 ],
                 'warnings' => [
-                    12 => 'Missing docblock for function test_the_thing',
+                    15 => 'Missing docblock for function this_is_not_a_test in testcase',
+                    18 => 'Missing docblock for function this_is_a_dataprovider in testcase',
                 ],
             ],
         ];
