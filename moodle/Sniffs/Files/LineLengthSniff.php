@@ -24,8 +24,8 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\Files;
 
+use MoodleHQ\MoodleCS\moodle\Util\Docblocks;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff as GenericLineLengthSniff;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 
 class LineLengthSniff extends GenericLineLengthSniff
@@ -40,6 +40,17 @@ class LineLengthSniff extends GenericLineLengthSniff
         if (strpos($file->getFilename(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) !== false) {
             return;
         }
+
         parent::process($file, $stackptr);
+    }
+
+    protected function checkLineLength($phpcsFile, $tokens, $stackPtr) {
+        // Ignore lines that are part of a docblock.
+        // We may extend this to only ignore certain tags in the future.
+        if (Docblocks::getStartOfCurrentDocblock($phpcsFile, $stackPtr) !== null) {
+            return;
+        }
+
+        parent::checkLineLength($phpcsFile, $tokens, $stackPtr);
     }
 }
