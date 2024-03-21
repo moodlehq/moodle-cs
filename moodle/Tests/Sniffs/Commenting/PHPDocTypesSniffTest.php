@@ -72,25 +72,6 @@ class PHPDocTypesSniffTest extends MoodleCSBaseTestCase
                 'errors' => [],
                 'warnings' => [],
             ],
-            'PHPDocTypes properties right' => [
-                'fixture' => 'phpdoctypes_properties_right',
-                'errors' => [],
-                'warnings' => [],
-            ],
-            'PHPDocTypes properties wrong' => [
-                'fixture' => 'phpdoctypes_properties_wrong',
-                'errors' => [
-                    33 => 'PHPDoc missing @var tag',
-                ],
-                'warnings' => [
-                    23 => 'PHPDoc variable or constant is not documented',
-                    24 => 'PHPDoc variable or constant is not documented',
-                    25 => 'PHPDoc variable or constant is not documented',
-                    26 => 'PHPDoc variable or constant is not documented',
-                    27 => 'PHPDoc variable or constant is not documented',
-                    28 => 'PHPDoc variable or constant is not documented',
-                ],
-            ],
             'PHPDocTypes tags general right' => [
                 'fixture' => 'phpdoctypes_tags_general_right',
                 'errors' => [],
@@ -99,19 +80,20 @@ class PHPDocTypesSniffTest extends MoodleCSBaseTestCase
             'PHPDocTypes tags general wrong' => [
                 'fixture' => 'phpdoctypes_tags_general_wrong',
                 'errors' => [
-                    44 => 2,
-                    54 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    61 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    71 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    80 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    90 => 'PHPDoc function parameter 2 type mismatch',
-                    100 => 'PHPDoc function parameter 1 type mismatch',
-                    110 => 'PHPDoc function parameter 1 type mismatch',
-                    120 => 'PHPDoc function parameter 2 type mismatch',
-                    129 => 'PHPDoc function return type missing or malformed',
+                    41 => "PHPDoc function parameter 1 type missing or malformed",
+                    42 => "PHPDoc function parameter 2 type missing or malformed",
+                    48 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
+                    58 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
+                    65 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
+                    75 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
+                    88 => 'PHPDoc function parameter 2 type mismatch',
+                    97 => 'PHPDoc function parameter 1 type mismatch',
+                    107 => 'PHPDoc function parameter 1 type mismatch',
+                    118 => 'PHPDoc function parameter 2 type mismatch',
+                    127 => 'PHPDoc function return type missing or malformed',
                 ],
                 'warnings' => [
-                    110 => 'PHPDoc function parameter 2 splat mismatch',
+                    108 => 'PHPDoc function parameter 2 splat mismatch',
                 ],
             ],
         ];

@@ -23,10 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later (or CC BY-SA v4 or later)
  */
 
+declare(strict_types=1);
+
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\Commenting;
 
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Util\Tokens;
 use MoodleHQ\MoodleCS\moodle\Util\PHPDocTypeParser;
 
 /**
@@ -37,7 +40,8 @@ class PHPDocTypesSniff implements Sniff
     /** @var ?File the current file */
     protected ?File $file = null;
 
-    /** @var array{'code': ?array-key, 'content': string, 'scope_opener'?: int, 'scope_closer'?: int}[]
+    /** @var array{'code': ?array-key, 'content': string, 'scope_opener'?: int, 'scope_closer'?: int,
+     *              'parenthesis_opener'?: int, 'parenthesis_closer'?: int, 'attribute_closer'?: int}[]
      * file tokens */
     protected array $tokens = [];
 
@@ -45,7 +49,7 @@ class PHPDocTypesSniff implements Sniff
      * classish things: classes, interfaces, traits, and enums */
     protected array $artifacts = [];
 
-    /** @var ?PHPDocTypeParser */
+    /** @var ?PHPDocTypeParser for parsing and comparing types */
     protected ?PHPDocTypeParser $typeparser = null;
 
     /** @var 1|2 pass 1 for gathering artifact/classish info, 2 for checking */
@@ -54,25 +58,24 @@ class PHPDocTypesSniff implements Sniff
     /** @var int current token pointer in the file */
     protected int $fileptr = 0;
 
-    /** @var non-empty-array<\stdClass&object{type: string, namespace: string, uses: string[], templates: string[],
-     *                                  classname: ?string, parentname: ?string, opened: bool, closer: ?int}>
-     * file scope: classish, function, etc.  We only need a closer if we might be in a switch statement. */
-    protected array $scopes;
-
-    /** @var ?(\stdClass&object{tags: array<string, string[]>}) PHPDoc comment for upcoming declaration */
+    /** @var ?(\stdClass&object{ptr: int, tags: array<string, object{ptr: int, content: string, cstartptr: ?int, cendptr: ?int}[]>})
+     * PHPDoc comment for upcoming declaration */
     protected ?object $commentpending = null;
 
     /** @var int how long until we dispose of a pending comment */
     protected int $commentpendingcounter = 0;
 
-    /** @var ?(\stdClass&object{tags: array<string, string[]>}) PHPDoc comment for current declaration */
+    /** @var ?(\stdClass&object{ptr: int, tags: array<string, object{ptr: int, content: string, cstartptr: ?int, cendptr: ?int}[]>})
+     * PHPDoc comment for current declaration */
     protected ?object $comment = null;
 
-    /** @var array{'code': ?array-key, 'content': string, 'scope_opener'?: int, 'scope_closer'?: int}
+    /** @var array{'code': ?array-key, 'content': string, 'scope_opener'?: int, 'scope_closer'?: int,
+     *              'parenthesis_opener'?: int, 'parenthesis_closer'?: int, 'attribute_closer'?: int}
      * the current token */
     protected array $token = ['code' => null, 'content' => ''];
 
-    /** @var array{'code': ?array-key, 'content': string, 'scope_opener'?: int, 'scope_closer'?: int}
+    /** @var array{'code': ?array-key, 'content': string, 'scope_opener'?: int, 'scope_closer'?: int,
+     *              'parenthesis_opener'?: int, 'parenthesis_closer'?: int, 'attribute_closer'?: int}
      * the previous token */
     protected array $tokenprevious = ['code' => null, 'content' => ''];
 
@@ -92,17 +95,19 @@ class PHPDocTypesSniff implements Sniff
      */
     public function process(File $phpcsfile, $stackptr): void {
 
-        // Check we haven't already done this file.
-        if ($phpcsfile == $this->file) {
-            return;
-        }
-
         try {
             $this->file = $phpcsfile;
             $this->tokens = $phpcsfile->getTokens();
-            $this->artifacts = [];
+
+            // Check we haven't already seen this file.
+            for ($tagcounter = $stackptr - 1; $tagcounter >= 0; $tagcounter--) {
+                if ($this->tokens[$tagcounter]['code'] == T_OPEN_TAG) {
+                    return;
+                }
+            }
 
             // Gather atifact info.
+            $this->artifacts = [];
             $this->pass = 1;
             $this->typeparser = null;
             $this->fileptr = $stackptr;
@@ -114,6 +119,7 @@ class PHPDocTypesSniff implements Sniff
             $this->fileptr = $stackptr;
             $this->processPass();
         } catch (\Exception $e) {
+            // Give up.  The user will probably want to fix parse errors before anything else.
             $this->file->addError(
                 'The PHPDoc type sniff failed to parse the file.  PHPDoc type checks were not performed.',
                 $this->fileptr < count($this->tokens) ? $this->fileptr : $this->fileptr - 1,
@@ -128,127 +134,90 @@ class PHPDocTypesSniff implements Sniff
      * @phpstan-impure
      */
     protected function processPass(): void {
-        $this->scopes = [(object)['type' => 'root', 'namespace' => '', 'uses' => [], 'templates' => [],
-                        'classname' => null, 'parentname' => null, 'opened' => true, 'closer' => null]];
+        $scope = (object)[
+            'namespace' => '', 'uses' => [], 'templates' => [], 'closer' => null,
+            'classname' => null, 'parentname' => null, 'type' => 'root',
+        ];
         $this->tokenprevious = ['code' => null, 'content' => ''];
         $this->fetchToken();
         $this->commentpending = null;
         $this->comment = null;
 
-        while ($this->token['code']) {
+        $this->processBlock($scope);
+    }
+
+    /**
+     * Process the content of a file, class, or function
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
+     * @return void
+     * @phpstan-impure
+     */
+    protected function processBlock(object $scope): void {
+
+        // Check we are at the start of a scope.
+        if (!($this->token['code'] == T_OPEN_TAG || $this->token['scope_opener'] == $this->fileptr)) {
+            throw new \Exception();
+        }
+
+        $scope->closer = ($this->token['code'] == T_OPEN_TAG) ?
+            count($this->tokens)
+            : $this->token['scope_closer'];
+        $this->advance();
+
+        while (true) {
             // Skip irrelevant tokens.
             while (
                 !in_array(
                     $this->token['code'],
-                    [T_NAMESPACE, T_USE,
-                    T_ABSTRACT, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_READONLY, T_FINAL,
-                    T_CLASS, T_ANON_CLASS, T_INTERFACE, T_TRAIT, T_ENUM,
-                    T_FUNCTION, T_CLOSURE, T_VAR, T_CONST,
-                    T_SEMICOLON, null]
+                    array_merge(
+                        [T_NAMESPACE, T_USE],
+                        Tokens::$methodPrefixes,
+                        [T_READONLY],
+                        Tokens::$ooScopeTokens,
+                        [T_FUNCTION, T_CLOSURE, T_FN,
+                        T_VAR, T_CONST,
+                        null]
+                    )
                 )
-                && (!isset($this->token['scope_opener']) || $this->token['scope_opener'] != $this->fileptr)
-                && (!isset($this->token['scope_closer']) || $this->token['scope_closer'] != $this->fileptr)
+                && !($this->fileptr >= $scope->closer)
             ) {
                 $this->advance();
             }
 
-            // Check for the end of the file.
-            if (!$this->token['code']) {
+
+            if ($this->fileptr >= $scope->closer) {
+                // End of the block.
                 break;
-            }
-
-            // Namespace.
-            if ($this->token['code'] == T_NAMESPACE && end($this->scopes)->opened) {
-                $this->processNamespace();
-                continue;
-            }
-
-            // Use.
-            if ($this->token['code'] == T_USE) {
-                if (end($this->scopes)->type == 'classish' && end($this->scopes)->opened) {
+            } elseif ($this->token['code'] == T_NAMESPACE && $scope->type == 'root') {
+                // Namespace.
+                $this->processNamespace($scope);
+            } elseif ($this->token['code'] == T_USE) {
+                // Use.
+                if ($scope->type == 'root' | $scope->type == 'namespace') {
+                    $this->processUse($scope);
+                } elseif ($scope->type == 'classish') {
                     $this->processClassTraitUse();
-                } elseif (end($this->scopes)->type == 'function' && !end($this->scopes)->opened) {
-                    $this->advance(T_USE);
                 } else {
-                    $this->processUse();
-                }
-                continue;
-            }
-
-            // Ignore constructor property promotion.  This has already been checked.
-            if (
-                end($this->scopes)->type == 'function' && !end($this->scopes)->opened
-                && in_array($this->token['code'], [T_PUBLIC, T_PROTECTED, T_PRIVATE])
-            ) {
-                $this->advance();
-                continue;
-            }
-
-            // Malformed prior declaration.
-            if (
-                !end($this->scopes)->opened
-                    && !(isset($this->token['scope_opener']) && $this->token['scope_opener'] == $this->fileptr
-                        || $this->token['code'] == T_SEMICOLON)
-            ) {
-                throw new \Exception();
-            }
-
-            // Opening a scope.
-            if (isset($this->token['scope_opener']) && $this->token['scope_opener'] == $this->fileptr) {
-                if ($this->token['scope_closer'] == end($this->scopes)->closer) {
-                    // We're closing the previous scope at the same time.  This happens in switch statements.
-                    if (count($this->scopes) <= 1) {
-                        // Trying to close a scope that wasn't open.
-                        throw new \Exception();
-                    }
-                    array_pop($this->scopes);
-                }
-                if (!end($this->scopes)->opened) {
-                    end($this->scopes)->opened = true;
-                } else {
-                    $oldscope = end($this->scopes);
-                    array_push($this->scopes, $newscope = clone $oldscope);
-                    $newscope->type = 'other';
-                    $newscope->opened = true;
-                    $newscope->closer = $this->tokens[$this->fileptr]['scope_closer'];
-                }
-                $this->advance();
-                continue;
-            }
-
-            // Closing a scope (without opening a new one).
-            if (isset($this->token['scope_closer']) && $this->token['scope_closer'] == $this->fileptr) {
-                if (count($this->scopes) <= 1) {
-                    // Trying to close a scope that wasn't open.
                     throw new \Exception();
                 }
-                array_pop($this->scopes);
-                $this->advance();
-                continue;
-            }
-
-            // Empty declarations and other semicolons.
-            if ($this->token['code'] == T_SEMICOLON) {
-                if (!end($this->scopes)->opened) {
-                    array_pop($this->scopes);
-                }
-                $this->advance(T_SEMICOLON);
-                continue;
-            }
-
-            // Declarations.
-            if (
+            } elseif (
                 in_array(
                     $this->token['code'],
-                    [T_ABSTRACT, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_READONLY, T_FINAL,
-                    T_CLASS, T_ANON_CLASS, T_INTERFACE, T_TRAIT, T_ENUM,
-                    T_FUNCTION, T_CLOSURE,
-                    T_CONST, T_VAR, ]
+                    array_merge(
+                        Tokens::$methodPrefixes,
+                        [T_READONLY],
+                        Tokens::$ooScopeTokens,
+                        [T_FUNCTION, T_CLOSURE, T_FN,
+                        T_CONST, T_VAR, ]
+                    )
                 )
             ) {
+                // Declarations.
                 // Fetch comment.
                 $this->comment = $this->commentpending;
                 $this->commentpending = null;
+                // Ignore preceding stuff, and gather info to check this is actually a declaration.
                 $static = false;
                 $staticprecededbynew = ($this->tokenprevious['code'] == T_NEW);
                 while (
@@ -260,30 +229,34 @@ class PHPDocTypesSniff implements Sniff
                     $static = ($this->token['code'] == T_STATIC);
                     $this->advance();
                 }
+                // What kind of declaration is this?
                 if ($static && ($this->token['code'] == T_DOUBLE_COLON || $staticprecededbynew)) {
-                    // Ignore static late binding.
-                } elseif (in_array($this->token['code'], [T_CLASS,  T_ANON_CLASS, T_INTERFACE, T_TRAIT, T_ENUM])) {
+                    // It's not a declaration, it's a static late binding.  Ignore.
+                } elseif (in_array($this->token['code'], Tokens::$ooScopeTokens)) {
                     // Classish thing.
-                    $this->processClassish();
-                } elseif ($this->token['code'] == T_FUNCTION || $this->token['code'] == T_CLOSURE) {
+                    $this->processClassish($scope);
+                } elseif (in_array($this->token['code'], [T_FUNCTION, T_CLOSURE, T_FN])) {
                     // Function.
-                    $this->processFunction();
+                    $this->processFunction($scope);
                 } else {
                     // Variable.
-                    $this->processVariable();
+                    $this->processVariable($scope);
                 }
                 $this->comment = null;
-                continue;
+            } else {
+                // We got something unrecognised.
+                throw new \Exception();
             }
-
-            // We got something unrecognised.
-            throw new \Exception();
         }
 
-        // Some scopes weren't closed.
-        if (count($this->scopes) != 1) {
+        // Check we are at the end of the scope.
+        if ($this->fileptr != $scope->closer) {
             throw new \Exception();
         }
+        // We can't consume this token.  Arrow functions close on the token following their body.
+        /*if ($this->token['code']) {
+            $this->advance();
+        }*/
     }
 
     /**
@@ -315,7 +288,10 @@ class PHPDocTypesSniff implements Sniff
         // Skip stuff that doesn't effect us.
         while (
             $nextptr < count($this->tokens)
-            && in_array($this->tokens[$nextptr]['code'], [T_WHITESPACE, T_COMMENT, T_INLINE_HTML, T_PHPCS_IGNORE])
+            && in_array(
+                $this->tokens[$nextptr]['code'],
+                array_merge([T_WHITESPACE, T_COMMENT], Tokens::$phpcsCommentTokens)
+            )
         ) {
             $nextptr++;
         }
@@ -331,6 +307,18 @@ class PHPDocTypesSniff implements Sniff
             $nextptr = $this->fileptr;
         }
 
+        // Allow attributes between the comment and what it relates to.
+        while (
+            $nextptr < count($this->tokens)
+            && in_array($this->tokens[$nextptr]['code'], [T_WHITESPACE, T_ATTRIBUTE])
+        ) {
+            if ($this->tokens[$nextptr]['code'] == T_ATTRIBUTE) {
+                $nextptr = $this->tokens[$nextptr]['attribute_closer'] + 1;
+            } else {
+                $nextptr++;
+            }
+        }
+
         $this->fileptr = $nextptr;
         $this->fetchToken();
 
@@ -341,6 +329,19 @@ class PHPDocTypesSniff implements Sniff
                 $this->commentpending = null;
             }
         }
+    }
+
+    /**
+     * Advance the token pointer to a specific point.
+     * @param int $newptr
+     * @return void
+     * @phpstan-impure
+     */
+    protected function advanceTo(int $newptr): void {
+        $this->fileptr = $newptr;
+        $this->commentpending = null;
+        $this->commentpendingcounter = 0;
+        $this->fetchToken();
     }
 
     /**
@@ -356,8 +357,7 @@ class PHPDocTypesSniff implements Sniff
             !in_array(
                 $this->token['code'],
                 [T_DOC_COMMENT_OPEN_TAG, T_DOC_COMMENT_CLOSE_TAG, T_DOC_COMMENT_STAR,
-                T_DOC_COMMENT_TAG, T_DOC_COMMENT_STRING, T_DOC_COMMENT_WHITESPACE,
-                T_PHPCS_IGNORE]
+                T_DOC_COMMENT_TAG, T_DOC_COMMENT_STRING, T_DOC_COMMENT_WHITESPACE]
             )
         ) {
             throw new \Exception();
@@ -389,7 +389,7 @@ class PHPDocTypesSniff implements Sniff
      * @phpstan-impure
      */
     protected function processComment(): void {
-        $this->commentpending = (object)['tags' => []];
+        $this->commentpending = (object)['ptr' => $this->fileptr, 'tags' => []];
 
         // Skip line starting stuff.
         while (
@@ -402,22 +402,33 @@ class PHPDocTypesSniff implements Sniff
 
         // For each tag.
         while ($this->token['code'] != T_DOC_COMMENT_CLOSE_TAG) {
+            $tag = (object)['ptr' => $this->fileptr, 'content' => '', 'cstartptr' => null, 'cendptr' => null];
             // Fetch the tag type.
             if ($this->token['code'] == T_DOC_COMMENT_TAG) {
                 $tagtype = $this->token['content'];
                 $this->advanceComment(T_DOC_COMMENT_TAG);
+                while (
+                    $this->token['code'] == T_DOC_COMMENT_WHITESPACE
+                    && !in_array(substr($this->token['content'], -1), ["\n", "\r"])
+                ) {
+                    $this->advanceComment(T_DOC_COMMENT_WHITESPACE);
+                }
             } else {
                 $tagtype = '';
             }
-            $tagcontent = '';
 
             // For each line, until we reach a new tag.
+            // Note: the logic for fixing a comment tag must exactly match this.
             do {
                 $newline = false;
                 // Fetch line content.
                 while ($this->token['code'] != T_DOC_COMMENT_CLOSE_TAG && !$newline) {
-                    $tagcontent .= $this->token['content'];
+                    if (!$tag->cstartptr) {
+                        $tag->cstartptr = $this->fileptr;
+                    }
+                    $tag->cendptr = $this->fileptr;
                     $newline = in_array(substr($this->token['content'], -1), ["\n", "\r"]);
+                    $tag->content .= ($newline ? "\n" : $this->token['content']);
                     $this->advanceComment();
                 }
                 // Skip next line starting stuff.
@@ -434,18 +445,80 @@ class PHPDocTypesSniff implements Sniff
             if (!isset($this->commentpending->tags[$tagtype])) {
                 $this->commentpending->tags[$tagtype] = [];
             }
-            $this->commentpending->tags[$tagtype][] = trim($tagcontent);
+            $this->commentpending->tags[$tagtype][] = $tag;
         }
         $this->advanceComment(T_DOC_COMMENT_CLOSE_TAG);
     }
 
     /**
-     * Process a namespace declaration.
+     * Fix a PHPDoc comment tag.
+     * @param object{ptr: int, content: string, cstartptr: ?int, cendptr: ?int} $tag
+     * @param string $replacement
      * @return void
      * @phpstan-impure
      */
-    protected function processNamespace(): void {
+    protected function fixCommentTag(object $tag, string $replacement): void {
+        $replacementarray = explode("\n", $replacement);
+        $replacementcounter = 0;
+        $donereplacement = false;
+        $ptr = $tag->cstartptr;
+
+        $this->file->fixer->beginChangeset();
+
+        // For each line, until we reach a new tag.
+        // Note: the logic for this must exactly match that for processing a comment tag.
+        do {
+            $newline = false;
+            // Change line content.
+            while ($this->tokens[$ptr]['code'] != T_DOC_COMMENT_CLOSE_TAG && !$newline) {
+                $newline = in_array(substr($this->tokens[$ptr]['content'], -1), ["\n", "\r"]);
+                if (!$newline) {
+                    if ($donereplacement || $replacementarray[$replacementcounter] === "") {
+                        throw new \Exception();
+                    }
+                    $this->file->fixer->replaceToken($ptr, $replacementarray[$replacementcounter]);
+                    $donereplacement = true;
+                } else {
+                    if (!($donereplacement || $replacementarray[$replacementcounter] === "")) {
+                        throw new \Exception();
+                    }
+                    $replacementcounter++;
+                    $donereplacement = false;
+                }
+                $ptr++;
+            }
+            // Skip next line starting stuff.
+            while (
+                in_array($this->tokens[$ptr]['code'], [T_DOC_COMMENT_OPEN_TAG, T_DOC_COMMENT_STAR])
+                    || $this->tokens[$ptr]['code'] == T_DOC_COMMENT_WHITESPACE
+                        && !in_array(substr($this->tokens[$ptr]['content'], -1), ["\n", "\r"])
+            ) {
+                $ptr++;
+            }
+        } while (!in_array($this->tokens[$ptr]['code'], [T_DOC_COMMENT_CLOSE_TAG, T_DOC_COMMENT_TAG]));
+
+        // Check we're done all the expected replacements, otherwise something's gone seriously wrong.
+        if (
+            !($replacementcounter == count($replacementarray) - 1
+            && ($donereplacement || $replacementarray[count($replacementarray) - 1] === ""))
+        ) {
+            throw new \Exception();
+        }
+
+        $this->file->fixer->endChangeset();
+    }
+
+    /**
+     * Process a namespace declaration.
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
+     * @return void
+     * @phpstan-impure
+     */
+    protected function processNamespace(object $scope): void {
         $this->advance(T_NAMESPACE);
+
+        // Fetch the namespace.
         $namespace = '';
         while (
             in_array(
@@ -456,37 +529,46 @@ class PHPDocTypesSniff implements Sniff
             $namespace .= $this->token['content'];
             $this->advance();
         }
+
+        // Check it's right.
         if ($namespace != '' && $namespace[strlen($namespace) - 1] == "\\") {
             throw new \Exception();
         }
+
+        // Check it's fully qualified.
         if ($namespace != '' && $namespace[0] != "\\") {
             $namespace = "\\" . $namespace;
         }
+
+        // What kind of namespace is it?
         if (!in_array($this->token['code'], [T_OPEN_CURLY_BRACKET, T_SEMICOLON])) {
             throw new \Exception();
         }
-        if ($this->token['code'] == T_SEMICOLON) {
-            end($this->scopes)->namespace = $namespace;
+        if ($this->token['code'] == T_OPEN_CURLY_BRACKET) {
+            $scope = clone($scope);
+            $scope->type = 'namespace';
+            $scope->namespace = $namespace;
+            $this->processBlock($scope);
         } else {
-            $oldscope = end($this->scopes);
-            array_push($this->scopes, $newscope = clone $oldscope);
-            $newscope->type = 'namespace';
-            $newscope->namespace = $namespace;
-            $newscope->opened = false;
-            $newscope->closer = null;
+            $scope->namespace = $namespace;
+            $this->advance(T_SEMICOLON);
         }
     }
 
     /**
      * Process a use declaration.
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
      * @return void
      * @phpstan-impure
      */
-    protected function processUse(): void {
+    protected function processUse(object $scope): void {
         $this->advance(T_USE);
+
+        // Loop until we've fetched all imports.
         $more = false;
         do {
-            $namespace = '';
+            // Get the type.
             $type = 'class';
             if ($this->token['code'] == T_FUNCTION) {
                 $type = 'function';
@@ -495,6 +577,9 @@ class PHPDocTypesSniff implements Sniff
                 $type = 'const';
                 $this->advance(T_CONST);
             }
+
+            // Get what's being imported
+            $namespace = '';
             while (
                 in_array(
                     $this->token['code'],
@@ -504,18 +589,24 @@ class PHPDocTypesSniff implements Sniff
                 $namespace .= $this->token['content'];
                 $this->advance();
             }
+
+            // Check it's fully qualified.
             if ($namespace != '' && $namespace[0] != "\\") {
                 $namespace = "\\" . $namespace;
             }
+
             if ($this->token['code'] == T_OPEN_USE_GROUP) {
+                // It's a group.
                 $namespacestart = $namespace;
                 if ($namespacestart && strrpos($namespacestart, "\\") != strlen($namespacestart) - 1) {
                     throw new \Exception();
                 }
                 $typestart = $type;
+
+                // Fetch everything in the group.
                 $this->advance(T_OPEN_USE_GROUP);
                 do {
-                    $namespaceend = '';
+                    // Get the type.
                     $type = $typestart;
                     if ($this->token['code'] == T_FUNCTION) {
                         $type = 'function';
@@ -524,6 +615,9 @@ class PHPDocTypesSniff implements Sniff
                         $type = 'const';
                         $this->advance(T_CONST);
                     }
+
+                    // Get what's being imported.
+                    $namespaceend = '';
                     while (
                         in_array(
                             $this->token['code'],
@@ -534,12 +628,17 @@ class PHPDocTypesSniff implements Sniff
                         $this->advance();
                     }
                     $namespace = $namespacestart . $namespaceend;
+
+                    // Figure out the alias.
                     $alias = substr($namespace, strrpos($namespace, "\\") + 1);
                     $asalias = $this->processUseAsAlias();
                     $alias = $asalias ?? $alias;
+
+                    // Store it.
                     if ($this->pass == 2 && $type == 'class') {
-                        end($this->scopes)->uses[$alias] = $namespace;
+                        $scope->uses[$alias] = $namespace;
                     }
+
                     $more = ($this->token['code'] == T_COMMA);
                     if ($more) {
                         $this->advance(T_COMMA);
@@ -547,6 +646,8 @@ class PHPDocTypesSniff implements Sniff
                 } while ($more);
                 $this->advance(T_CLOSE_USE_GROUP);
             } else {
+                // It's a single import.
+                // Figure out the alias.
                 $alias = (strrpos($namespace, "\\") !== false) ?
                     substr($namespace, strrpos($namespace, "\\") + 1)
                     : $namespace;
@@ -555,8 +656,10 @@ class PHPDocTypesSniff implements Sniff
                 }
                 $asalias = $this->processUseAsAlias();
                 $alias = $asalias ?? $alias;
+
+                // Store it.
                 if ($this->pass == 2 && $type == 'class') {
-                    end($this->scopes)->uses[$alias] = $namespace;
+                    $scope->uses[$alias] = $namespace;
                 }
             }
             $more = ($this->token['code'] == T_COMMA);
@@ -564,9 +667,8 @@ class PHPDocTypesSniff implements Sniff
                 $this->advance(T_COMMA);
             }
         } while ($more);
-        if ($this->token['code'] != T_SEMICOLON) {
-            throw new \Exception();
-        }
+
+        $this->advance(T_SEMICOLON);
     }
 
     /**
@@ -588,17 +690,24 @@ class PHPDocTypesSniff implements Sniff
 
     /**
      * Process a classish thing.
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
      * @return void
      * @phpstan-impure
      */
-    protected function processClassish(): void {
+    protected function processClassish(object $scope): void {
+
+        // New scope.
+        $scope = clone($scope);
+        $scope->type = 'classish';
+        $scope->closer = null;
 
         // Get details.
         $name = $this->file->getDeclarationName($this->fileptr);
-        $name = $name ? end($this->scopes)->namespace . "\\" . $name : null;
+        $name = $name ? $scope->namespace . "\\" . $name : null;
         $parent = $this->file->findExtendedClassName($this->fileptr);
         if ($parent && $parent[0] != "\\") {
-            $parent = end($this->scopes)->namespace . "\\" . $parent;
+            $parent = $scope->namespace . "\\" . $parent;
         }
         $interfaces = $this->file->findImplementedInterfaceNames($this->fileptr);
         if (!is_array($interfaces)) {
@@ -606,18 +715,11 @@ class PHPDocTypesSniff implements Sniff
         }
         foreach ($interfaces as $index => $interface) {
             if ($interface && $interface[0] != "\\") {
-                $interfaces[$index] = end($this->scopes)->namespace . "\\" . $interface;
+                $interfaces[$index] = $scope->namespace . "\\" . $interface;
             }
         }
-
-        // Add to scopes.
-        $oldscope = end($this->scopes);
-        array_push($this->scopes, $newscope = clone $oldscope);
-        $newscope->type = 'classish';
-        $newscope->classname = $name;
-        $newscope->parentname = $parent;
-        $newscope->opened = false;
-        $newscope->closer = null;
+        $scope->classname = $name;
+        $scope->parentname = $parent;
 
         if ($this->pass == 1 && $name) {
             // Store details.
@@ -625,15 +727,77 @@ class PHPDocTypesSniff implements Sniff
         } elseif ($this->pass == 2) {
             // Check and store templates.
             if ($this->comment && isset($this->comment->tags['@template'])) {
-                $this->processTemplates();
+                $this->processTemplates($scope);
+            }
+            // Check properties.
+            if ($this->comment) {
+                // Check each property type.
+                foreach (['@property', '@property-read', '@property-write'] as $tagname) {
+                    if (!isset($this->comment->tags[$tagname])) {
+                        $this->comment->tags[$tagname] = [];
+                    }
+
+                    // Check each individual property.
+                    for ($propnum = 0; $propnum < count($this->comment->tags[$tagname]); $propnum++) {
+                        $docpropdata = $this->typeparser->parseTypeAndVar(
+                            $scope,
+                            $this->comment->tags[$tagname][$propnum]->content,
+                            1,
+                            false
+                        );
+                        if (!$docpropdata->type) {
+                            $this->file->addError(
+                                'PHPDoc class property type missing or malformed',
+                                $this->comment->tags[$tagname][$propnum]->ptr,
+                                'phpdoc_class_prop_type'
+                            );
+                        } elseif (!$docpropdata->var) {
+                            $this->file->addError(
+                                'PHPDoc class property name missing or malformed',
+                                $this->comment->tags[$tagname][$propnum]->ptr,
+                                'phpdoc_class_prop_name'
+                            );
+                        } elseif ($docpropdata->fixed) {
+                            $fix = $this->file->addFixableWarning(
+                                "PHPDoc class property type doesn't conform to recommended style",
+                                $this->comment->tags[$tagname][$propnum]->ptr,
+                                'phpdoc_class_prop_type_style'
+                            );
+                            if ($fix) {
+                                $this->fixCommentTag(
+                                    $this->comment->tags[$tagname][$propnum],
+                                    $docpropdata->fixed
+                                );
+                            }
+                        }
+                    }
+                }
             }
         }
 
+        $parametersptr = isset($this->token['parenthesis_opener']) ? $this->token['parenthesis_opener'] : null;
+        $blockptr = isset($this->token['scope_opener']) ? $this->token['scope_opener'] : null;
+
         $this->advance();
+
+        // If it's an anonymous class, it could have parameters.
+        // And those parameters could have other anonymous classes or functions in them.
+        if ($parametersptr) {
+            $this->advanceTo($parametersptr);
+            $this->processParameters($scope);
+        }
+
+        // Process the content.
+        if ($blockptr) {
+            $this->advanceTo($blockptr);
+            $this->processBlock($scope);
+        };
     }
 
     /**
-     * Process a class trait usage.
+     * Skip over a class trait usage.
+     * We need to ignore these, because if it's got public, protected, or private in it,
+     * it could be confused for a declaration.
      * @return void
      * @phpstan-impure
      */
@@ -672,37 +836,38 @@ class PHPDocTypesSniff implements Sniff
 
     /**
      * Process a function.
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
      * @return void
      * @phpstan-impure
      */
-    protected function processFunction(): void {
+    protected function processFunction(object $scope): void {
+
+        // New scope.
+        $scope = clone($scope);
+        $scope->type = 'function';
+        $scope->closer = null;
 
         // Get details.
-        $name = $this->file->getDeclarationName($this->fileptr);
+        // Can't fetch name for arrow functions.  But we're not doing checks that need the name any more.
+        // $name = $this->file->getDeclarationName($this->fileptr);
         $parameters = $this->file->getMethodParameters($this->fileptr);
         $properties = $this->file->getMethodProperties($this->fileptr);
-
-        // Push to scopes.
-        $oldscope = end($this->scopes);
-        array_push($this->scopes, $newscope = clone $oldscope);
-        $newscope->type = 'function';
-        $newscope->opened = false;
-        $newscope->closer = null;
 
         // Checks.
         if ($this->pass == 2) {
             // Check for missing docs if not anonymous.
-            if ($name && !$this->comment) {
+            /*if ($name && !$this->comment) {
                 $this->file->addWarning(
                     'PHPDoc function is not documented',
                     $this->fileptr,
                     'phpdoc_fun_doc_missing'
                 );
-            }
+            }*/
 
             // Check and store templates.
             if ($this->comment && isset($this->comment->tags['@template'])) {
-                $this->processTemplates();
+                $this->processTemplates($scope);
             }
 
             // Check parameter types.
@@ -713,61 +878,80 @@ class PHPDocTypesSniff implements Sniff
                 if (count($this->comment->tags['@param']) != count($parameters)) {
                     $this->file->addError(
                         "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                        $this->fileptr,
+                        $this->comment->ptr,
                         'phpdoc_fun_param_count'
                     );
                 }
+
+                // Check each individual parameter.
                 for ($varnum = 0; $varnum < count($this->comment->tags['@param']); $varnum++) {
                     $docparamdata = $this->typeparser->parseTypeAndVar(
-                        $newscope,
-                        $this->comment->tags['@param'][$varnum],
+                        $scope,
+                        $this->comment->tags['@param'][$varnum]->content,
                         2,
                         false
                     );
                     if (!$docparamdata->type) {
                         $this->file->addError(
                             'PHPDoc function parameter %s type missing or malformed',
-                            $this->fileptr,
+                            $this->comment->tags['@param'][$varnum]->ptr,
                             'phpdoc_fun_param_type',
                             [$varnum + 1]
                         );
                     } elseif (!$docparamdata->var) {
                         $this->file->addError(
                             'PHPDoc function parameter %s name missing or malformed',
-                            $this->fileptr,
+                            $this->comment->tags['@param'][$varnum]->ptr,
                             'phpdoc_fun_param_name',
                             [$varnum + 1]
                         );
                     } elseif ($varnum < count($parameters)) {
+                        // Compare docs against actual parameters.
                         $paramdata = $this->typeparser->parseTypeAndVar(
-                            $newscope,
+                            $scope,
                             $parameters[$varnum]['content'],
                             3,
                             true
                         );
-                        if (!$this->typeparser->comparetypes($paramdata->type, $docparamdata->type)) {
-                            $this->file->addError(
-                                'PHPDoc function parameter %s type mismatch',
-                                $this->fileptr,
-                                'phpdoc_fun_param_type_mismatch',
-                                [$varnum + 1]
-                            );
-                        }
-                        if ($paramdata->passsplat != $docparamdata->passsplat) {
-                            $this->file->addWarning(
-                                'PHPDoc function parameter %s splat mismatch',
-                                $this->fileptr,
-                                'phpdoc_fun_param_pass_splat_mismatch',
-                                [$varnum + 1]
-                            );
-                        }
                         if ($paramdata->var != $docparamdata->var) {
+                            // Function parameter names don't match.
+                            // Don't do any more checking, because the parameters might be in the wrong order.
                             $this->file->addError(
                                 'PHPDoc function parameter %s name mismatch',
-                                $this->fileptr,
+                                $this->comment->tags['@param'][$varnum]->ptr,
                                 'phpdoc_fun_param_name_mismatch',
                                 [$varnum + 1]
                             );
+                        } else {
+                            if (!$this->typeparser->comparetypes($paramdata->type, $docparamdata->type)) {
+                                $this->file->addError(
+                                    'PHPDoc function parameter %s type mismatch',
+                                    $this->comment->tags['@param'][$varnum]->ptr,
+                                    'phpdoc_fun_param_type_mismatch',
+                                    [$varnum + 1]
+                                );
+                            } elseif ($docparamdata->fixed) {
+                                $fix = $this->file->addFixableWarning(
+                                    "PHPDoc function parameter %s type doesn't conform to recommended style",
+                                    $this->comment->tags['@param'][$varnum]->ptr,
+                                    'phpdoc_fun_param_type_style',
+                                    [$varnum + 1]
+                                );
+                                if ($fix) {
+                                    $this->fixCommentTag(
+                                        $this->comment->tags['@param'][$varnum],
+                                        $docparamdata->fixed
+                                    );
+                                }
+                            }
+                            if ($paramdata->passsplat != $docparamdata->passsplat) {
+                                $this->file->addWarning(
+                                    'PHPDoc function parameter %s splat mismatch',
+                                    $this->comment->tags['@param'][$varnum]->ptr,
+                                    'phpdoc_fun_param_pass_splat_mismatch',
+                                    [$varnum + 1]
+                                );
+                            }
                         }
                     }
                 }
@@ -789,84 +973,156 @@ class PHPDocTypesSniff implements Sniff
                 if (count($this->comment->tags['@return']) > 1) {
                     $this->file->addError(
                         'PHPDoc multiple function @return tags--Put in one tag, seperated by vertical bars |',
-                        $this->fileptr,
+                        $this->comment->tags['@return'][1]->ptr,
                         'phpdoc_fun_ret_multiple'
                     );
                 }
                 $retdata = $properties['return_type'] ?
                     $this->typeparser->parseTypeAndVar(
-                        $newscope,
+                        $scope,
                         $properties['return_type'],
                         0,
                         true
                     )
                     : (object)['type' => 'mixed'];
+
+                // Check each individual return tag, in case there's more than one.
                 for ($retnum = 0; $retnum < count($this->comment->tags['@return']); $retnum++) {
                     $docretdata = $this->typeparser->parseTypeAndVar(
-                        $newscope,
-                        $this->comment->tags['@return'][$retnum],
+                        $scope,
+                        $this->comment->tags['@return'][$retnum]->content,
                         0,
                         false
                     );
                     if (!$docretdata->type) {
                         $this->file->addError(
                             'PHPDoc function return type missing or malformed',
-                            $this->fileptr,
+                            $this->comment->tags['@return'][$retnum]->ptr,
                             'phpdoc_fun_ret_type'
                         );
                     } elseif (!$this->typeparser->comparetypes($retdata->type, $docretdata->type)) {
                         $this->file->addError(
                             'PHPDoc function return type mismatch',
-                            $this->fileptr,
+                            $this->comment->tags['@return'][$retnum]->ptr,
                             'phpdoc_fun_ret_type_mismatch'
                         );
+                    } elseif ($docretdata->fixed) {
+                        $fix = $this->file->addFixableWarning(
+                            "PHPDoc function return type doesn't conform to recommended style",
+                            $this->comment->tags['@return'][$retnum]->ptr,
+                            'phpdoc_fun_ret_type_style'
+                        );
+                        if ($fix) {
+                            $this->fixCommentTag(
+                                $this->comment->tags['@return'][$retnum],
+                                $docretdata->fixed
+                            );
+                        }
                     }
                 }
             }
         }
 
+        $parametersptr = isset($this->token['parenthesis_opener']) ? $this->token['parenthesis_opener'] : null;
+        $blockptr = isset($this->token['scope_opener']) ? $this->token['scope_opener'] : null;
+
         $this->advance();
-        if ($this->token['code'] == T_BITWISE_AND) {
-            $this->advance(T_BITWISE_AND);
+
+        // Parameters could contain anonymous classes or functions.
+        if ($parametersptr) {
+            $this->advanceTo($parametersptr);
+            $this->processParameters($scope);
         }
 
-        // Function name.
-        if ($this->token['code'] == T_STRING) {
-            $this->advance(T_STRING);
-        }
-
-        // Parameters.
-        if ($this->token['code'] != T_OPEN_PARENTHESIS) {
-            throw new \Exception();
-        }
+        // Content.
+        if ($blockptr) {
+            $this->advanceTo($blockptr);
+            $this->processBlock($scope);
+        };
     }
 
     /**
-     * Process templates.
+     * Search parameter default values for anonymous classes and functions
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
      * @return void
      * @phpstan-impure
      */
-    protected function processTemplates(): void {
-        $newscope = end($this->scopes);
-        foreach ($this->comment->tags['@template'] as $templatetext) {
-            $templatedata = $this->typeparser->parseTemplate($newscope, $templatetext);
-            if (!$templatedata->var) {
-                $this->file->addError('PHPDoc template name missing or malformed', $this->fileptr, 'phpdoc_template_name');
-            } elseif (!$templatedata->type) {
-                $this->file->addError('PHPDoc template type missing or malformed', $this->fileptr, 'phpdoc_template_type');
-                $newscope->templates[$templatedata->var] = 'never';
+    protected function processParameters(object $scope): void {
+
+        $scope = clone($scope);
+        $scope->closer = $this->token['parenthesis_closer'];
+        $this->advance(T_OPEN_PARENTHESIS);
+
+        while (true) {
+            // Skip irrelevant tokens.
+            while (
+                !in_array($this->token['code'], [T_ANON_CLASS, T_CLOSURE, T_FN])
+                && $this->fileptr < $scope->closer
+            ) {
+                $this->advance();
+            }
+
+            if ($this->fileptr >= $scope->closer) {
+                // End of the parameters.
+                break;
+            } elseif ($this->token['code'] == T_ANON_CLASS) {
+                // Classish thing.
+                $this->processClassish($scope);
+            } elseif (in_array($this->token['code'], [T_CLOSURE, T_FN])) {
+                // Function.
+                $this->processFunction($scope);
             } else {
-                $newscope->templates[$templatedata->var] = $templatedata->type;
+                // Something unrecognised.
+                throw new \Exception();
+            }
+        }
+        $this->advance(T_CLOSE_PARENTHESIS);
+    }
+
+
+    /**
+     * Process templates.
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
+     * @return void
+     * @phpstan-impure
+     */
+    protected function processTemplates(object $scope): void {
+        foreach ($this->comment->tags['@template'] as $templatetag) {
+            $templatedata = $this->typeparser->parseTemplate($scope, $templatetag->content);
+            if (!$templatedata->var) {
+                $this->file->addError('PHPDoc template name missing or malformed', $templatetag->ptr, 'phpdoc_template_name');
+            } elseif (!$templatedata->type) {
+                $this->file->addError('PHPDoc template type missing or malformed', $templatetag->ptr, 'phpdoc_template_type');
+                $scope->templates[$templatedata->var] = 'never';
+            } else {
+                $scope->templates[$templatedata->var] = $templatedata->type;
+                if ($templatedata->fixed) {
+                    $fix = $this->file->addFixableWarning(
+                        "PHPDoc tempate type doesn't conform to recommended style",
+                        $templatetag->ptr,
+                        'phpdoc_template_type_style'
+                    );
+                    if ($fix) {
+                        $this->fixCommentTag(
+                            $templatetag,
+                            $templatedata->fixed
+                        );
+                    }
+                }
             }
         }
     }
 
     /**
      * Process a variable.
+     * @param \stdClass&object{namespace: string, uses: string[], templates: string[],
+     *              classname: ?string, parentname: ?string, type: string, closer: ?int} $scope
      * @return void
      * @phpstan-impure
      */
-    protected function processVariable(): void {
+    protected function processVariable($scope): void {
 
         // Parse var/const token.
         $const = ($this->token['code'] == T_CONST);
@@ -895,32 +1151,34 @@ class PHPDocTypesSniff implements Sniff
             throw new \Exception();
         }
 
-        // Checking.
+        // Type checking.
         if ($this->pass == 2) {
             // Get properties, unless it's a function static variable or constant.
-            $properties = (end($this->scopes)->type == 'classish' && !$const) ?
+            $properties = ($scope->type == 'classish' && !$const) ?
                 $this->file->getMemberProperties($this->fileptr)
                 : null;
 
-            if (!$this->comment && end($this->scopes)->type == 'classish') {
+            if (!$this->comment && $scope->type == 'classish') {
                 // Require comments for class variables and constants.
-                $this->file->addWarning(
+                /*$this->file->addWarning(
                     'PHPDoc variable or constant is not documented',
                     $this->fileptr,
                     'phpdoc_var_doc_missing'
-                );
+                );*/
             } elseif ($this->comment) {
                 if (!isset($this->comment->tags['@var'])) {
                     $this->comment->tags['@var'] = [];
                 }
-                if (count($this->comment->tags['@var']) < 1) {
-                    $this->file->addError('PHPDoc missing @var tag', $this->fileptr, 'phpdoc_var_missing');
+                // Missing or multiple vars.
+                /*if (count($this->comment->tags['@var']) < 1) {
+                    $this->file->addError('PHPDoc missing @var tag', $this->comment->ptr, 'phpdoc_var_missing');
                 } elseif (count($this->comment->tags['@var']) > 1) {
-                    $this->file->addError('PHPDoc multiple @var tags', $this->fileptr, 'phpdoc_var_multiple');
-                }
+                    $this->file->addError('PHPDoc multiple @var tags', $this->comment->tags['@var'][1]->ptr, 'phpdoc_var_multiple');
+                }*/
+                // Var type check and match.
                 $vardata = ($properties && $properties['type']) ?
                     $this->typeparser->parseTypeAndVar(
-                        end($this->scopes),
+                        $scope,
                         $properties['type'],
                         0,
                         true
@@ -928,24 +1186,35 @@ class PHPDocTypesSniff implements Sniff
                     : (object)['type' => 'mixed'];
                 for ($varnum = 0; $varnum < count($this->comment->tags['@var']); $varnum++) {
                     $docvardata = $this->typeparser->parseTypeAndVar(
-                        end($this->scopes),
-                        $this->comment->tags['@var'][$varnum],
+                        $scope,
+                        $this->comment->tags['@var'][$varnum]->content,
                         0,
                         false
                     );
                     if (!$docvardata->type) {
                         $this->file->addError(
                             'PHPDoc var type missing or malformed',
-                            $this->fileptr,
-                            'phpdoc_var_type',
-                            [$varnum + 1]
+                            $this->comment->tags['@var'][$varnum]->ptr,
+                            'phpdoc_var_type'
                         );
                     } elseif (!$this->typeparser->comparetypes($vardata->type, $docvardata->type)) {
                         $this->file->addError(
                             'PHPDoc var type mismatch',
-                            $this->fileptr,
+                            $this->comment->tags['@var'][$varnum]->ptr,
                             'phpdoc_var_type_mismatch'
                         );
+                    } elseif ($docvardata->fixed) {
+                        $fix = $this->file->addFixableWarning(
+                            "PHPDoc var type doesn't conform to recommended style",
+                            $this->comment->tags['@var'][$varnum]->ptr,
+                            'phpdoc_var_type_style'
+                        );
+                        if ($fix) {
+                            $this->fixCommentTag(
+                                $this->comment->tags['@var'][$varnum],
+                                $docvardata->fixed
+                            );
+                        }
                     }
                 }
             }
@@ -956,5 +1225,6 @@ class PHPDocTypesSniff implements Sniff
         if (!in_array($this->token['code'], [T_EQUAL, T_COMMA, T_SEMICOLON])) {
             throw new \Exception();
         }
+        $this->advance();
     }
 }
