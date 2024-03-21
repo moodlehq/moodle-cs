@@ -103,4 +103,62 @@ class TokenUtilTest extends MoodleCSBaseTestCase
 
         return $cases;
     }
+
+    /**
+     * @dataProvider countGlobalScopesInFileProvider
+     */
+    public function testCountGlobalScopesInFile(
+        string $content,
+        int $expectedCount
+    ): void {
+        $config = new Config([]);
+        $ruleset = new Ruleset($config);
+
+        $phpcsFile = new DummyFile($content, $ruleset, $config);
+        $phpcsFile->process();
+
+        $this->assertEquals($expectedCount, TokenUtil::countGlobalScopesInFile($phpcsFile));
+    }
+
+    public static function countGlobalScopesInFileProvider(): array {
+        $cases = [
+            'No global scopes' => [
+                '<?php $a = 1;',
+                0,
+            ],
+            'One global scope' => [
+                '<?php class Example {}',
+                1,
+            ],
+            'Two global scopes' => [
+                '<?php class Example {} class AnotherExample {}',
+                2,
+            ],
+            'Class method is not global' => [
+                '<?php class Example { public function exampleMethod() {} }',
+                1,
+            ],
+            'Global method counts' => [
+                '<?php function exampleFunction() {}',
+                1,
+            ],
+            'Interfaces count' => [
+                '<?php interface ExampleInterface {}',
+                1,
+            ],
+            'Traits count' => [
+                '<?php trait ExampleTrait {}',
+                1,
+            ],
+        ];
+
+        if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
+            $cases['Enums count'] = [
+                '<?php enum ExampleEnum {}',
+                1,
+            ];
+        }
+
+        return $cases;
+    }
 }

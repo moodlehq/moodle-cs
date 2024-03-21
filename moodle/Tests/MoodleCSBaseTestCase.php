@@ -58,8 +58,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected ?string $fixture = null;
 
-    /** @var string|null Fixture file content */
-    protected ?string $fixtureContent = null;
+    /** @var string|null A path name to mock for the fixture */
+    protected ?string $fixtureFileName = null;
 
     /**
      * @var array custom config elements to setup before running phpcs. name => value.
@@ -88,6 +88,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         $this->sniff = null;
         $this->errors = null;
         $this->warnings = null;
+        $this->fixture = null;
+        $this->fixtureFileName = null;
         // Reset any mocked component mappings.
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedComponentMappings([]);
         // If there is any custom config setup, remove it.
@@ -144,22 +146,17 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * Set the full path to the file used as input.
      *
      * @param string $fixture full path to the file used as input (fixture).
+     * @param string|null $fileName A path name to mock for the fixture. If not specified, the fixture filepath is used.
      */
-    protected function setFixture($fixture) {
-        if ($this->fixtureContent !== null) {
-            $this->fail('Fixture file content already set, cannot set it again.');
-        }
+    protected function setFixture(
+        string $fixture,
+        ?string $fileName = null
+    ) {
         if (!is_readable($fixture)) {
             $this->fail('Unreadable fixture passed: ' . $fixture);
         }
         $this->fixture = $fixture;
-    }
-
-    protected function setFixtureFileContent(string $content): void {
-        if ($this->fixture !== null) {
-            $this->fail('Fixture file content already set, cannot set it again.');
-        }
-        $this->fixtureContent = $content;
+        $this->fixtureFileName = $fileName;
     }
 
     /**
@@ -223,8 +220,13 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
 
         // Let's process the fixture.
         try {
-            if ($this->fixtureContent !== null) {
-                $phpcsfile = new \PHP_CodeSniffer\Files\DummyFile($this->fixtureContent, $ruleset, $config);
+            if ($this->fixtureFileName !== null) {
+                $fixtureSource = file_get_contents($this->fixture);
+                $fixtureContent = <<<EOF
+                phpcs_input_file: {$this->fixtureFileName}
+                {$fixtureSource}
+                EOF;
+                $phpcsfile = new \PHP_CodeSniffer\Files\DummyFile($fixtureContent, $ruleset, $config);
             } else {
                 $phpcsfile = new \PHP_CodeSniffer\Files\LocalFile($this->fixture, $ruleset, $config);
             }
