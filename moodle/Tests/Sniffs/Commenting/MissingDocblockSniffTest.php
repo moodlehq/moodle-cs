@@ -129,6 +129,12 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'errors' => [],
                 'warnings' => [],
             ],
+            'Docblock with attributes on function (correct)' => [
+                'fixture' => 'docblock_with_multiline_attributes',
+                'fixtureFilename' => null,
+                'errors' => [],
+                'warnings' => [],
+            ],
             'Testcase' => [
                 'fixture' => 'testcase_class',
                 'fixtureFilename' => '/lib/tests/example_test.php',
