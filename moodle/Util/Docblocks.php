@@ -271,6 +271,7 @@ abstract class Docblocks
             T_INCLUDE_ONCE,
             T_REQUIRE,
             T_REQUIRE_ONCE,
+            T_ATTRIBUTE,
         ];
 
         while ($stackPtr = $phpcsFile->findNext($ignore, ($stackPtr + 1), null, true)) {
@@ -281,13 +282,15 @@ abstract class Docblocks
 
             if ($tokens[$stackPtr]['code'] === T_DOC_COMMENT_OPEN_TAG) {
                 $nextToken = $tokens[$stackPtr]['comment_closer'];
+                $closeLine = $tokens[$nextToken]['line'];
+
                 while ($nextToken = $phpcsFile->findNext(T_WHITESPACE, $nextToken + 1, null, true)) {
-                    if ($nextToken && $tokens[$nextToken]['code'] === T_ATTRIBUTE) {
-                        $nextToken = $tokens[$nextToken]['attribute_closer'] + 1;
-                        continue;
-                    }
                     if (in_array($tokens[$nextToken]['code'], $stopAtTypes)) {
-                        return null;
+                        // If the stop token is on the line immediately following the attribute or close comment
+                        // then it belongs to that stop token, and not the file.
+                        if ($tokens[$nextToken]['line'] === ($closeLine + 1)) {
+                            return null;
+                        }
                     }
                     break;
                 }
