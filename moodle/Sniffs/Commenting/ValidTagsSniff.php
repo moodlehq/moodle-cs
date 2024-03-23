@@ -49,7 +49,7 @@ class ValidTagsSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         while ($docPtr = $phpcsFile->findNext(T_DOC_COMMENT_OPEN_TAG, $stackPtr)) {
-            $docblock = Docblocks::getDocBlock($phpcsFile, $docPtr);
+            $docblock = $tokens[$docPtr];
             foreach ($docblock['comment_tags'] as $tagPtr) {
                 $tagName = ltrim($tokens[$tagPtr]['content'], '@');
                 if (!Docblocks::isValidTag($phpcsFile, $tagPtr)) {
