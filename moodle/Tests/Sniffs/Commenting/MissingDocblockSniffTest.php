@@ -108,6 +108,23 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'fixtureFilename' => null,
                 'errors' => [
                     13 => 'Missing docblock for class class_only_with_attributes_incorrect_whitespace',
+                    20 => 'Missing docblock for function method_only_with_attributes_incorrect_whitespace',
+                ],
+                'warnings' => [],
+            ],
+            'Interface only with attributes and incorrect whitespace' => [
+                'fixture' => 'interface_only_with_attributes_incorrect_whitespace',
+                'fixtureFilename' => null,
+                'errors' => [
+                    13 => 'Missing docblock for interface interface_only_with_attributes_incorrect_whitespace',
+                ],
+                'warnings' => [],
+            ],
+            'Trait only with attributes and incorrect whitespace' => [
+                'fixture' => 'trait_only_with_attributes_incorrect_whitespace',
+                'fixtureFilename' => null,
+                'errors' => [
+                    13 => 'Missing docblock for trait trait_only_with_attributes_incorrect_whitespace',
                 ],
                 'warnings' => [],
             ],

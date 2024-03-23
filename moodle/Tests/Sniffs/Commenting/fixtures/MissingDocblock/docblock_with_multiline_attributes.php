@@ -9,9 +9,9 @@ namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\PHPUnit;
 defined('MOODLE_INTERNAL') || die(); // Make this always the 1st line in all CS fixtures.
 
 /**
- * Example class. 
+ * Example class.
  */
-#[\Attribute(
+#[someattribute(
     attr1: 'asdf',
     attr2: 'asdf',
 )]
@@ -20,7 +20,7 @@ class class_multiline_attribute {
     /**
      * Method attribute.
      */
-    #[\Attribute(
+    #[someattribute(
         attr1: 'asdf',
         attr2: 'asdf',
     )]
@@ -31,7 +31,7 @@ class class_multiline_attribute {
 /**
  * Interface with multiline attributes.
  */
-#[\Attribute(
+#[someattribute(
     attr1: 'asdf',
     attr2: 'asdf',
 )]
@@ -41,7 +41,7 @@ interface interface_multiline_attribute {
 /**
  * Trait with multiline attributes.
  */
-#[\Attribute(
+#[someattribute(
     attr1: 'asdf',
     attr2: 'asdf',
 )]
@@ -52,7 +52,7 @@ trait trait_multiline_attribute {
  * Example class. 
  */
 
-#[\Attribute(
+#[someattribute(
     attr1: 'asdf',
     attr2: 'asdf',
 )]
@@ -62,7 +62,7 @@ class class_multiline_attribute_space_between {
      * Method attribute.
      */
 
-    #[\Attribute(
+    #[someattribute(
         attr1: 'asdf',
         attr2: 'asdf',
     )]
@@ -74,7 +74,7 @@ class class_multiline_attribute_space_between {
  * Interface with multiline attributes.
  */
 
-#[\Attribute(
+#[someattribute(
     attr1: 'asdf',
     attr2: 'asdf',
 )]
@@ -85,7 +85,7 @@ interface interface_multiline_attribute_space_between {
  * Trait with multiline attributes and space between.
  */
 
- #[\Attribute(
+ #[someattribute(
     attr1: 'asdf',
     attr2: 'asdf',
 )]
