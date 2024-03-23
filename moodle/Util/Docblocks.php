@@ -145,25 +145,6 @@ abstract class Docblocks
     ];
 
     /**
-     * Get the docblock for a file, class, interface, trait, or method.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return null|array
-     */
-    public static function getDocBlock(
-        File $phpcsFile,
-        int $stackPtr
-    ): ?array {
-        $docPtr = self::getDocBlockPointer($phpcsFile, $stackPtr);
-        if ($docPtr !== null) {
-            return $phpcsFile->getTokens()[$docPtr];
-        }
-
-        return null;
-    }
-
-    /**
      * Get the docblock pointer for a file, class, interface, trait, or method.
      *
      * @param File $phpcsFile
@@ -301,17 +282,23 @@ abstract class Docblocks
         return null;
     }
 
+    /**
+     * Get the tags that match the given tag name.
+     *
+     * @param File $phpcsFile
+     * @param int|null $stackPtr The pointer of the docblock
+     * @param string $tagName
+     */
     public static function getMatchingDocTags(
         File $phpcsFile,
-        int $stackPtr,
+        ?int $stackPtr,
         string $tagName
     ): array {
-        $tokens = $phpcsFile->getTokens();
-        $docblock = self::getDocBlock($phpcsFile, $stackPtr);
-        if ($docblock === null) {
+        if ($stackPtr === null) {
             return [];
         }
-
+        $tokens = $phpcsFile->getTokens();
+        $docblock = $tokens[$stackPtr];
         $matchingTags = [];
         foreach ($docblock['comment_tags'] as $tag) {
             if ($tokens[$tag]['content'] === $tagName) {
