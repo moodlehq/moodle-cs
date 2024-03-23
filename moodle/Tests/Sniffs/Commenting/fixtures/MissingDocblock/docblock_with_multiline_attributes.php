@@ -41,10 +41,53 @@ interface interface_multiline_attribute {
 /**
  * Trait with multiline attributes.
  */
-
 #[\Attribute(
     attr1: 'asdf',
     attr2: 'asdf',
 )]
 trait trait_multiline_attribute {
+}
+
+/**
+ * Example class. 
+ */
+
+#[\Attribute(
+    attr1: 'asdf',
+    attr2: 'asdf',
+)]
+class class_multiline_attribute_space_between {
+
+    /**
+     * Method attribute.
+     */
+
+    #[\Attribute(
+        attr1: 'asdf',
+        attr2: 'asdf',
+    )]
+    function method_multiline_attribute_space_between(): void {
+    }
+}
+
+/**
+ * Interface with multiline attributes.
+ */
+
+#[\Attribute(
+    attr1: 'asdf',
+    attr2: 'asdf',
+)]
+interface interface_multiline_attribute_space_between {
+}
+
+/**
+ * Trait with multiline attributes and space between.
+ */
+
+ #[\Attribute(
+    attr1: 'asdf',
+    attr2: 'asdf',
+)]
+trait trait_multiline_attribute_space_between {
 }

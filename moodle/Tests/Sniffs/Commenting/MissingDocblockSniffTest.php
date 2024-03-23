@@ -147,6 +147,10 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'fixture' => 'docblock_with_multiline_attributes',
                 'fixtureFilename' => null,
                 'errors' => [
+                    59 => 'Missing docblock for class class_multiline_attribute_space_between',
+                    69 => 'Missing docblock for function method_multiline_attribute_space_between',
+                    81 => 'Missing docblock for interface interface_multiline_attribute_space_between',
+                    92 => 'Missing docblock for trait trait_multiline_attribute_space_between',
                 ],
                 'warnings' => [],
             ];
