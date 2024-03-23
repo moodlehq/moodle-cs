@@ -124,6 +124,54 @@ class DocblocksTest extends MoodleCSBaseTestCase
     }
 
     /**
+     * Test that a file docblock and a class with no docblock correctly associated the docblock with the file
+     * and not the class.
+     */
+    public function testGetDocBlockClassWithoutDocblock(): void {
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
+            __DIR__ . '/fixtures/docblocks/file_followed_by_class_without_docblock.php',
+            $phpcsRuleset,
+            $phpcsConfig
+        );
+
+        $phpcsFile->process();
+        $filePointer = $phpcsFile->findNext(T_OPEN_TAG, 0);
+        $classPointer = $phpcsFile->findNext(T_CLASS, 0);
+
+        $fileDocBlock = Docblocks::getDocBlock($phpcsFile, $filePointer);
+        $this->assertNotNull($fileDocBlock);
+
+        $classDocBlock = Docblocks::getDocBlock($phpcsFile, $classPointer);
+        $this->assertNull($classDocBlock);
+    }
+
+    /**
+     * Test that a file docblock and a class with no docblock correctly associated the docblock with the file
+     * and not the class when the class has an Attribute.
+     */
+    public function testGetDocBlockClassWithAttribute(): void {
+        $phpcsConfig = new Config();
+        $phpcsRuleset = new Ruleset($phpcsConfig);
+        $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
+            __DIR__ . '/fixtures/docblocks/file_followed_by_class_with_attribute.php',
+            $phpcsRuleset,
+            $phpcsConfig
+        );
+
+        $phpcsFile->process();
+        $filePointer = $phpcsFile->findNext(T_OPEN_TAG, 0);
+        $classPointer = $phpcsFile->findNext(T_CLASS, 0);
+
+        $fileDocBlock = Docblocks::getDocBlock($phpcsFile, $filePointer);
+        $this->assertNotNull($fileDocBlock);
+
+        $classDocBlock = Docblocks::getDocBlock($phpcsFile, $classPointer);
+        $this->assertNull($classDocBlock);
+    }
+
+    /**
      * @dataProvider validTagsProvider
      */
     public function testIsValidTag(
