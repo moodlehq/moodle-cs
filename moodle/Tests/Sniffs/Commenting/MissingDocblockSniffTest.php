@@ -108,6 +108,23 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'fixtureFilename' => null,
                 'errors' => [
                     13 => 'Missing docblock for class class_only_with_attributes_incorrect_whitespace',
+                    20 => 'Missing docblock for function method_only_with_attributes_incorrect_whitespace',
+                ],
+                'warnings' => [],
+            ],
+            'Interface only with attributes and incorrect whitespace' => [
+                'fixture' => 'interface_only_with_attributes_incorrect_whitespace',
+                'fixtureFilename' => null,
+                'errors' => [
+                    13 => 'Missing docblock for interface interface_only_with_attributes_incorrect_whitespace',
+                ],
+                'warnings' => [],
+            ],
+            'Trait only with attributes and incorrect whitespace' => [
+                'fixture' => 'trait_only_with_attributes_incorrect_whitespace',
+                'fixtureFilename' => null,
+                'errors' => [
+                    13 => 'Missing docblock for trait trait_only_with_attributes_incorrect_whitespace',
                 ],
                 'warnings' => [],
             ],
@@ -141,6 +158,20 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 ],
             ],
         ];
+
+        if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
+            $cases['Multiline attributes'] = [
+                'fixture' => 'docblock_with_multiline_attributes',
+                'fixtureFilename' => null,
+                'errors' => [
+                    59 => 'Missing docblock for class class_multiline_attribute_space_between',
+                    69 => 'Missing docblock for function method_multiline_attribute_space_between',
+                    81 => 'Missing docblock for interface interface_multiline_attribute_space_between',
+                    92 => 'Missing docblock for trait trait_multiline_attribute_space_between',
+                ],
+                'warnings' => [],
+            ];
+        }
 
         if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
             $cases['Enum only (correct)'] = [

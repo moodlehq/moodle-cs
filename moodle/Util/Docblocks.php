@@ -215,12 +215,12 @@ abstract class Docblocks
 
             if ($token['code'] === T_ATTRIBUTE_END && isset($token['attribute_opener'])) {
                 $commentEnd = $token['attribute_opener'];
-                $pointerLine = $token['line'];
+                $pointerLine = $tokens[$commentEnd]['line'];
                 continue;
             }
 
             if ($token['line'] < ($pointerLine - 1)) {
-                // The comment msut be on the line immediately before the pointer, or immediately before the attribute.       z
+                // The comment must be on the line immediately before the pointer, or immediately before the attribute.       z
                 return null;
             }
 
