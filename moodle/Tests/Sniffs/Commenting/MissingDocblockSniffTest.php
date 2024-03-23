@@ -129,12 +129,6 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'errors' => [],
                 'warnings' => [],
             ],
-            'Docblock with attributes on function (correct)' => [
-                'fixture' => 'docblock_with_multiline_attributes',
-                'fixtureFilename' => null,
-                'errors' => [],
-                'warnings' => [],
-            ],
             'Testcase' => [
                 'fixture' => 'testcase_class',
                 'fixtureFilename' => '/lib/tests/example_test.php',
@@ -147,6 +141,16 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 ],
             ],
         ];
+
+        if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
+            $cases['Multiline attributes'] = [
+                'fixture' => 'docblock_with_multiline_attributes',
+                'fixtureFilename' => null,
+                'errors' => [
+                ],
+                'warnings' => [],
+            ];
+        }
 
         if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
             $cases['Enum only (correct)'] = [
