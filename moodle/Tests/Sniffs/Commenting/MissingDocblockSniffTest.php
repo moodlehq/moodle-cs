@@ -146,6 +146,15 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'errors' => [],
                 'warnings' => [],
             ],
+            'Constants' => [
+                'fixture' => 'imported_constants',
+                'fixtureFilename' => null,
+                'errors' => [
+                    16 => 'Missing docblock for constant UNDOCUMENTED_CONST',
+                    32 => 'Missing docblock for constant example_class::UNDOCUMENTED_CONST',
+                ],
+                'warnings' => [],
+            ],
             'Testcase' => [
                 'fixture' => 'testcase_class',
                 'fixtureFilename' => '/lib/tests/example_test.php',
@@ -178,6 +187,18 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'fixture' => 'enum_only',
                 'fixtureFilename' => null,
                 'errors' => [],
+                'warnings' => [],
+            ];
+        }
+
+        if (version_compare(PHP_VERSION, '8.3.0') >= 0) {
+            $cases['Typed constants'] = [
+                'fixture' => 'typed_constants',
+                'fixtureFilename' => null,
+                'errors' => [
+                    16 => 'Missing docblock for constant UNDOCUMENTED_CONST',
+                    32 => 'Missing docblock for constant example_class::UNDOCUMENTED_CONST',
+                ],
                 'warnings' => [],
             ];
         }
