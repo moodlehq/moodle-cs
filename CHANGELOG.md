@@ -6,6 +6,17 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.4.3] - 2024-03-27
+### Added
+- Add new `moodle.Commenting.DocblockDescription` sniff to check that all the artifacts (classes, interfaces, traits, ...) and functions PHPDoc blocks have some description.
+
+### Changed
+- The `moodle.Commenting.MissingDocBlock` sniff now also checks that constants are documented.
+
+### Fixed
+- Solved a problem with file-level PHPDoc blocks not controlling the required blank lines after it.
+- Fixed the PHPDoc block detection when multi-line PHP 8 attributes are used in the middle.
+
 ## [v3.4.2] - 2024-03-21
 ### Added
 - Add new `moodle.Files.LangFilesOrdering` sniff to check that lang files are sorted by key.
@@ -182,7 +193,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.2...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.3...main
+[v3.4.3]: https://github.com/moodlehq/moodle-cs/compare/v3.4.2...v3.4.3
 [v3.4.2]: https://github.com/moodlehq/moodle-cs/compare/v3.4.1...v3.4.2
 [v3.4.1]: https://github.com/moodlehq/moodle-cs/compare/v3.4.0...v3.4.1
 [v3.4.0]: https://github.com/moodlehq/moodle-cs/compare/v3.3.15...v3.4.0
