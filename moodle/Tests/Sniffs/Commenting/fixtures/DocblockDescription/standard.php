@@ -58,3 +58,8 @@ trait trait_with_docblock_but_no_description {}
  * @license
  */
 function function_with_docblock_but_no_description() {}
+
+/**
+ * @deprecated
+ */
+function function_with_deprecated_tag() {}
