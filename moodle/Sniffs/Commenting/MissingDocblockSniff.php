@@ -89,14 +89,14 @@ class MissingDocblockSniff implements Sniff
                 continue;
             }
 
-            if (!Docblocks::getDocBlock($phpcsFile, $typePtr)) {
+            if (!Docblocks::getDocBlockPointer($phpcsFile, $typePtr)) {
                 $missingDocblocks[] = $typePtr;
             }
         }
 
         if ($artifactCount !== 1) {
             // See if there is a file docblock.
-            $fileblock = Docblocks::getDocBlock($phpcsFile, $stackPtr);
+            $fileblock = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
 
             if ($fileblock === null) {
                 $objectName = TokenUtil::getObjectName($phpcsFile, $stackPtr);
@@ -176,7 +176,7 @@ class MissingDocblockSniff implements Sniff
                 }
             }
 
-            if (!Docblocks::getDocBlock($phpcsFile, $typePtr)) {
+            if (!Docblocks::getDocBlockPointer($phpcsFile, $typePtr)) {
                 $missingDocblocks[$typePtr] = $extendsOrImplements;
             }
         }
@@ -229,7 +229,7 @@ class MissingDocblockSniff implements Sniff
                 }
             }
 
-            if (Docblocks::getDocBlock($phpcsFile, $typePtr)) {
+            if (Docblocks::getDocBlockPointer($phpcsFile, $typePtr)) {
                 // This is documented.
                 continue;
             }

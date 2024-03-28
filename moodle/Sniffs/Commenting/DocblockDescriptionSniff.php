@@ -79,6 +79,12 @@ class DocblockDescriptionSniff implements Sniff
             }
             $faultAtLine = $tokens[$stopAt]['line'];
 
+            $deprecatedTagPtrs = Docblocks::getMatchingDocTags($phpcsFile, $docblockPtr, '@deprecated');
+            if (count($deprecatedTagPtrs) > 0) {
+                // Skip if the docblock contains a @deprecated tag.
+                continue;
+            }
+
             // Skip to the next T_DOC_COMMENT_STAR line. We do not accept single line docblocks.
             $docblockLinePtr = $docblockPtr;
             while ($docblockLinePtr = $phpcsFile->findNext(T_DOC_COMMENT_STAR, $docblockLinePtr + 1, $stopAt)) {
