@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.4.4] - 2024-03-29
+### Changed
+- Improved some internal `moodle.Util.Docblocks` helpers and uses.
+
+### Fixed
+- The `@deprecated` tag is allowed to be alone within PHPDoc blocks.
+
 ## [v3.4.3] - 2024-03-27
 ### Added
 - Add new `moodle.Commenting.DocblockDescription` sniff to check that all the artifacts (classes, interfaces, traits, ...) and functions PHPDoc blocks have some description.
@@ -193,7 +200,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.3...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.4...main
+[v3.4.4]: https://github.com/moodlehq/moodle-cs/compare/v3.4.3...v3.4.4
 [v3.4.3]: https://github.com/moodlehq/moodle-cs/compare/v3.4.2...v3.4.3
 [v3.4.2]: https://github.com/moodlehq/moodle-cs/compare/v3.4.1...v3.4.2
 [v3.4.1]: https://github.com/moodlehq/moodle-cs/compare/v3.4.0...v3.4.1
