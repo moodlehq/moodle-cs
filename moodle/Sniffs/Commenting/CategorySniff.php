@@ -46,15 +46,21 @@ class CategorySniff implements Sniff
      * @param int $stackPtr The position in the stack.
      */
     public function process(File $phpcsFile, $stackPtr) {
-        $categoryTokens = Docblocks::getMatchingDocTags($phpcsFile, $stackPtr, '@category');
+        $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
+        if (empty($docPtr)) {
+            // It should not be possible to reach this line. It is a safety check.
+            return; // @codeCoverageIgnore
+        }
+
+        $categoryTokens = Docblocks::getMatchingDocTags($phpcsFile, $docPtr, '@category');
         if (empty($categoryTokens)) {
             return;
         }
 
         $tokens = $phpcsFile->getTokens();
+        $docblock = $tokens[$docPtr];
         $apis = MoodleUtil::getMoodleApis($phpcsFile);
 
-        $docblock = Docblocks::getDocBlock($phpcsFile, $stackPtr);
         foreach ($categoryTokens as $tokenPtr) {
             $categoryValuePtr = $phpcsFile->findNext(
                 T_DOC_COMMENT_STRING,

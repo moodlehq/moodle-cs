@@ -33,7 +33,7 @@ use PHP_CodeSniffer\Ruleset;
  */
 class DocblocksTest extends MoodleCSBaseTestCase
 {
-    public function testGetDocBlock(): void {
+    public function testgetDocBlockPointer(): void {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -45,7 +45,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $phpcsFile->process();
         $filePointer = $phpcsFile->findNext(T_OPEN_TAG, 0);
 
-        $docBlock = Docblocks::getDocBlock($phpcsFile, $filePointer);
+        $docBlock = Docblocks::getDocBlockPointer($phpcsFile, $filePointer);
         $this->assertNull($docBlock);
     }
 
@@ -62,20 +62,21 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $filePointer = $phpcsFile->findNext(T_OPEN_TAG, 0);
         $classPointer = $phpcsFile->findNext(T_CLASS, 0);
 
-        $fileDocBlock = Docblocks::getDocBlock($phpcsFile, $filePointer);
-        $this->assertNotNull($fileDocBlock);
-        $this->assertCount(1, Docblocks::getMatchingDocTags($phpcsFile, $filePointer, '@copyright'));
-        $this->assertCount(0, Docblocks::getMatchingDocTags($phpcsFile, $filePointer, '@property'));
+        $this->assertCount(0, Docblocks::getMatchingDocTags($phpcsFile, null, '@copyright'));
 
-        $classDocBlock = Docblocks::getDocBlock($phpcsFile, $classPointer);
-        $this->assertNotNull($classDocBlock);
-        $this->assertNotEquals($fileDocBlock, $classDocBlock);
-        $this->assertCount(1, Docblocks::getMatchingDocTags($phpcsFile, $classPointer, '@copyright'));
-        $this->assertCount(2, Docblocks::getMatchingDocTags($phpcsFile, $classPointer, '@property'));
+        $fileDocBlockPtr = Docblocks::getDocBlockPointer($phpcsFile, $filePointer);
+        $this->assertNotNull($fileDocBlockPtr);
+        $this->assertCount(1, Docblocks::getMatchingDocTags($phpcsFile, $fileDocBlockPtr, '@copyright'));
+        $this->assertCount(0, Docblocks::getMatchingDocTags($phpcsFile, $fileDocBlockPtr, '@property'));
+
+        $classDocBlockPtr = Docblocks::getDocBlockPointer($phpcsFile, $classPointer);
+        $this->assertNotNull($classDocBlockPtr);
+        $this->assertNotEquals($fileDocBlockPtr, $classDocBlockPtr);
+        $this->assertCount(1, Docblocks::getMatchingDocTags($phpcsFile, $classDocBlockPtr, '@copyright'));
+        $this->assertCount(2, Docblocks::getMatchingDocTags($phpcsFile, $classDocBlockPtr, '@property'));
 
         $methodPointer = $phpcsFile->findNext(T_FUNCTION, $classPointer);
-        $this->assertNull(Docblocks::getDocBlock($phpcsFile, $methodPointer));
-        $this->assertCount(0, Docblocks::getMatchingDocTags($phpcsFile, $methodPointer, '@property'));
+        $this->assertNull(Docblocks::getDocBlockPointer($phpcsFile, $methodPointer));
 
         // Get the docblock from pointers at the start, middle, and end, of a docblock.
         $tokens = $phpcsFile->getTokens();
@@ -83,17 +84,17 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $endDocPointer = $phpcsFile->findNext(T_DOC_COMMENT_CLOSE_TAG, $startDocPointer);
         $middleDocPointer = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $startDocPointer, $endDocPointer);
 
-        $docblock = Docblocks::getDocBlock($phpcsFile, $startDocPointer);
-        $this->assertIsArray($docblock);
-        $this->assertEquals($tokens[$startDocPointer], $docblock);
+        $docblock = Docblocks::getDocBlockPointer($phpcsFile, $startDocPointer);
+        $this->assertIsInt($docblock);
+        $this->assertEquals($startDocPointer, $docblock);
 
-        $docblock = Docblocks::getDocBlock($phpcsFile, $middleDocPointer);
-        $this->assertIsArray($docblock);
-        $this->assertEquals($tokens[$startDocPointer], $docblock);
+        $docblock = Docblocks::getDocBlockPointer($phpcsFile, $middleDocPointer);
+        $this->assertIsInt($docblock);
+        $this->assertEquals($startDocPointer, $docblock);
 
-        $docblock = Docblocks::getDocBlock($phpcsFile, $endDocPointer);
-        $this->assertIsArray($docblock);
-        $this->assertEquals($tokens[$startDocPointer], $docblock);
+        $docblock = Docblocks::getDocBlockPointer($phpcsFile, $endDocPointer);
+        $this->assertIsInt($docblock);
+        $this->assertEquals($startDocPointer, $docblock);
     }
 
     public function testGetDocBlockClassOnly(): void {
@@ -109,18 +110,17 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $filePointer = $phpcsFile->findNext(T_OPEN_TAG, 0);
         $classPointer = $phpcsFile->findNext(T_CLASS, 0);
 
-        $fileDocBlock = Docblocks::getDocBlock($phpcsFile, $filePointer);
+        $fileDocBlock = Docblocks::getDocBlockPointer($phpcsFile, $filePointer);
         $this->assertNull($fileDocBlock);
 
-        $classDocBlock = Docblocks::getDocBlock($phpcsFile, $classPointer);
-        $this->assertNotNull($classDocBlock);
-        $this->assertNotEquals($fileDocBlock, $classDocBlock);
-        $this->assertCount(1, Docblocks::getMatchingDocTags($phpcsFile, $classPointer, '@copyright'));
-        $this->assertCount(2, Docblocks::getMatchingDocTags($phpcsFile, $classPointer, '@property'));
+        $classDocBlockPtr = Docblocks::getDocBlockPointer($phpcsFile, $classPointer);
+        $this->assertNotNull($classDocBlockPtr);
+        $this->assertNotEquals($fileDocBlock, $classDocBlockPtr);
+        $this->assertCount(1, Docblocks::getMatchingDocTags($phpcsFile, $classDocBlockPtr, '@copyright'));
+        $this->assertCount(2, Docblocks::getMatchingDocTags($phpcsFile, $classDocBlockPtr, '@property'));
 
         $methodPointer = $phpcsFile->findNext(T_FUNCTION, $classPointer);
-        $this->assertNull(Docblocks::getDocBlock($phpcsFile, $methodPointer));
-        $this->assertCount(0, Docblocks::getMatchingDocTags($phpcsFile, $methodPointer, '@property'));
+        $this->assertNull(Docblocks::getDocBlockPointer($phpcsFile, $methodPointer));
     }
 
     /**
@@ -140,10 +140,10 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $filePointer = $phpcsFile->findNext(T_OPEN_TAG, 0);
         $classPointer = $phpcsFile->findNext(T_CLASS, 0);
 
-        $fileDocBlock = Docblocks::getDocBlock($phpcsFile, $filePointer);
+        $fileDocBlock = Docblocks::getDocBlockPointer($phpcsFile, $filePointer);
         $this->assertNotNull($fileDocBlock);
 
-        $classDocBlock = Docblocks::getDocBlock($phpcsFile, $classPointer);
+        $classDocBlock = Docblocks::getDocBlockPointer($phpcsFile, $classPointer);
         $this->assertNull($classDocBlock);
     }
 
@@ -164,10 +164,10 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $filePointer = $phpcsFile->findNext(T_OPEN_TAG, 0);
         $classPointer = $phpcsFile->findNext(T_CLASS, 0);
 
-        $fileDocBlock = Docblocks::getDocBlock($phpcsFile, $filePointer);
+        $fileDocBlock = Docblocks::getDocBlockPointer($phpcsFile, $filePointer);
         $this->assertNotNull($fileDocBlock);
 
-        $classDocBlock = Docblocks::getDocBlock($phpcsFile, $classPointer);
+        $classDocBlock = Docblocks::getDocBlockPointer($phpcsFile, $classPointer);
         $this->assertNull($classDocBlock);
     }
 

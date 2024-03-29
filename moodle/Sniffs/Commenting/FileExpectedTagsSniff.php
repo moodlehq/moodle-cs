@@ -93,9 +93,9 @@ class FileExpectedTagsSniff implements Sniff
      * @param int $stackPtr The position in the stack.
      */
     private function processFileCopyright(File $phpcsFile, $stackPtr): void {
-        $copyrightTokens = Docblocks::getMatchingDocTags($phpcsFile, $stackPtr, '@copyright');
+        $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
+        $copyrightTokens = Docblocks::getMatchingDocTags($phpcsFile, $docPtr, '@copyright');
         if (empty($copyrightTokens)) {
-            $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
             if (empty($docPtr)) {
                 $docPtr = $stackPtr;
             }
@@ -117,9 +117,9 @@ class FileExpectedTagsSniff implements Sniff
      */
     private function processFileLicense(File $phpcsFile, $stackPtr): void {
         $tokens = $phpcsFile->getTokens();
-        $foundTokens = Docblocks::getMatchingDocTags($phpcsFile, $stackPtr, '@license');
+        $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
+        $foundTokens = Docblocks::getMatchingDocTags($phpcsFile, $docPtr, '@license');
         if (empty($foundTokens)) {
-            $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
             if ($docPtr) {
                 $phpcsFile->addError(
                     'Missing @license tag',
