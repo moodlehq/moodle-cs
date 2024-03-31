@@ -90,6 +90,14 @@ class VariableCommentSniffTest extends MoodleCSBaseTestCase
                 ],
                 'warnings' => [],
             ],
+            'Constructor with mixed CPP' => [
+                'fixture' => 'constructor_with_mixed_property_promotion',
+                'errors' => [
+                    21 => 'Missing member variable doc comment',
+                ],
+                'warnings' => [
+                ],
+            ],
         ];
 
         if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
