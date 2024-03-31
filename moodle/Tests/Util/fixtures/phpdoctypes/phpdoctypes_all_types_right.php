@@ -24,10 +24,10 @@
  * @package   local_codechecker
  * @copyright 2023 Otago Polytechnic
  * @author    James Calder
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later (or CC BY-SA v4 or later)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later, CC BY-SA v4 or later, and BSD-3-Clause
  */
 
-defined('MOODLE_INTERNAL') || die();
+use stdClass as MyStdClass;
 
 /**
  * A parent class
@@ -47,9 +47,9 @@ interface types_valid_interface {
  * @package   local_codechecker
  * @copyright 2023 Otago Polytechnic
  * @author    James Calder
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later (or CC BY-SA v4 or later)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later, CC BY-SA v4 or later, and BSD-3-Clause
  */
-class types_valid extends types_valid_parent {
+class types_valid extends types_valid_parent implements types_valid_interface {
 
     /** @var array<int, string> */
     public const ARRAY_CONST = [ 1 => 'one', 2 => 'two' ];
@@ -117,6 +117,7 @@ class types_valid extends types_valid_parent {
      * Parameter modifiers
      * @param object &$reference
      * @param int ...$splat
+     * @return void
      */
     public function parameter_modifiers(
         object &$reference,
@@ -127,6 +128,7 @@ class types_valid extends types_valid_parent {
      * Boolean types
      * @param bool|boolean $bool
      * @param true|false $literal
+     * @return void
      */
     public function boolean_types(bool $bool, bool $literal): void {
     }
@@ -138,6 +140,7 @@ class types_valid extends types_valid_parent {
      * @param int<0, 100>|int<min, 100>|int<50, max>|int<-100, max> $intrange2
      * @param 234|-234 $literal1
      * @param int-mask<1, 2, 4> $intmask1
+     * @return void
      */
     public function integer_types(int $int, int $intrange1, int $intrange2,
         int $literal1, int $intmask1): void {
@@ -148,6 +151,7 @@ class types_valid extends types_valid_parent {
      * @param 1_000|-1_000 $literal2
      * @param int-mask<types_valid::INT_ONE, types_valid::INT_TWO> $intmask2
      * @param int-mask-of<types_valid::INT_*>|int-mask-of<key-of<types_valid::ARRAY_CONST>> $intmask3
+     * @return void
      */
     public function integer_types_complex(int $literal2, int $intmask2, int $intmask3): void {
     }
@@ -156,6 +160,7 @@ class types_valid extends types_valid_parent {
      * Float types
      * @param float|double $float
      * @param 1.0|-1.0 $literal
+     * @return void
      */
     public function float_types(float $float, float $literal): void {
     }
@@ -166,16 +171,17 @@ class types_valid extends types_valid_parent {
      * @param class-string|class-string<types_valid> $classstring1
      * @param callable-string|numeric-string|non-empty-string|non-falsy-string|truthy-string|literal-string $other
      * @param 'foo'|'bar' $literal
+     * @return void
      */
     public function string_types(string $string, string $classstring1, string $other, string $literal): void {
     }
 
     /**
      * String types complex
-     * @param class-string<types_valid|types_valid_interface> $classstring2
      * @param '\'' $stringwithescape
+     * @return void
      */
-    public function string_types_complex(string $classstring2, string $stringwithescape): void {
+    public function string_types_complex(string $stringwithescape): void {
     }
 
     /**
@@ -185,6 +191,7 @@ class types_valid extends types_valid_parent {
      * @param list<types_valid>|non-empty-list<types_valid> $list
      * @param array{'foo': int, "bar": string}|array{'foo': int, "bar"?: string}|array{int, int} $shapes1
      * @param array{0: int, 1?: int}|array{foo: int, bar: string} $shapes2
+     * @return void
      */
     public function array_types(array $genarray1, array $genarray2, array $list,
         array $shapes1, array $shapes2): void {
@@ -192,7 +199,8 @@ class types_valid extends types_valid_parent {
 
     /**
      * Array types complex
-     * @param array<array-key, string>|array<1|2, string>|array<types_valid::INT_*, string> $genarray3
+     * @param array<array-key, string> $genarray3
+     * @return void
      */
     public function array_types_complex(array $genarray3): void {
     }
@@ -206,6 +214,7 @@ class types_valid extends types_valid_parent {
      * @param self|parent|static|$this $relative
      * @param Traversable<int>|Traversable<int, int> $traversable1
      * @param \Closure|\Closure(int, int): string $closure
+     * @return void
      */
     public function object_types(object $object, object $shapes1, object $shapes2, object $class,
         object $relative, object $traversable1, object $closure): void {
@@ -214,6 +223,7 @@ class types_valid extends types_valid_parent {
     /**
      * Object types complex
      * @param Traversable<1|2, types_valid|types_valid_interface>|Traversable<types_valid::INT_*, string> $traversable2
+     * @return void
      */
     public function object_types_complex(object $traversable2): void {
     }
@@ -243,6 +253,7 @@ class types_valid extends types_valid_parent {
     /**
      * User-defined type
      * @param types_valid|\types_valid $class
+     * @return void
      */
     public function user_defined_type(types_valid $class): void {
     }
@@ -251,9 +262,10 @@ class types_valid extends types_valid_parent {
      * Callable types
      * @param callable|callable(int, int): string|callable(int, int=): string $callable1
      * @param callable(int $foo, string $bar): void $callable2
-     * @param callable(float ...$floats): (int|null)|callable(float...): (int|null) $callable3
+     * @param callable(float ...$floats): (int|null)|callable(object&): ?int $callable3
      * @param \Closure|\Closure(int, int): string $closure
      * @param callable-string $callablestring
+     * @return void
      */
     public function callable_types(callable $callable1, callable $callable2, callable $callable3,
         callable $closure, callable $callablestring): void {
@@ -264,6 +276,7 @@ class types_valid extends types_valid_parent {
      * @param array<int> $array
      * @param iterable<types_valid>|iterable<int, types_valid> $iterable1
      * @param Traversable<types_valid>|Traversable<int, types_valid> $traversable1
+     * @return void
      */
     public function iterable_types(iterable $array, iterable $iterable1, iterable $traversable1): void {
     }
@@ -272,6 +285,7 @@ class types_valid extends types_valid_parent {
      * Iterable types complex
      * @param iterable<1|2, types_valid>|iterable<types_valid::INT_*, string> $iterable2
      * @param Traversable<1|2, types_valid>|Traversable<types_valid::INT_*, string> $traversable2
+     * @return void
      */
     public function iterable_types_complex(iterable $iterable2, iterable $traversable2): void {
     }
@@ -280,6 +294,7 @@ class types_valid extends types_valid_parent {
      * Key and value of
      * @param key-of<types_valid::ARRAY_CONST> $keyof1
      * @param value-of<types_valid::ARRAY_CONST> $valueof1
+     * @return void
      */
     public function key_and_value_of(int $keyof1, string $valueof1): void {
     }
@@ -288,6 +303,7 @@ class types_valid extends types_valid_parent {
      * Key and value of complex
      * @param key-of<types_valid::ARRAY_CONST|array<int, string>> $keyof2
      * @param value-of<types_valid::ARRAY_CONST|array<int, string>> $valueof2
+     * @return void
      */
     public function key_and_value_of_complex(int $keyof2, string $valueof2): void {
     }
@@ -329,6 +345,7 @@ class types_valid extends types_valid_parent {
      * @param types_valid::FLOAT_1_0|types_valid::FLOAT_2_0 $float
      * @param types_valid::STRING_HELLO $string
      * @param types_valid::ARRAY_CONST $array
+     * @return void
      */
     public function constant_enumerations(bool $bool, int $int1, int $int2, int $int3, $mixed,
         float $float, string $string, array $array): void {
@@ -341,7 +358,7 @@ class types_valid extends types_valid_parent {
      * @param types_valid&object{additionalproperty: string} $intersection
      * @param (int) $brackets
      * @param int[] $arraysuffix
-
+     * @return void
      */
     public function basic_structure(
         ?int $nullable,
@@ -369,6 +386,7 @@ class types_valid extends types_valid_parent {
      * @param (int)[] $bracketarray1
      * @param (int[]) $bracketarray2
      * @param int|(types_valid&object{additionalproperty: string}) $dnf
+     * @return void
      */
     public function structure_combos(
         $multipleunion,
@@ -394,12 +412,30 @@ class types_valid extends types_valid_parent {
      * @param types_valid $basic
      * @param self|static|$this $relative1
      * @param types_valid $relative2
+     * @return void
      */
     public function inheritance(
         types_valid_parent $basic,
         parent $relative1,
         parent $relative2
     ): void {
+    }
+
+    /**
+     * Template
+     * @template T of int
+     * @param T $template
+     * @return void
+     */
+    public function template(int $template): void {
+    }
+
+    /**
+     * Use alias
+     * @param stdClass $use
+     * @return void
+     */
+    public function uses(MyStdClass $use): void {
     }
 
     /**
@@ -410,6 +446,7 @@ class types_valid extends types_valid_parent {
      * @param Exception|ErrorException $exception
      * @param Error|ArithmeticError|AssertionError|ParseError|TypeError $error
      * @param ArithmeticError|DivisionByZeroError $arithmeticerror
+     * @return void
      */
     public function builtin_classes(
         Traversable $traversable, Iterator $iterator,
@@ -423,6 +460,7 @@ class types_valid extends types_valid_parent {
      * @param Iterator|SeekableIterator<int, string>|ArrayIterator $iterator
      * @param SeekableIterator<int, string>|ArrayIterator $seekableiterator
      * @param Countable|ArrayIterator $countable
+     * @return void
      */
     public function spl_classes(
         Iterator $iterator, SeekableIterator $seekableiterator, Countable $countable

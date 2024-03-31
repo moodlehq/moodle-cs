@@ -23,7 +23,7 @@
  *
  * @copyright   2023-2024 Otago Polytechnic
  * @author      James Calder
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later (or CC BY-SA v4 or later)
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later, CC BY-SA v4 or later, and BSD-3-Clause
  */
 
 declare(strict_types=1);
@@ -165,13 +165,13 @@ class PHPDocTypeParser
      * Parse a type and possibly variable name
      * @param ?object{namespace: string, uses: string[], templates: string[], classname: ?string, parentname: ?string} $scope
      * @param string $text the text to parse
-     * @param 0|1|2|3 $getwhat what to get 0=type only 1=also var 2=also modifiers (& ...) 3=also default
+     * @param 0|1|2|3 $getwhat what to get 0=type only 1=also name 2=also modifiers (& ...) 3=also default
      * @param bool $gowide if we can't determine the type, should we assume wide (for native type) or narrow (for PHPDoc)?
-     * @return object{type: ?non-empty-string, passsplat: string, var: ?non-empty-string,
+     * @return object{type: ?non-empty-string, passsplat: string, name: ?non-empty-string,
      *              rem: string, fixed: ?string}
      *          the simplified type, pass by reference & splat, variable name, remaining text, and fixed text
      */
-    public function parseTypeAndVar(?object $scope, string $text, int $getwhat, bool $gowide): object {
+    public function parseTypeAndName(?object $scope, string $text, int $getwhat, bool $gowide): object {
 
         // Initialise variables.
         if ($scope) {
@@ -215,19 +215,18 @@ class PHPDocTypeParser
                 $this->parseToken('&');
             }
             if ($this->next == '...') {
-                // Add to variable name for code smell check.
                 $passsplat .= $this->parseToken('...');
             }
         }
 
-        // Try to parse variable and default value.
+        // Try to parse name and default value.
         if ($getwhat >= 1) {
             $savednexts = $this->nexts;
             try {
                 if (!($this->next != null && $this->next[0] == '$')) {
                     throw new \Exception("Error parsing type, expected variable, saw \"{$this->next}\".");
                 }
-                $variable = $this->parseToken();
+                $name = $this->parseToken();
                 if (
                     !($this->next == null || $getwhat >= 3 && $this->next == '='
                         || ctype_space(substr($this->text, $this->nexts[0]->startpos - 1, 1))
@@ -236,6 +235,8 @@ class PHPDocTypeParser
                     // Code smell check.
                     throw new \Exception("Warning parsing type, no space after variable name.");
                 }
+                // Implicit nullable
+                // TODO: This is deprecated in PHP 8.4, so this should be removed at some stage.
                 if ($getwhat >= 3) {
                     if (
                         $this->next == '='
@@ -249,13 +250,13 @@ class PHPDocTypeParser
             } catch (\Exception $e) {
                 $this->nexts = $savednexts;
                 $this->next = $this->next();
-                $variable = null;
+                $name = null;
             }
         } else {
-            $variable = null;
+            $name = null;
         }
 
-        return (object)['type' => $type, 'passsplat' => $passsplat, 'var' => $variable,
+        return (object)['type' => $type, 'passsplat' => $passsplat, 'name' => $name,
             'rem' => trim(substr($text, $this->nexts[0]->startpos)),
             'fixed' => $type ? $this->getFixed() : null];
     }
@@ -264,7 +265,7 @@ class PHPDocTypeParser
      * Parse a template
      * @param ?object{namespace: string, uses: string[], templates: string[], classname: ?string, parentname: ?string} $scope
      * @param string $text the text to parse
-     * @return object{type: ?non-empty-string, var: ?non-empty-string, rem: string, fixed: ?string}
+     * @return object{type: ?non-empty-string, name: ?non-empty-string, rem: string, fixed: ?string}
      *          the simplified type, template name, remaining text, and fixed text
      */
     public function parseTemplate(?object $scope, string $text): object {
@@ -287,9 +288,9 @@ class PHPDocTypeParser
             if (!($this->next != null && (ctype_alpha($this->next[0]) || $this->next[0] == '_'))) {
                 throw new \Exception("Error parsing type, expected variable, saw \"{$this->next}\".");
             }
-            $variable = $this->parseToken();
+            $name = $this->parseToken();
             if (
-                !($this->next == null || $this->next == 'of'
+                !($this->next == null
                     || ctype_space(substr($this->text, $this->nexts[0]->startpos - 1, 1))
                     || in_array($this->next, [',', ';', ':', '.']))
             ) {
@@ -299,11 +300,11 @@ class PHPDocTypeParser
         } catch (\Exception $e) {
             $this->nexts = $savednexts;
             $this->next = $this->next();
-            $variable = null;
+            $name = null;
         }
 
-        if ($this->next == 'of') {
-            $this->parseToken('of');
+        if ($this->next == 'of' || $this->next == 'as') {
+            $this->parseToken();
             // Try to parse type.
             $savednexts = $this->nexts;
             try {
@@ -325,7 +326,7 @@ class PHPDocTypeParser
             $type = 'mixed';
         }
 
-        return (object)['type' => $type, 'var' => $variable,
+        return (object)['type' => $type, 'name' => $name,
             'rem' => trim(substr($text, $this->nexts[0]->startpos)),
             'fixed' => $type ? $this->getFixed() : null];
     }
@@ -416,7 +417,7 @@ class PHPDocTypeParser
             } else {
                 $supertypes = ['object'];
                 $supertypequeue = [$basetype];
-                $ignore = true;
+                $ignore = true;  // We don't want to include the class itself, just super types of it.
             }
             while ($supertype = array_shift($supertypequeue)) {
                 if (in_array($supertype, $supertypes)) {
@@ -838,7 +839,7 @@ class PHPDocTypeParser
             $strtype = strtolower($this->parseToken());
             if ($strtype == 'class-string' && $this->next == '<') {
                 $this->parseToken('<');
-                $stringtype = $this->parseAnyType();
+                $stringtype = $this->parseBasicType();
                 if (!$this->compareTypes('object', $stringtype)) {
                     throw new \Exception("Error parsing type, class-string type isn't class.");
                 }
@@ -938,7 +939,7 @@ class PHPDocTypeParser
             $type = 'resource';
         } elseif (in_array($lowernext, ['never', 'never-return', 'never-returns', 'no-return'])) {
             // Never.
-            $this->correctToken($lowernext);
+            $this->correctToken('never');
             $this->parseToken();
             $type = 'never';
         } elseif ($lowernext == 'null') {

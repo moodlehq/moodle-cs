@@ -62,39 +62,81 @@ class PHPDocTypesSniffTest extends MoodleCSBaseTestCase
      */
     public static function provider(): array {
         return [
+            /*'PHPDocTypes docs missing wrong' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_docs_missing_wrong',
+                'errors' => [],
+                'warnings' => [
+                    40 => "PHPDoc function is not documented",
+                    43 => 2,
+                    52 => "PHPDoc variable or constant is not documented",
+                    54 => "PHPDoc variable missing @var tag",
+                ],
+            ],*/
             'PHPDocTypes general right' => [
-                'fixture' => 'phpdoctypes_general_right',
+                'fixture' => 'phpdoctypes/phpdoctypes_general_right',
                 'errors' => [],
                 'warnings' => [],
             ],
-            'PHPDocTypes method union types right' => [
-                'fixture' => 'phpdoctypes_method_union_types_right',
-                'errors' => [],
-                'warnings' => [],
-            ],
-            'PHPDocTypes tags general right' => [
-                'fixture' => 'phpdoctypes_tags_general_right',
-                'errors' => [],
-                'warnings' => [],
-            ],
-            'PHPDocTypes tags general wrong' => [
-                'fixture' => 'phpdoctypes_tags_general_wrong',
+            'PHPDocTypes general wrong' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_general_wrong',
                 'errors' => [
-                    41 => "PHPDoc function parameter 1 type missing or malformed",
-                    42 => "PHPDoc function parameter 2 type missing or malformed",
-                    48 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    58 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    65 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    75 => "PHPDoc number of function @param tags doesn't match actual number of parameters",
-                    88 => 'PHPDoc function parameter 2 type mismatch',
-                    97 => 'PHPDoc function parameter 1 type mismatch',
-                    107 => 'PHPDoc function parameter 1 type mismatch',
-                    118 => 'PHPDoc function parameter 2 type mismatch',
-                    127 => 'PHPDoc function return type missing or malformed',
+                    41 => "PHPDoc class property type missing or malformed",
+                    42 => "PHPDoc class property name missing or malformed",
+                    48 => "PHPDoc function parameter type missing or malformed",
+                    49 => "PHPDoc function parameter name missing or malformed",
+                    50 => "PHPDoc function parameter doesn't exist",
+                    52 => "PHPDoc function parameter repeated",
+                    53 => "PHPDoc function parameter type mismatch",
+                    64 => "PHPDoc multiple function @return tags--Put in one tag, seperated by vertical bars |",
+                    72 => "PHPDoc function return type missing or malformed",
+                    79 => "PHPDoc function return type mismatch",
+                    87 => "PHPDoc template name missing or malformed",
+                    88 => "PHPDoc template type missing or malformed",
+                    94 => "PHPDoc var type missing or malformed",
+                    97 => "PHPDoc var type mismatch",
+                    102 => "PHPDoc var type missing or malformed",
                 ],
                 'warnings' => [
-                    108 => 'PHPDoc function parameter 2 splat mismatch',
+                    31 => "PHPDoc misplaced tag",
+                    46 => "PHPDoc function parameter order wrong",
+                    54 => "PHPDoc function parameter splat mismatch",
                 ],
+            ],
+            'PHPDocTypes method union types right' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_method_union_types_right',
+                'errors' => [],
+                'warnings' => [],
+            ],
+            'PHPDocTypes namespace right' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_namespace_right',
+                'errors' => [],
+                'warnings' => [],
+            ],
+            'PHPDocTypes parse wrong' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_parse_wrong',
+                'errors' => [
+                    91 => "PHPDoc function parameter type mismatch",
+                ],
+                'warnings' => [],
+            ],
+            'PHPDocTypes style wrong' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_style_wrong',
+                'errors' => [],
+                'warnings' => [
+                    36 => "PHPDoc class property type doesn't conform to recommended style",
+                    41 => "PHPDoc function parameter type doesn't conform to recommended style",
+                    42 => "PHPDoc function return type doesn't conform to recommended style",
+                    43 => "PHPDoc tempate type doesn't conform to recommended style",
+                    49 => "PHPDoc var type doesn't conform to recommended style",
+                    52 => "PHPDoc var type doesn't conform to recommended style",
+                    56 => "PHPDoc var type doesn't conform to recommended style",
+                    63 => "PHPDoc var type doesn't conform to recommended style",
+                ],
+            ],
+            'PHPDocTypes tags general right' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_tags_general_right',
+                'errors' => [],
+                'warnings' => [],
             ],
         ];
     }

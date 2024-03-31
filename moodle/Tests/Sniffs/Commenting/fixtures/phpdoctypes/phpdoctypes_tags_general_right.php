@@ -22,8 +22,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 global $CFG;
 
 /**
@@ -41,6 +39,7 @@ class fixturing_general {
      * @param string|bool $one
      * @param bool $two
      * @param array $three
+     * @return void
      */
     public function correct_param_types($one, bool $two, array $three): void {
         echo "yay!";
@@ -52,6 +51,7 @@ class fixturing_general {
      * @param string|bool $one
      * @param bool $two
      * @param array $three
+     * @return void
      */
     public function correct_param_types1($one, bool $two, array $three): void {
         echo "yay!";
@@ -62,6 +62,7 @@ class fixturing_general {
      *
      * @param string $one
      * @param bool $two
+     * @return void
      */
     public function correct_param_types2($one, $two): void {
         echo "yay!";
@@ -73,6 +74,7 @@ class fixturing_general {
      * @param string|null $one
      * @param bool $two
      * @param array $three
+     * @return void
      */
     public function correct_param_types3(?string $one, bool $two, array $three): void {
         echo "yay!";
@@ -84,6 +86,7 @@ class fixturing_general {
      * @param string $one
      * @param bool $two
      * @param int[]|null $three
+     * @return void
      */
     public function correct_param_types4($one, bool $two, array $three = null): void {
         echo "yay!";
@@ -94,6 +97,7 @@ class fixturing_general {
      *
      * @param string $one
      * @param mixed ...$params one or more params
+     * @return void
      */
     public function correct_param_types5(string $one, ...$params): void {
         echo "yay!";
