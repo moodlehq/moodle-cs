@@ -145,25 +145,6 @@ abstract class Docblocks
     ];
 
     /**
-     * Get the docblock for a file, class, interface, trait, or method.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @return null|array
-     */
-    public static function getDocBlock(
-        File $phpcsFile,
-        int $stackPtr
-    ): ?array {
-        $docPtr = self::getDocBlockPointer($phpcsFile, $stackPtr);
-        if ($docPtr !== null) {
-            return $phpcsFile->getTokens()[$docPtr];
-        }
-
-        return null;
-    }
-
-    /**
      * Get the docblock pointer for a file, class, interface, trait, or method.
      *
      * @param File $phpcsFile
@@ -215,12 +196,12 @@ abstract class Docblocks
 
             if ($token['code'] === T_ATTRIBUTE_END && isset($token['attribute_opener'])) {
                 $commentEnd = $token['attribute_opener'];
-                $pointerLine = $token['line'];
+                $pointerLine = $tokens[$commentEnd]['line'];
                 continue;
             }
 
             if ($token['line'] < ($pointerLine - 1)) {
-                // The comment msut be on the line immediately before the pointer, or immediately before the attribute.       z
+                // The comment must be on the line immediately before the pointer, or immediately before the attribute.       z
                 return null;
             }
 
@@ -271,6 +252,7 @@ abstract class Docblocks
             T_INCLUDE_ONCE,
             T_REQUIRE,
             T_REQUIRE_ONCE,
+            T_ATTRIBUTE,
         ];
 
         while ($stackPtr = $phpcsFile->findNext($ignore, ($stackPtr + 1), null, true)) {
@@ -281,13 +263,15 @@ abstract class Docblocks
 
             if ($tokens[$stackPtr]['code'] === T_DOC_COMMENT_OPEN_TAG) {
                 $nextToken = $tokens[$stackPtr]['comment_closer'];
+                $closeLine = $tokens[$nextToken]['line'];
+
                 while ($nextToken = $phpcsFile->findNext(T_WHITESPACE, $nextToken + 1, null, true)) {
-                    if ($nextToken && $tokens[$nextToken]['code'] === T_ATTRIBUTE) {
-                        $nextToken = $tokens[$nextToken]['attribute_closer'] + 1;
-                        continue;
-                    }
                     if (in_array($tokens[$nextToken]['code'], $stopAtTypes)) {
-                        return null;
+                        // If the stop token is on the line immediately following the attribute or close comment
+                        // then it belongs to that stop token, and not the file.
+                        if ($tokens[$nextToken]['line'] === ($closeLine + 1)) {
+                            return null;
+                        }
                     }
                     break;
                 }
@@ -298,17 +282,23 @@ abstract class Docblocks
         return null;
     }
 
+    /**
+     * Get the tags that match the given tag name.
+     *
+     * @param File $phpcsFile
+     * @param int|null $stackPtr The pointer of the docblock
+     * @param string $tagName
+     */
     public static function getMatchingDocTags(
         File $phpcsFile,
-        int $stackPtr,
+        ?int $stackPtr,
         string $tagName
     ): array {
-        $tokens = $phpcsFile->getTokens();
-        $docblock = self::getDocBlock($phpcsFile, $stackPtr);
-        if ($docblock === null) {
+        if ($stackPtr === null) {
             return [];
         }
-
+        $tokens = $phpcsFile->getTokens();
+        $docblock = $tokens[$stackPtr];
         $matchingTags = [];
         foreach ($docblock['comment_tags'] as $tag) {
             if ($tokens[$tag]['content'] === $tagName) {

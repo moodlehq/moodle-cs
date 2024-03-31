@@ -6,6 +6,39 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.4.4] - 2024-03-29
+### Changed
+- Improved some internal `moodle.Util.Docblocks` helpers and uses.
+
+### Fixed
+- The `@deprecated` tag is allowed to be alone within PHPDoc blocks.
+
+## [v3.4.3] - 2024-03-27
+### Added
+- Add new `moodle.Commenting.DocblockDescription` sniff to check that all the artifacts (classes, interfaces, traits, ...) and functions PHPDoc blocks have some description.
+
+### Changed
+- The `moodle.Commenting.MissingDocBlock` sniff now also checks that constants are documented.
+
+### Fixed
+- Solved a problem with file-level PHPDoc blocks not controlling the required blank lines after it.
+- Fixed the PHPDoc block detection when multi-line PHP 8 attributes are used in the middle.
+
+## [v3.4.2] - 2024-03-21
+### Added
+- Add new `moodle.Files.LangFilesOrdering` sniff to check that lang files are sorted by key.
+- Add new `moodle.Commenting.MissingDocBlock` sniff to check that all the artifacts (classes, interfaces, traits, ...) and functions are documented.
+- Add new `moodle.Commenting.VariableComment` sniff to check that the `@var` tag and its types are used correctly.
+- Add new `moodle.Commenting.ValidTag` sniff to check that only allowed tags are used.
+- Add new `moodle.Commenting.FileExpectedTags` sniff to check that files or classes have the correct PHPDoc block with both `@copyright` and `@license` information.
+
+  The expected contents of the `@license` tag can be controlled both by the `preferredLicenseRegex ` property in ruleset files or by the `moodleLicenseRegex ` configuration option in `phpcs.xml` files and CLI invocations. Setting them to empty string disables the Sniff completely. By default, the *"https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later"* content is checked.
+
+Note that all the `moodle.Commenting` sniffs above are part of the migration from `moodle-local_moodlecheck` to `moodle-cs`. You can find more information about the deprecation of the former and links to track the progress in the [announcement in General developer forum](https://moodle.org/mod/forum/discuss.php?d=455786).
+
+### Changed
+- Various reorganisations of tests, fixtures and utils affecting a number of sniffs.
+
 ## [v3.4.1] - 2024-03-08
 ### Fixed
 - Solved a problem with the `moodle.Commenting.Package` sniff when running against arbitrary (not Moodle based) directories.
@@ -167,7 +200,10 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.1...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.4...main
+[v3.4.4]: https://github.com/moodlehq/moodle-cs/compare/v3.4.3...v3.4.4
+[v3.4.3]: https://github.com/moodlehq/moodle-cs/compare/v3.4.2...v3.4.3
+[v3.4.2]: https://github.com/moodlehq/moodle-cs/compare/v3.4.1...v3.4.2
 [v3.4.1]: https://github.com/moodlehq/moodle-cs/compare/v3.4.0...v3.4.1
 [v3.4.0]: https://github.com/moodlehq/moodle-cs/compare/v3.3.15...v3.4.0
 [v3.3.15]: https://github.com/moodlehq/moodle-cs/compare/v3.3.14...v3.3.15

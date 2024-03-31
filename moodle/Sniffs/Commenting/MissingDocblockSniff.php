@@ -23,6 +23,7 @@ use MoodleHQ\MoodleCS\moodle\Util\TokenUtil;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
@@ -59,6 +60,7 @@ class MissingDocblockSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr) {
         $this->processScopes($phpcsFile, $stackPtr);
         $this->processFunctions($phpcsFile, $stackPtr);
+        $this->processConstants($phpcsFile, $stackPtr);
     }
 
     protected function processScopes(File $phpcsFile, int $stackPtr): void {
@@ -87,14 +89,14 @@ class MissingDocblockSniff implements Sniff
                 continue;
             }
 
-            if (!Docblocks::getDocBlock($phpcsFile, $typePtr)) {
+            if (!Docblocks::getDocBlockPointer($phpcsFile, $typePtr)) {
                 $missingDocblocks[] = $typePtr;
             }
         }
 
         if ($artifactCount !== 1) {
             // See if there is a file docblock.
-            $fileblock = Docblocks::getDocBlock($phpcsFile, $stackPtr);
+            $fileblock = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
 
             if ($fileblock === null) {
                 $objectName = TokenUtil::getObjectName($phpcsFile, $stackPtr);
@@ -147,7 +149,11 @@ class MissingDocblockSniff implements Sniff
             if (count($token['conditions']) > 0) {
                 // This method has conditions (a Class, Interface, Trait, etc.).
                 // Check if that container extends or implements anything.
-                foreach (array_keys($token['conditions']) as $condition) {
+                foreach ($token['conditions'] as $condition => $conditionCode) {
+                    if ($conditionCode === T_USE) {
+                        // Skip any method inside a USE.
+                        continue 2;
+                    }
                     if (!array_key_exists($condition, $knownClasses)) {
                         $extendsOrImplements = $extendsOrImplements || ObjectDeclarations::findExtendedClassName(
                             $phpcsFile,
@@ -170,7 +176,7 @@ class MissingDocblockSniff implements Sniff
                 }
             }
 
-            if (!Docblocks::getDocBlock($phpcsFile, $typePtr)) {
+            if (!Docblocks::getDocBlockPointer($phpcsFile, $typePtr)) {
                 $missingDocblocks[$typePtr] = $extendsOrImplements;
             }
         }
@@ -193,6 +199,62 @@ class MissingDocblockSniff implements Sniff
                 $phpcsFile->addWarning('Missing docblock for %s %s', $typePtr, 'Missing', [$objectType, $objectName]);
             } else {
                 $phpcsFile->addError('Missing docblock for %s %s', $typePtr, 'Missing', [$objectType, $objectName]);
+            }
+        }
+    }
+
+    /**
+     * Process constants.
+     *
+     * @param File $phpcsFile The file being scanned.
+     * @param int $stackPtr The position in the stack.
+     */
+    protected function processConstants(File $phpcsFile, int $stackPtr): void {
+        $tokens = $phpcsFile->getTokens();
+
+        $typePtr = $stackPtr + 1;
+        while ($typePtr = $phpcsFile->findNext(T_CONST, $typePtr + 1)) {
+            $token = $tokens[$typePtr];
+            $containerName = null;
+
+            if (count($token['conditions']) > 0) {
+                foreach ($token['conditions'] as $conditionPtr => $conditionCode) {
+                    // Skip any constant inside a USE.
+                    if ($conditionCode === T_USE) {
+                        continue 2;
+                    }
+                    if (in_array($conditionCode, Collections::closedScopes())) {
+                        $containerName = TokenUtil::getObjectName($phpcsFile, $conditionPtr);
+                    }
+                }
+            }
+
+            if (Docblocks::getDocBlockPointer($phpcsFile, $typePtr)) {
+                // This is documented.
+                continue;
+            }
+
+            // Get the constant name
+            // We have to find the equals and step back from there.
+            // PHP 8.3 introduces the concept of typed constants but both the type and name are presented as T_STRING
+            $equalPtr = $phpcsFile->findNext(T_EQUAL, $typePtr + 1);
+            $namePtr = $phpcsFile->findPrevious(T_STRING, $equalPtr - 1, $typePtr);
+            $objectName = $tokens[$namePtr]['content'];
+
+            if ($containerName) {
+                $phpcsFile->addError(
+                    'Missing docblock for constant %s::%s',
+                    $typePtr,
+                    'Missing',
+                    [$containerName, $objectName]
+                );
+            } else {
+                $phpcsFile->addError(
+                    'Missing docblock for constant %s',
+                    $typePtr,
+                    'Missing',
+                    [$objectName]
+                );
             }
         }
     }

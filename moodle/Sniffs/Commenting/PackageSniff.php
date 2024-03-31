@@ -49,12 +49,12 @@ class PackageSniff implements Sniff
     public function process(File $phpcsFile, $stackPtr) {
         $tokens = $phpcsFile->getTokens();
 
-        $docblock = Docblocks::getDocBlock($phpcsFile, $stackPtr);
-        if ($docblock) {
+        $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
+        if ($docPtr) {
             $filePackageFound = $this->checkDocblock(
                 $phpcsFile,
                 $stackPtr,
-                $docblock
+                $docPtr
             );
             if ($filePackageFound) {
                 return;
@@ -75,13 +75,13 @@ class PackageSniff implements Sniff
                 continue;
             }
 
-            $docblock = Docblocks::getDocBlock($phpcsFile, $typePtr);
+            $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $typePtr);
 
-            if ($docblock === null) {
+            if ($docPtr === null) {
                 continue;
             }
 
-            $this->checkDocblock($phpcsFile, $typePtr, $docblock);
+            $this->checkDocblock($phpcsFile, $typePtr, $docPtr);
         }
     }
 
@@ -96,11 +96,8 @@ class PackageSniff implements Sniff
     protected function checkDocblock(
         File $phpcsFile,
         int $stackPtr,
-        array $docblock
+        int $docPtr
     ): bool {
-        $tokens = $phpcsFile->getTokens();
-        $objectName = TokenUtil::getObjectName($phpcsFile, $stackPtr);
-        $objectType = TokenUtil::getObjectType($phpcsFile, $stackPtr);
         $expectedPackage = MoodleUtil::getMoodleComponent($phpcsFile, true);
 
         // Nothing to do if we have been unable to determine the package
@@ -109,7 +106,12 @@ class PackageSniff implements Sniff
             return false;
         }
 
-        $packageTokens = Docblocks::getMatchingDocTags($phpcsFile, $stackPtr, '@package');
+        $tokens = $phpcsFile->getTokens();
+        $objectName = TokenUtil::getObjectName($phpcsFile, $stackPtr);
+        $objectType = TokenUtil::getObjectType($phpcsFile, $stackPtr);
+        $docblock = $tokens[$docPtr];
+
+        $packageTokens = Docblocks::getMatchingDocTags($phpcsFile, $docPtr, '@package');
         if (empty($packageTokens)) {
             $fix = $phpcsFile->addFixableError(
                 'DocBlock missing a @package tag for %s %s. Expected @package %s',
