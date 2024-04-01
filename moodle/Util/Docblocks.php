@@ -32,7 +32,7 @@ abstract class Docblocks
      *
      * @var array<string, bool>
      * @link http://manual.phpdoc.org/HTMLSmartyConverter/HandS/ */
-    public static array $validTags = [
+    private static array $validTags = [
         // Behat tags.
         'Given' => true,
         'Then' => true,
@@ -100,7 +100,7 @@ abstract class Docblocks
      *
      * @var string[]
      */
-    public static array $invalidTagsToRemove = [
+    private static array $invalidTagsToRemove = [
         'void',
     ];
 
@@ -109,7 +109,7 @@ abstract class Docblocks
      *
      * @var string[string]
      */
-    public static array $renameTags = [
+    private static array $renameTags = [
         // Rename returns to return.
         'returns' => 'return',
     ];
@@ -120,7 +120,7 @@ abstract class Docblocks
      *
      * @var array(string => array(string))
      */
-    public static array $pathRestrictedTags = [
+    private static array $pathRestrictedTags = [
         'Given' => ['#.*/tests/behat/.*#'],
         'Then' => ['#.*/tests/behat/.*#'],
         'When' => ['#.*/tests/behat/.*#'],
