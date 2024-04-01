@@ -324,7 +324,7 @@ abstract class Docblocks
         $tag = ltrim($tokens[$tagPtr]['content'], '@');
         if (array_key_exists($tag, self::$validTags)) {
             if (array_key_exists($tag, self::$pathRestrictedTags)) {
-                $file = $phpcsFile->getFilename();
+                $file = MoodleUtil::getStandardisedFilename($phpcsFile);
                 foreach (self::$pathRestrictedTags[$tag] as $path) {
                     if (preg_match($path, $file)) {
                         return true;
