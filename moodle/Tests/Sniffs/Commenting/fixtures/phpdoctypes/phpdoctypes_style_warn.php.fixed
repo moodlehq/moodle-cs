@@ -33,32 +33,32 @@
  * @copyright 2024 Otago Polytechnic
  * @author    James Calder
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later, CC BY-SA v4 or later, and BSD-3-Clause
- * @property Integer $p PHPDoc class property type doesn't conform to recommended style
+ * @property int $p PHPDoc class property type doesn't conform to recommended style
  */
 class types_invalid {
 
     /**
-     * @param Integer $p PHPDoc function parameter type doesn't conform to recommended style
-     * @return Integer PHPDoc function return type doesn't conform to recommended style
-     * @template T of Integer PHPDoc tempate type doesn't conform to recommended style
+     * @param bool|T $p PHPDoc function parameter type doesn't conform to recommended style
+     * @return int PHPDoc function return type doesn't conform to recommended style
+     * @template T of int PHPDoc tempate type doesn't conform to recommended style
      */
-    public function fun_wrong(int $p): int {
+    public function fun_wrong($p): int {
         return 0;
     }
 
-    /** @var Integer PHPDoc var type doesn't conform to recommended style */
+    /** @var int PHPDoc var type doesn't conform to recommended style */
     public int $v1;
 
-    /** @var Integer
-     *      | Boolean Multiline type, no line break at end */
+    /** @var int
+     *      | bool Multiline type, no line break at end */
     public int|bool $v2;
 
-    /** @var Integer
-     *      | Boolean Multiline type, line break at end
+    /** @var int
+     *      | bool Multiline type, line break at end
      */
     public int|bool $v3;
 
 }
 
-/** @var Integer PHPDoc var type doesn't conform to recommended style (not class var) */
+/** @var int PHPDoc var type doesn't conform to recommended style (not class var) */
 $v4 = 0;

@@ -58,14 +58,13 @@ trait php_valid_trait {
  * @copyright 2023 Otago Polytechnic
  * @author    James Calder
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later, CC BY-SA v4 or later, and BSD-3-Clause
- * @template  T of int
  */
 class php_valid extends php_valid_parent implements php_valid_interface {
     use php_valid_trait;
 
     /**
      * Namespaces recognised
-     * @param \MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Commenting\fixtures\php_valid<int> $x
+     * @param \MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Commenting\fixtures\php_valid $x
      * @return void
      */
     function namespaces(php_valid $x): void {
@@ -81,7 +80,7 @@ class php_valid extends php_valid_parent implements php_valid_interface {
 
     /**
      * Parents recognised
-     * @param php_valid<int> $x
+     * @param php_valid $x
      * @return void
      */
     function parents(php_valid_parent $x): void {
@@ -89,18 +88,10 @@ class php_valid extends php_valid_parent implements php_valid_interface {
 
     /**
      * Interfaces recognised
-     * @param php_valid<int> $x
+     * @param php_valid $x
      * @return void
      */
     function interfaces(php_valid_interface $x): void {
-    }
-
-    /**
-     * Class templates recognised
-     * @param T $x
-     * @return void
-     */
-    function class_templates(int $x): void {
     }
 
     /**
@@ -120,16 +111,25 @@ class php_valid extends php_valid_parent implements php_valid_interface {
     public function visibility(int $x): void {
     }
 
+    /** @var int
+     *      | bool Multiline type */
+    public int|bool $v2;
+
+}
+
+/**
+ * @template T of int
+ */
+class php_valid_2 {
+
     /**
-     * Multiline comment
-     * @param object{
-     *   a: int,
-     *   b: string
-     * } $x
+     * Class templates recognised
+     * @param T $x
      * @return void
      */
-    function multiline_comment(object $x): void {
+    function class_templates(int $x): void {
     }
+
 }
 
 // Ignore things that don't concern us.

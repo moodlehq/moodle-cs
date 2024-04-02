@@ -62,8 +62,20 @@ class PHPDocTypesSniffTest extends MoodleCSBaseTestCase
      */
     public static function provider(): array {
         return [
-            /*'PHPDocTypes docs missing wrong' => [
-                'fixture' => 'phpdoctypes/phpdoctypes_docs_missing_wrong',
+            'PHPDocTypes complex warn' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_complex_warn',
+                'errors' => [],
+                'warnings' => [
+                    39 => "PHPDoc template type doesn't conform to PHP-FIG PHPDoc",
+                    40 => "PHPDoc class property type doesn't conform to PHP-FIG PHPDoc",
+                    45 => "PHPDoc function parameter type doesn't conform to PHP-FIG PHPDoc",
+                    46 => "PHPDoc function return type doesn't conform to PHP-FIG PHPDoc",
+                    52 => "PHPDoc var type doesn't conform to PHP-FIG PHPDoc",
+                    57 => "PHPDoc var type doesn't conform to PHP-FIG PHPDoc",
+                ],
+            ],
+            /*'PHPDocTypes docs missing warn' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_docs_missing_warn',
                 'errors' => [],
                 'warnings' => [
                     40 => "PHPDoc function is not documented",
@@ -102,11 +114,6 @@ class PHPDocTypesSniffTest extends MoodleCSBaseTestCase
                     54 => "PHPDoc function parameter splat mismatch",
                 ],
             ],
-            'PHPDocTypes method union types right' => [
-                'fixture' => 'phpdoctypes/phpdoctypes_method_union_types_right',
-                'errors' => [],
-                'warnings' => [],
-            ],
             'PHPDocTypes namespace right' => [
                 'fixture' => 'phpdoctypes/phpdoctypes_namespace_right',
                 'errors' => [],
@@ -119,8 +126,8 @@ class PHPDocTypesSniffTest extends MoodleCSBaseTestCase
                 ],
                 'warnings' => [],
             ],
-            'PHPDocTypes style wrong' => [
-                'fixture' => 'phpdoctypes/phpdoctypes_style_wrong',
+            'PHPDocTypes style warn' => [
+                'fixture' => 'phpdoctypes/phpdoctypes_style_warn',
                 'errors' => [],
                 'warnings' => [
                     36 => "PHPDoc class property type doesn't conform to recommended style",
@@ -132,11 +139,6 @@ class PHPDocTypesSniffTest extends MoodleCSBaseTestCase
                     56 => "PHPDoc var type doesn't conform to recommended style",
                     63 => "PHPDoc var type doesn't conform to recommended style",
                 ],
-            ],
-            'PHPDocTypes tags general right' => [
-                'fixture' => 'phpdoctypes/phpdoctypes_tags_general_right',
-                'errors' => [],
-                'warnings' => [],
             ],
         ];
     }

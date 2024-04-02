@@ -237,13 +237,13 @@ class types_valid extends types_valid_parent implements types_valid_interface {
     }
 
     /**
-     * Void type
+     * Null type
      * @param null $standalonenull
      * @param ?int $explicitnullable
      * @param ?int $implicitnullable
      * @return void
      */
-    public function void_type(
+    public function null_type(
         $standalonenull,
         ?int $explicitnullable,
         int $implicitnullable=null

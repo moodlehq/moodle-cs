@@ -15,50 +15,44 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * A collection of types not in recommended style for testing
+ * A collection of valid types for testing
  *
- * These needn't give errors in PHPStan or Psalm.
- * But the PHPDocTypesSniff should give warnings.
+ * This file should have no errors when checked with either PHPStan or Psalm.
+ * Having just valid code in here means it can be easily checked with other checkers,
+ * to verify we are actually checking against correct examples.
  *
  * @package   local_codechecker
  * @copyright 2024 Otago Polytechnic
  * @author    James Calder
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later, CC BY-SA v4 or later, and BSD-3-Clause
  */
+
+namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Commenting\fixtures;
 
 /**
- * A collection of types not in recommended style for testing
+ * A collection of valid types for testing
  *
  * @package   local_codechecker
- * @copyright 2024 Otago Polytechnic
+ * @copyright 2023 Otago Polytechnic
  * @author    James Calder
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later, CC BY-SA v4 or later, and BSD-3-Clause
- * @property int $p PHPDoc class property type doesn't conform to recommended style
+ * @template  T of ?int
+ * @property ?int $p
  */
-class types_invalid {
+class php_valid {
 
     /**
-     * @param int $p PHPDoc function parameter type doesn't conform to recommended style
-     * @return int PHPDoc function return type doesn't conform to recommended style
-     * @template T of int PHPDoc tempate type doesn't conform to recommended style
+     * @param ?int $p
+     * @return ?int
      */
-    public function fun_wrong(int $p): int {
-        return 0;
+    function f(?int $p): ?int {
+        return $p;
     }
 
-    /** @var int PHPDoc var type doesn't conform to recommended style */
-    public int $v1;
-
-    /** @var int
-     *      | bool Multiline type, no line break at end */
-    public int|bool $v2;
-
-    /** @var int
-     *      | bool Multiline type, line break at end
-     */
-    public int|bool $v3;
+    /** @var ?int */
+    public ?int $v;
 
 }
 
-/** @var int PHPDoc var type doesn't conform to recommended style (not class var) */
-$v4 = 0;
+/** @var ?int */
+$v2 = 0;
