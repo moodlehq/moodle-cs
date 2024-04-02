@@ -179,6 +179,25 @@ class VariableCommentSniff extends AbstractVariableSniff
 
         $method = $phpcsFile->getTokens()[$methodPtr];
         if ($method['parenthesis_opener'] < $stackPtr && $method['parenthesis_closer'] > $stackPtr) {
+            // Only apply to properties declared in the constructor.
+            // Constructor Promoted Properties canbe detected by a visbility keyword.
+            // These can be found, amongst others like READONLY in Collections::propertyModifierKeywords().
+            // When searching, only look back to the previous arg (comma), or the opening parenthesis.
+            $lookBackTo = max(
+                $method['parenthesis_opener'],
+                $phpcsFile->findPrevious(T_COMMA, $stackPtr)
+            );
+            $modifierPtr = $phpcsFile->findPrevious(
+                Collections::propertyModifierKeywords(),
+                $stackPtr,
+                $lookBackTo
+            );
+            if ($modifierPtr === false) {
+                // No modifier found, so not a promoted property.
+                return;
+            }
+
+            // This is a promoted property. Handle it in the same way as other properties.
             $this->processMemberVar($phpcsFile, $stackPtr);
             return;
         }
