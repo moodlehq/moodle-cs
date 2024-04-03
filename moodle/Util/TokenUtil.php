@@ -35,6 +35,11 @@ class TokenUtil
         int $stackPtr
     ): string {
         $tokens = $phpcsFile->getTokens();
+
+        if (!isset($tokens[$stackPtr])) {
+            return '';
+        }
+
         if ($tokens[$stackPtr]['code'] === T_OPEN_TAG) {
             return 'file';
         }
@@ -46,15 +51,27 @@ class TokenUtil
      *
      * @param File $phpcsFile
      * @param int $stackPtr
-     * @return string
+     * @return null|string
      */
     public static function getObjectName(
         File $phpcsFile,
         int $stackPtr
-    ): string {
+    ): ?string {
         $tokens = $phpcsFile->getTokens();
+        if (!isset($tokens[$stackPtr])) {
+            return '';
+        }
+
         if ($tokens[$stackPtr]['code'] === T_OPEN_TAG) {
             return basename($phpcsFile->getFilename());
+        }
+
+        if ($tokens[$stackPtr]['code'] === T_ANON_CLASS) {
+            return 'anonymous class';
+        }
+
+        if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
+            return 'closure';
         }
 
         return ObjectDeclarations::getName($phpcsFile, $stackPtr);
