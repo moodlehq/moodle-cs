@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+
+## [v3.4.6] - 2024-04-03
+### Fixed
+- Solved a problem where Windows file paths were not normalised leading to false positive results on some path-based sniffs.
+- Solved a problem with fetching the name of an anonymous class, or closure.
+
 ## [v3.4.5] - 2024-03-31
 ### Fixed
 - Solved a problem when checking constructor's promoted properties that was leading to some false positives.
@@ -204,7 +210,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.5...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.6...main
+[v3.4.6]: https://github.com/moodlehq/moodle-cs/compare/v3.4.5...v3.4.6
 [v3.4.5]: https://github.com/moodlehq/moodle-cs/compare/v3.4.4...v3.4.5
 [v3.4.4]: https://github.com/moodlehq/moodle-cs/compare/v3.4.3...v3.4.4
 [v3.4.3]: https://github.com/moodlehq/moodle-cs/compare/v3.4.2...v3.4.3
