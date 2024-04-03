@@ -2,6 +2,7 @@
 
 /**
  * @covers \some_class
+ * @group some_group
  */
 class some_test extends \advanced_testcase {
     /**
@@ -42,6 +43,8 @@ class some_test extends \advanced_testcase {
 
     /**
      * Some more valid tags, because we are under tests area.
+     *
+     * @group some_group
      */
     public function valid_inline_tags() {
         // @codeCoverageIgnoreStart

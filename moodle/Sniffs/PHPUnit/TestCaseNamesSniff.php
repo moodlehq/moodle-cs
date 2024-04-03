@@ -233,9 +233,10 @@ class TestCaseNamesSniff implements Sniff
             if ($bspos !== false) { // Only if there are level2 and down namespace.
                 $relns = str_replace('\\', '/', substr(trim($namespace, ' \\'), $bspos + 1));
 
+                $filename = MoodleUtil::getStandardisedFilename($file);
                 // Calculate the relative path under tests directory.
-                $dirpos = strripos(trim(dirname($file->getFilename()), ' /') . '/', '/tests/');
-                $reldir = str_replace('\\', '/', substr(trim(dirname($file->getFilename()), ' /'), $dirpos + 7));
+                $dirpos = strripos(trim(dirname($filename), ' /') . '/', '/tests/');
+                $reldir = str_replace('\\', '/', substr(trim(dirname($filename), ' /'), $dirpos + 7));
 
                 // Warning if the relative namespace does not match the relative directory.
                 if ($reldir !== $relns) {

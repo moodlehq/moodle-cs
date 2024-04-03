@@ -221,9 +221,13 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         // Let's process the fixture.
         try {
             if ($this->fixtureFileName !== null) {
+                $fixtureFilename = $this->fixtureFileName;
+                if (DIRECTORY_SEPARATOR !== '/') {
+                    $fixtureFilename = str_replace('/', DIRECTORY_SEPARATOR, $fixtureFilename);
+                }
                 $fixtureSource = file_get_contents($this->fixture);
                 $fixtureContent = <<<EOF
-                phpcs_input_file: {$this->fixtureFileName}
+                phpcs_input_file: {$fixtureFilename}
                 {$fixtureSource}
                 EOF;
                 $phpcsfile = new \PHP_CodeSniffer\Files\DummyFile($fixtureContent, $ruleset, $config);
