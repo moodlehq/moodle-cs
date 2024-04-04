@@ -242,14 +242,17 @@ abstract class MoodleUtil
             }
         }
 
+        $filepath = MoodleUtil::getStandardisedFilename($file);
         // Let's find the first component that matches the file path.
         foreach ($components as $component => $componentPath) {
             // Only components with path.
             if (empty($componentPath)) {
                 continue;
             }
+
             // Look for component paths matching the file path.
-            if (strpos($file->path, $componentPath . '/') === 0) {
+            $componentPath = str_replace('\\', '/', $componentPath . DIRECTORY_SEPARATOR);
+            if (strpos($filepath, $componentPath) === 0) {
                 // First match found should be the better one always. We are done.
                 return $component;
             }
@@ -450,14 +453,15 @@ abstract class MoodleUtil
      */
     public static function isLangFile(File $phpcsFile): bool
     {
+        $filename = MoodleUtil::getStandardisedFilename($phpcsFile);
         // If the file is not under a /lang/[a-zA-Z0-9_-]+/ directory, nothing to check.
         // (note that we are using that regex because it's what PARAM_LANG does).
-        if (preg_match('~/lang/[a-zA-Z0-9_-]+/~', $phpcsFile->getFilename()) === 0) {
+        if (preg_match('~/lang/[a-zA-Z0-9_-]+/~', $filename) === 0) {
             return false;
         }
 
         // If the file is not a PHP file, nothing to check.
-        if (substr($phpcsFile->getFilename(), -4) !== '.php') {
+        if (substr($filename, -4) !== '.php') {
             return false;
         }
 
@@ -476,28 +480,29 @@ abstract class MoodleUtil
      */
     public static function isUnitTest(File $phpcsFile): bool
     {
+        $filename = MoodleUtil::getStandardisedFilename($phpcsFile);
         // If the file isn't called, _test.php, nothing to check.
         if (stripos(basename($phpcsFile->getFilename()), '_test.php') === false) {
             return false;
         }
 
         // If the file isn't under tests directory, nothing to check.
-        if (stripos($phpcsFile->getFilename(), '/tests/') === false) {
+        if (stripos($filename, '/tests/') === false) {
             return false;
         }
 
         // If the file is in a fixture directory, ignore it.
-        if (stripos($phpcsFile->getFilename(), '/tests/fixtures/') !== false) {
+        if (stripos($filename, '/tests/fixtures/') !== false) {
             return false;
         }
 
         // If the file is in a generator directory, ignore it.
-        if (stripos($phpcsFile->getFilename(), '/tests/generator/') !== false) {
+        if (stripos($filename, '/tests/generator/') !== false) {
             return false;
         }
 
         // If the file is in a behat directory, ignore it.
-        if (stripos($phpcsFile->getFilename(), '/tests/behat/') !== false) {
+        if (stripos($filename, '/tests/behat/') !== false) {
             return false;
         }
 
@@ -608,5 +613,15 @@ abstract class MoodleUtil
             fn($token) => $token['line'] === $line,
             ARRAY_FILTER_USE_BOTH
         );
+    }
+
+    /**
+     * Get the standardised filename for the file.
+     *
+     * @param File @phpcsFile
+     * @return string
+     */
+    public static function getStandardisedFilename(File $phpcsFile): string {
+        return str_replace('\\', '/', $phpcsFile->getFilename());
     }
 }

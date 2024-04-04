@@ -38,9 +38,9 @@ class TokenUtilTest extends MoodleCSBaseTestCase
      */
     public function testGetObjectProperties(
         string $content,
-        int $type,
-        string $expectedType,
-        string $expectedName
+        $type,
+        ?string $expectedType,
+        ?string $expectedName
     ): void {
         $config = new Config([]);
         $ruleset = new Ruleset($config);
@@ -89,6 +89,25 @@ class TokenUtilTest extends MoodleCSBaseTestCase
                 T_FUNCTION,
                 'function',
                 'exampleFunction',
+            ],
+            'Unnamed anonymous class' => [
+                <<<EOF
+                <?php
+
+                return new class extends phpunit_coverage_info {
+                    /** @var array The list of folders relative to the plugin root to include in coverage generation. */
+                    protected \$includelistfolders = ['classes'];
+                };
+                EOF,
+                T_ANON_CLASS,
+                'class',
+                'anonymous class',
+            ],
+            'Unnamed closure' => [
+                '<?php $fn = function() {};',
+                T_CLOSURE,
+                'function',
+                'closure',
             ],
         ];
 
@@ -160,5 +179,18 @@ class TokenUtilTest extends MoodleCSBaseTestCase
         }
 
         return $cases;
+    }
+
+    public function testObjectPropertiesInvalidPointer(): void {
+        $config = new Config([]);
+        $ruleset = new Ruleset($config);
+
+        $phpcsFile = new DummyFile('<?php', $ruleset, $config);
+        $phpcsFile->process();
+
+        $stackPtr = 1000;
+
+        $this->assertEquals('', TokenUtil::getObjectType($phpcsFile, $stackPtr));
+        $this->assertEquals('', TokenUtil::getObjectName($phpcsFile, $stackPtr));
     }
 }
