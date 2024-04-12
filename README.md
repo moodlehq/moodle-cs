@@ -16,7 +16,7 @@
 
 ## Information
 
-This repository contains the Moodle Coding Style configurations, written as [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) rulesets.
+This repository contains the Moodle Coding Style configurations, written as [PHP CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer) rulesets.
 
 Two coding styles are included:
 
