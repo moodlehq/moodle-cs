@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Changed
 - Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.10.1) and `PHPCompatibility` (96072c30).
+- The `moodle.Commenting.MissingDocblock` sniff will now detect use of the Override attribute (Fixes #155).
 
 ## [v3.4.6] - 2024-04-03
 ### Fixed
