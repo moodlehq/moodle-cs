@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Added
 - Add new `moodle.PHPUnit.ParentSetUpTearDown` sniff to verify, among other things, that all the `setUp()`, `tearDown()`, `setUpBeforeClass()` and `tearDownAfterClass()` methods in unit tests are properly calling to their parent counterparts. Applies to Moodle 4.5 and up.
+- Add new `moodle.Commenting.ConstructorReturn` sniff to check that constructors do not document a return value.
 
 ### Changed
 - Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.10.1) and `PHPCompatibility` (96072c30).
