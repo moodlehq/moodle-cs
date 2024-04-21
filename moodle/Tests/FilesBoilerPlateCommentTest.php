@@ -69,7 +69,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/blank.php');
 
         $this->setErrors([
-            2 => 'followed by exactly one newline',
+            2 => 'not found at first line',
         ]);
         $this->setWarnings([]);
 
@@ -82,7 +82,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short.php');
 
         $this->setErrors([
-            14 => 'FileTooShort',
+            14 => 'CommentEndedTooSoon',
         ]);
         $this->setWarnings([]);
 
@@ -95,7 +95,20 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_empty.php');
 
         $this->setErrors([
-            1 => 'FileTooShort',
+            1 => 'NoBoilerplateComment',
+        ]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
+
+    public function testMoodleFilesBoilerplateCommentShortNotEof() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_not_eof.php');
+
+        $this->setErrors([
+            15 => 'CommentEndedTooSoon',
         ]);
         $this->setWarnings([]);
 
@@ -138,6 +151,39 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/gnu_https.php');
 
         $this->setErrors([]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
+
+    /**
+     * Assert that boilerplate is found if it is not the first thing in the file.
+     */
+    public function testMoodleFilesBoilerplateCommentWrongPlace() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/wrong_place.php');
+
+        $this->setErrors([
+            2 => 'not found at first line',
+            9 => 'either version 3 of the License',
+        ]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
+
+    /**
+     * Assert that boilerplate is followed by a single newline.
+     */
+    public function testMoodleFilesBoilerplateCommentTrailingWhitespace() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/trailing_whitespace.php');
+
+        $this->setErrors([
+            16 => 'SingleTrailingNewLine',
+        ]);
         $this->setWarnings([]);
 
         $this->verifyCsResults();
