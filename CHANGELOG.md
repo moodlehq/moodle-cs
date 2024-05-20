@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.10.1) and `PHPCompatibility` (96072c30).
 
 ## [v3.4.6] - 2024-04-03
 ### Fixed
