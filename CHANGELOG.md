@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Added
+- Add new `moodle.PHPUnit.ParentSetUpTearDown` sniff to verify, among other things, that all the `setUp()`, `tearDown()`, `setUpBeforeClass()` and `tearDownAfterClass()` methods in unit tests are properly calling to their parent counterparts. Applies to Moodle 4.5 and up.
+
 ### Changed
 - Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.10.1) and `PHPCompatibility` (96072c30).
 - The `moodle.Commenting.MissingDocblock` sniff will now detect use of the Override attribute (Fixes #155).
