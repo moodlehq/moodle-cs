@@ -18,9 +18,6 @@
 namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\Commenting;
 
 use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\DummyFile;
-use PHP_CodeSniffer\Ruleset;
 
 /**
  * Test the MissingDocblockSniff sniff.
@@ -68,11 +65,11 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                     159 => 'Missing docblock for function test_method',
                     166 => 'Missing docblock for function test_method',
                     170 => 'Missing docblock for class example_extends',
+                    171 => 'Missing docblock for function test_method',
                     175 => 'Missing docblock for class example_implements',
+                    176 => 'Missing docblock for function test_method',
                 ],
                 'warnings' => [
-                    171 => 'Missing docblock for function test_method',
-                    176 => 'Missing docblock for function test_method',
                 ],
             ],
             'File level tag, no class' => [
@@ -164,6 +161,22 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'warnings' => [
                     15 => 'Missing docblock for function this_is_not_a_test in testcase',
                     18 => 'Missing docblock for function this_is_a_dataprovider in testcase',
+                ],
+            ],
+            'With and without Overrides attributes' => [
+                'fixture' => 'with_and_without_overrides',
+                'fixtureFilename' => null,
+                'errors' => [
+                    1 => 'Missing docblock for file with_and_without_overrides.php',
+                    11 => 'Missing docblock for function has_override',
+                    13 => 'Missing docblock for function no_override',
+                    21 => 'Missing docblock for function has_override',
+                    23 => 'Missing docblock for function no_override',
+                    33 => 'Missing docblock for function no_override',
+                    43 => 'Missing docblock for function no_override',
+                    53 => 'Missing docblock for function no_override',
+                ],
+                'warnings' => [
                 ],
             ],
         ];
