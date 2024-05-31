@@ -1,16 +1,16 @@
 <?php
 defined('MOODLE_INTERNAL') || die(); // Make this always the 1st line in all CS fixtures.
 
-class missing_setup_teardown_test extends Something {
+class no_statement_setup_teardown_test extends Something {
     public function setUp(): void {
-    }
 
+    }
     public function tearDown(): void {
+        // This is not an statement.
     }
-
     public static function setUpBeforeClass(): void {
+        /** This is not an statement */
     }
-
     public static function tearDownAfterClass(): void {
     }
 }
@@ -86,4 +86,11 @@ class best_insertion_setup_teardown_test extends Something {
         global $CFG;
         require('somefile.php');
     }
+}
+
+class empty_setup_teardown_test extends Something {
+    public function setUp(): void {}
+    public function tearDown(): void {}
+    public static function setUpBeforeClass(): void {}
+    public static function tearDownAfterClass(): void {  } // Same line.
 }

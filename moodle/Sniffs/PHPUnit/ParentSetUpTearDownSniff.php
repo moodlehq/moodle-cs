@@ -143,15 +143,30 @@ class ParentSetUpTearDownSniff implements Sniff
                     );
                 }
 
-                // If there are no calls to correct parent, report it. Fixable.
+                // If there are no calls to correct parent, report it.
                 if (count($correctParentCalls) === 0) {
-                    // Any weird case where the method is empty, we need at very least 1 line. Skip.
-                    $startLine = $tokens[$tokens[$mStart]['scope_opener']]['line'];
-                    $endLine = $tokens[$tokens[$mStart]['scope_closer']]['line'];
-                    if ($startLine === $endLine) {
+                    // Unlikely case of empty method, report it and continue. Not fixable.
+                    // Find the next thing that is not an empty token.
+                    $ignore = \PHP_CodeSniffer\Util\Tokens::$emptyTokens;
+
+                    $nextValidStatement = $phpcsFile->findNext(
+                        $ignore,
+                        $tokens[$mStart]['scope_opener'] + 1,
+                        $tokens[$mStart]['scope_closer'],
+                        true
+                    );
+                    if ($nextValidStatement === false) {
+                        $phpcsFile->addError(
+                            'The %s() method in unit tests must not be empty',
+                            $mStart,
+                            'Empty' . ucfirst($method),
+                            [$method]
+                        );
+
                         continue;
                     }
 
+                    // If the method is not empty, let's report the missing call. Fixable.
                     $fix = $phpcsFile->addFixableError(
                         'The %s() method in unit tests must always call to parent::%s().',
                         $mStart,

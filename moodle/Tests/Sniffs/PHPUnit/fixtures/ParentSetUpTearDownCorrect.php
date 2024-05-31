@@ -24,10 +24,6 @@ class correct_setup_teardown_test extends Something {
 }
 
 class another_correct_setup_teardown_test extends Something {
-    public function setUp(): void {}
-    public function tearDown(): void {}
-    public static function setUpBeforeClass(): void {}
-    public static function tearDownAfterClass(): void {  } // Same line.
     public function ignoredMethod(): void {
          parent::setUp();
          parent::tearDown();
