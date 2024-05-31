@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+
+## [v3.4.7] - 2024-05-31
 ### Added
 - Add new `moodle.PHPUnit.ParentSetUpTearDown` sniff to verify, among other things, that all the `setUp()`, `tearDown()`, `setUpBeforeClass()` and `tearDownAfterClass()` methods in unit tests are properly calling to their parent counterparts. Applies to Moodle 4.5 and up.
 - Add new `moodle.Commenting.ConstructorReturn` sniff to check that constructors do not document a return value.
@@ -13,6 +15,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ### Changed
 - Update composer dependencies to current versions, notably `PHP_CodeSniffer` (3.10.1) and `PHPCompatibility` (96072c30).
 - The `moodle.Commenting.MissingDocblock` sniff will now detect use of the Override attribute (Fixes #155).
+
+### Fixed
+- Various fixes to own (GH workflow) integration tests.
 
 ## [v3.4.6] - 2024-04-03
 ### Fixed
@@ -217,7 +222,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.6...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.7...main
+[v3.4.7]: https://github.com/moodlehq/moodle-cs/compare/v3.4.6...v3.4.7
 [v3.4.6]: https://github.com/moodlehq/moodle-cs/compare/v3.4.5...v3.4.6
 [v3.4.5]: https://github.com/moodlehq/moodle-cs/compare/v3.4.4...v3.4.5
 [v3.4.4]: https://github.com/moodlehq/moodle-cs/compare/v3.4.3...v3.4.4
