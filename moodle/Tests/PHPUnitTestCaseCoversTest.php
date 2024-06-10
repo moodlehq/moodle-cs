@@ -93,9 +93,18 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
             'CoversDefaultClass' => [
                 'fixture' => 'fixtures/phpunit/testcasecovers_coversdefaultclass.php',
                 'errors' => [
-                    8 => 'Wrong @coversDefaultClass annotation, it must be FQCN (\\ prefixed)',
-                    9 => 'TestCaseCovers.WrongMethod',
-                    10 => '@coversDefaultClass annotation, it must contain some value',
+                    8 => [
+                        'Wrong @coversDefaultClass annotation, it must be FQCN (\\ prefixed)',
+                        'Class coversdefaultclass_test has more than one @coversDefaultClass tag',
+                    ],
+                    9 => [
+                        'TestCaseCovers.WrongMethod',
+                        'TestCaseCovers.MultipleDefaultClass',
+                    ],
+                    10 => [
+                        '@coversDefaultClass annotation, it must contain some value',
+                        'Class coversdefaultclass_test has more than one @coversDefaultClass tag',
+                    ],
                     14 => 'test_something() has @coversDefaultClass tag',
                     15 => 'TestCaseCovers.DefaultClassNotAllowed',
                     16 => 'TestCaseCovers.DefaultClassNotAllowed',

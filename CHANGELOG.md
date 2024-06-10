@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Added
+- The existing `moodle.PHPUnit.TestCaseCovers` sniff now detects multiple uses of the `@coversDefaultClass` annotation. Only one is allowed by class. 
 
 ## [v3.4.7] - 2024-05-31
 ### Added
