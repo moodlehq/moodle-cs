@@ -52,7 +52,7 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
 
     public static function docblockCorrectnessProvider(): array {
         $cases = [
-            'Multiple artifacts in a file' => [
+            'Multiple artifacts in a file, check messages' => [
                 'fixture' => 'multiple_artifacts',
                 'fixtureFilename' => null,
                 'errors' => [
@@ -68,6 +68,26 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                     171 => 'Missing docblock for function test_method',
                     175 => 'Missing docblock for class example_implements',
                     176 => 'Missing docblock for function test_method',
+                ],
+                'warnings' => [
+                ],
+            ],
+            'Multiple artifacts in a file, check codes' => [
+                'fixture' => 'multiple_artifacts',
+                'fixtureFilename' => null,
+                'errors' => [
+                    1 => 'moodle.Commenting.MissingDocblock.File',
+                    34 => 'moodle.Commenting.MissingDocblock.Function',
+                    38 => 'moodle.Commenting.MissingDocblock.Class',
+                    95 => 'moodle.Commenting.MissingDocblock.Interface',
+                    118 => 'moodle.Commenting.MissingDocblock.Trait',
+                    151 => 'moodle.Commenting.MissingDocblock.Function',
+                    159 => 'moodle.Commenting.MissingDocblock.Function',
+                    166 => 'moodle.Commenting.MissingDocblock.Function',
+                    170 => 'moodle.Commenting.MissingDocblock.Class',
+                    171 => 'moodle.Commenting.MissingDocblock.Function',
+                    175 => 'moodle.Commenting.MissingDocblock.Class',
+                    176 => 'moodle.Commenting.MissingDocblock.Function',
                 ],
                 'warnings' => [
                 ],
