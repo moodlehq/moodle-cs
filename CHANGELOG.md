@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+
+## [v3.4.8] - 2024-06-14
 ### Added
 - The existing `moodle.PHPUnit.TestCaseCovers` sniff now detects multiple uses of the `@coversDefaultClass` annotation. Only one is allowed by class.
 - The existing `moodle.Files.BoilerplateComment` sniff now performs more checks (spacing, placement, blank lines, ...) and is able to fix many of them.
@@ -228,7 +230,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.7...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.8...main
+[v3.4.8]: https://github.com/moodlehq/moodle-cs/compare/v3.4.7...v3.4.8
 [v3.4.7]: https://github.com/moodlehq/moodle-cs/compare/v3.4.6...v3.4.7
 [v3.4.6]: https://github.com/moodlehq/moodle-cs/compare/v3.4.5...v3.4.6
 [v3.4.5]: https://github.com/moodlehq/moodle-cs/compare/v3.4.4...v3.4.5
