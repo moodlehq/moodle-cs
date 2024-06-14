@@ -174,12 +174,28 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     }
 
     /**
-     * Assert that boilerplate is followed by a single newline.
+     * Assert that boilerplate is followed by a single newline (detect and remove excessive)
      */
     public function testMoodleFilesBoilerplateCommentTrailingWhitespace() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/trailing_whitespace.php');
+
+        $this->setErrors([
+            16 => 'SingleTrailingNewLine',
+        ]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
+
+    /**
+     * Assert that boilerplate is followed by a single newline (detect and fix missing)
+     */
+    public function testMoodleFilesBoilerplateCommentTrailingWhitespaceMissing() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/trailing_whitespace_missing.php');
 
         $this->setErrors([
             16 => 'SingleTrailingNewLine',
