@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Added
 - The existing `moodle.PHPUnit.TestCaseCovers` sniff now detects multiple uses of the `@coversDefaultClass` annotation. Only one is allowed by class.
+- The existing `moodle.Files.BoilerplateComment` sniff now performs more checks (spacing, placement, blank lines, ...) and is able to fix many of them.
 
 ### Changed
 - Made codes for `moodle.Commenting.MissingDocblock` more specific to the scenario (Fixes #154).
