@@ -110,7 +110,7 @@ class MissingDocblockSniff implements Sniff
             $objectName = TokenUtil::getObjectName($phpcsFile, $typePtr);
             $objectType = TokenUtil::getObjectType($phpcsFile, $typePtr);
 
-            $phpcsFile->addError('Missing docblock for %s %s', $typePtr, $objectType, [$objectType, $objectName]);
+            $phpcsFile->addError('Missing docblock for %s %s', $typePtr, ucfirst($objectType), [$objectType, $objectName]);
         }
 
         if ($artifactCount === 1) {
@@ -208,7 +208,7 @@ class MissingDocblockSniff implements Sniff
                     );
                 }
             } else {
-                $phpcsFile->addError('Missing docblock for %s %s', $typePtr, $objectType, [$objectType, $objectName]);
+                $phpcsFile->addError('Missing docblock for %s %s', $typePtr, ucfirst($objectType), [$objectType, $objectName]);
             }
         }
     }
