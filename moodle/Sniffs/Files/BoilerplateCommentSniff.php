@@ -166,7 +166,22 @@ class BoilerplateCommentSniff implements Sniff
             return;
         }
 
-        $tokenptr++;
+        // Let's jump over all the extra (allowed) consecutive comments to find the first non-comment token.
+        $lastComment = $tokenptr;
+        $nextComment = $tokenptr;
+        while (($nextComment = $phpcsFile->findNext(T_COMMENT, ($nextComment + 1), null, false)) !== false) {
+            // Only \n is allowed as spacing since the previous comment line.
+            if (strpos($tokens[$nextComment - 1]['content'], "\n") === false) {
+                // Stop looking for consecutive comments, some spacing broke the sequence.
+                break;
+            }
+            if ($tokens[$nextComment]['line'] !== ($tokens[$lastComment]['line'] + 1)) {
+                // Stop looking for comments, the lines are not consecutive.
+                break;
+            }
+            $lastComment = $nextComment;
+        }
+        $tokenptr = $lastComment + 1; // Move to the last found comment + 1.
 
         $nextnonwhitespace = $phpcsFile->findNext(T_WHITESPACE, $tokenptr, null, true);
 

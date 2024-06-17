@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Fixed
+- Fixed a recent regression by allowing to the `moodle.Files.BoilerplateComment` sniff to contain "extra" consecutive comment lines immediately after the official boilerplate ends.
 
 ## [v3.4.8] - 2024-06-14
 ### Added
