@@ -184,4 +184,99 @@ class AttributesTest extends MoodleCSBaseTestCase
 
         $this->assertNull(Attributes::getAttributeProperties($phpcsFile, $searchPtr));
     }
+
+/**
+     * @dataProvider hasOverrideAttributeProvider
+     */
+    public function testHasOverrideAttribute(
+        string $content,
+        $stackPtrSearch,
+        bool $expected
+    ): void {
+        $config = new Config([]);
+        $ruleset = new Ruleset($config);
+
+        $phpcsFile = new DummyFile($content, $ruleset, $config);
+        $phpcsFile->process();
+
+        $searchPtr = $phpcsFile->findNext($stackPtrSearch, 0);
+
+        $this->assertEquals($expected, Attributes::hasOverrideAttribute($phpcsFile, $searchPtr));
+    }
+
+    public static function hasOverrideAttributeProvider(): array {
+        return [
+            'Not in a method' => [
+                '<?php
+                protected $example;
+                function exampleFunction(string $param): void {}',
+                T_PROPERTY,
+                false,
+            ],
+            'Not in a class' => [
+                '<?php
+                function exampleFunction(string $param): void {}',
+                T_FUNCTION,
+                false,
+            ],
+            'Not in a class, has Override' => [
+                '<?php
+                #[\Override]
+                function exampleFunction(string $param): void {}',
+                T_FUNCTION,
+                false,
+            ],
+            'In a class, no Override' => [
+                '<?php
+                class Example {
+                    function exampleFunction(string $param): void {}
+                }',
+                T_FUNCTION,
+                false,
+            ],
+            'In a class, does not extend/implement, has Override' => [
+                '<?php
+                class Example {
+                    #[\Override]
+                    function exampleFunction(string $param): void {}
+                }',
+                T_FUNCTION,
+                false,
+            ],
+            'In a class, extends, no Override' => [
+                '<?php
+                class Example extends OtherExample {
+                    function exampleFunction(string $param): void {}
+                }',
+                T_FUNCTION,
+                false,
+            ],
+            'In a class, implements, no Override' => [
+                '<?php
+                class Example implements OtherExample {
+                    function exampleFunction(string $param): void {}
+                }',
+                T_FUNCTION,
+                false,
+            ],
+            'In a class, extends, has Override' => [
+                '<?php
+                class Example extends OtherExample {
+                    #[\Override]
+                    function exampleFunction(string $param): void {}
+                }',
+                T_FUNCTION,
+                true,
+            ],
+            'In a class, implements, has Override' => [
+                '<?php
+                class Example implements OtherExample {
+                    #[\Override]
+                    function exampleFunction(string $param): void {}
+                }',
+                T_FUNCTION,
+                true,
+            ],
+        ];
+    }
 }

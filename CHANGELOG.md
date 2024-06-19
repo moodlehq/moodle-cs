@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- The `moodle.NamingConventions.ValidFunctionName` sniff will now ignore errors on methods employing the `#[\Override]` attribute.
+
 ## [v3.4.9] - 2024-06-19
 ### Fixed
 - Fixed a recent regression by allowing to the `moodle.Files.BoilerplateComment` sniff to contain "extra" consecutive comment lines immediately after the official boilerplate ends.

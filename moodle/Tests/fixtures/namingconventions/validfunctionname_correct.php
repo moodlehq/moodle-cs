@@ -64,3 +64,10 @@ return new class {
         echo 'hi';
     }
 };
+
+class example extends class_with_correct_function_names {
+    #[\Override]
+    public function childMethod(): void {
+        echo 'hi';
+    }
+}
