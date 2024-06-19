@@ -18,4 +18,6 @@
 // to put any other information. We only will require the blank line
 // after the whole boilerplate ends.
 
+// But this is already considered another comments block, valid but another,
+// so we don't require the blank line here (we have required it above).
 class someclass { }

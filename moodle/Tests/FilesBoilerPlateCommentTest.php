@@ -48,6 +48,14 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->setWarnings([]);
 
         $this->verifyCsResults();
+
+        // Finally, try with another comments block after the boilerplate.
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/ok3.php');
+
+        $this->setErrors([]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
     }
 
     public function testMoodleFilesBoilerplateCommentNoPHP() {
