@@ -199,6 +199,31 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'warnings' => [
                 ],
             ],
+            'Anonymous class as only class in file (documented)' => [
+                'fixture' => 'entire_anonymous_class_documented',
+                'fixtureFilename' => null,
+                'errors' => [
+                ],
+                'warnings' => [
+                ],
+            ],
+            'Anonymous class as only class in file (undocumented)' => [
+                'fixture' => 'entire_anonymous_class',
+                'fixtureFilename' => null,
+                'errors' => [
+                    5 => 'Missing docblock for class anonymous class',
+                ],
+                'warnings' => [
+                ],
+            ],
+            'Anonymous class as member of method' => [
+                'fixture' => 'nested_anonymous_class',
+                'fixtureFilename' => null,
+                'errors' => [
+                ],
+                'warnings' => [
+                ],
+            ],
         ];
 
         if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
