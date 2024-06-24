@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Changed
 - The `moodle.NamingConventions.ValidFunctionName` sniff will now ignore errors on methods employing the `#[\Override]` attribute.
+- The `moodle.Commenting.MissingDocblock` sniff no longer warns about missing docs on non-global anonymous classes, for example those written as an instance class in a unit test.
 
 ## [v3.4.9] - 2024-06-19
 ### Fixed
