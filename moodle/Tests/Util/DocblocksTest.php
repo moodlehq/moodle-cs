@@ -33,11 +33,21 @@ use PHP_CodeSniffer\Ruleset;
  */
 class DocblocksTest extends MoodleCSBaseTestCase
 {
-    public function testgetDocBlockPointer(): void {
+    public static function getNullDocBlockPointerProvider(): array {
+        return [
+            'global_scope_code' => ['none_global_scope.php'],
+            'oop_scope_code' => ['none.php'],
+        ];
+    }
+
+    /**
+     * @dataProvider getNullDocBlockPointerProvider
+     */
+    public function testGetNullDocBlockPointer(string $fixture): void {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
-            __DIR__ . '/fixtures/docblocks/none.php',
+            __DIR__ . '/fixtures/docblocks/' . $fixture,
             $phpcsRuleset,
             $phpcsConfig
         );

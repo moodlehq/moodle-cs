@@ -14,12 +14,5 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\Tests;
-
-class example {
-    public function get_something() {
-        /** @var int $variable */
-        $variable = 1;
-        return $variable;
-    }
-}
+// Just an extreme case, that makes no sense within Moodle, but it's a valid PHP file.
+$variable = 1;
