@@ -212,4 +212,32 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
 
         $this->verifyCsResults();
     }
+
+    public function testMoodleFilesBoilerplateCommentFirstlineComment() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/firstline_comment.php');
+
+        $this->setErrors([
+            1 => 'NoBoilerplateComment',
+        ]);
+
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
+
+    public function testMoodleFilesBoilerplateCommentWithPhpcsTag() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/with_phpcs_tag.php');
+
+        $this->setErrors([
+            1 => 'NoBoilerplateComment',
+        ]);
+
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
 }
