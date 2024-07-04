@@ -233,8 +233,16 @@ class BoilerplateCommentSniff implements Sniff
 
     private function insertBoilerplate(File $file, int $stackptr): void
     {
-        $prefix = substr($file->getTokens()[$stackptr]['content'], -1) === "\n" ? '' : "\n";
-        $file->fixer->addContent($stackptr, $prefix . implode("\n", $this->fullComment()) . "\n");
+        $token = $file->getTokens()[$stackptr];
+        $paddedComment = implode("\n", $this->fullComment()) . "\n";
+
+        if ($token['code'] === T_OPEN_TAG) {
+            $replacement = trim($token['content']) . "\n" . $paddedComment;
+            $file->fixer->replaceToken($stackptr, $replacement);
+        } else {
+            $prefix = substr($token['content'], -1) === "\n" ? '' : "\n";
+            $file->fixer->addContent($stackptr, $prefix . $paddedComment);
+        }
     }
 
     private function moveBoilerplate(File $file, int $start, int $target): void
