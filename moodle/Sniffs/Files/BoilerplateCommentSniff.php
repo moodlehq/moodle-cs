@@ -288,6 +288,11 @@ class BoilerplateCommentSniff implements Sniff
      */
     private function regexForLine(string $line): string
     {
+        // We need to match the blank lines in their entirety.
+        if ($line === '//') {
+            return '/^\/\/$/';
+        }
+
         return str_replace(
             ['Moodle', 'https\\:'],
             ['.*', 'https?\\:'],
