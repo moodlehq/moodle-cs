@@ -240,4 +240,26 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
 
         $this->verifyCsResults();
     }
+
+    public function testMoodleFilesBoilerplateCommentMissingLines() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/missing_lines.php');
+
+        $this->setErrors([
+            3 => 'moodle.Files.BoilerplateComment.WrongLine',
+            4 => 'moodle.Files.BoilerplateComment.WrongLine',
+            5 => 'moodle.Files.BoilerplateComment.WrongLine',
+            6 => 'moodle.Files.BoilerplateComment.WrongLine',
+            7 => 'moodle.Files.BoilerplateComment.WrongLine',
+            8 => 'moodle.Files.BoilerplateComment.WrongLine',
+            9 => 'moodle.Files.BoilerplateComment.WrongLine',
+            10 => 'moodle.Files.BoilerplateComment.WrongLine',
+            11 => 'moodle.Files.BoilerplateComment.WrongLine',
+            12 => ['moodle.Files.BoilerplateComment.WrongLine', 'moodle.Files.BoilerplateComment.CommentEndedTooSoon'],
+        ]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
 }
