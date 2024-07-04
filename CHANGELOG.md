@@ -6,12 +6,14 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.4.10] - 2024-07-04
 ### Changed
 - The `moodle.NamingConventions.ValidFunctionName` sniff will now ignore errors on methods employing the `#[\Override]` attribute.
 - The `moodle.Commenting.MissingDocblock` sniff no longer warns about missing docs on non-global anonymous classes, for example those written as an instance class in a unit test.
 
 ### Fixed
 - Fixed an edge case leading to the file phpdoc block being incorrectly detected by various sniffs.
+- Fixed a couple of problems with the `moodle.Files.BoilerplateComment` related to empty comment lines and to comments in the `<?php` open tag line.
 
 ## [v3.4.9] - 2024-06-19
 ### Fixed
@@ -240,7 +242,8 @@ All features are maintained and no new features have been introduced to either t
 
 All the details about [previous releases] can be found in [local_codechecker](https://github.com/moodlehq/moodle-local_codechecker) own change log.
 
-[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.9...main
+[Unreleased]: https://github.com/moodlehq/moodle-cs/compare/v3.4.10...main
+[v3.4.10]: https://github.com/moodlehq/moodle-cs/compare/v3.4.9...v3.4.10
 [v3.4.9]: https://github.com/moodlehq/moodle-cs/compare/v3.4.8...v3.4.9
 [v3.4.8]: https://github.com/moodlehq/moodle-cs/compare/v3.4.7...v3.4.8
 [v3.4.7]: https://github.com/moodlehq/moodle-cs/compare/v3.4.6...v3.4.7
