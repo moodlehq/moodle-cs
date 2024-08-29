@@ -57,13 +57,13 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         'THEME',
         'USER',
         'XMLDB',
-    
+
         // Moodle global literals.
         'FULLME',
         'FULLSCRIPT',
         'ME',
         'SCRIPT',
-    
+
         // Moodle private objects.
         'ACCESSLIB_PRIVATE',
         'CONDITIONLIB_PRIVATE', // Removed in Moodle 2.7.
