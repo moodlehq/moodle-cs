@@ -28,6 +28,16 @@ class class_multiline_attribute {
     }
 }
 
+/*
+ * Function with multiline attributes.
+ */
+#[someattribute(
+    attr1: 'asdf',
+    attr2: 'asdf',
+)]
+function single_method_multiline_attribute(): void {
+}
+
 /**
  * Interface with multiline attributes.
  */
@@ -68,6 +78,17 @@ class class_multiline_attribute_space_between {
     )]
     function method_multiline_attribute_space_between(): void {
     }
+}
+
+/*
+ * Function with multiline attributes and space between.
+ */
+
+#[someattribute(
+    attr1: 'asdf',
+    attr2: 'asdf',
+)]
+function single_method_multiline_attribute_space_between(): void {
 }
 
 /**
