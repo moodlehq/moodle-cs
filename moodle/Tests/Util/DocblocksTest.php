@@ -268,7 +268,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
                      * @Given
                      * @When
                      * @Then
-                     * @Given
+                     * @Transform
                      */
                     function exampleFunction(string $param): void {}
                 }',
@@ -288,7 +288,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
                      * @Given
                      * @When
                      * @Then
-                     * @Given
+                     * @Transform
                      */
                     function exampleFunction(string $param): void {}
                 }',
