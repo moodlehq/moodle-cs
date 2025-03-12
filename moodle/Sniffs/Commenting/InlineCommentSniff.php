@@ -100,6 +100,7 @@ class InlineCommentSniff implements Sniff
                 T_STATIC,
                 T_ABSTRACT,
                 T_CONST,
+                T_ENUM,
                 T_PROPERTY,
                 T_INCLUDE,
                 T_INCLUDE_ONCE,
