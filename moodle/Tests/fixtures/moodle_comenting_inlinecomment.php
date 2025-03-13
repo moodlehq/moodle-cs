@@ -146,3 +146,7 @@ function dah() {
     //
 
     // Blank comments, like previous one, are ugly too.
+}
+
+/** This is an enum comment */
+enum commented_enum {}

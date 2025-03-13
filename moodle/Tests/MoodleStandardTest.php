@@ -164,6 +164,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
           143 => '@Message: Tab found before comment',
           144 => '@Source: moodle.Commenting.InlineComment.SpacingBefore',
           146 => '@Message: Blank comments are not allowed',
+          152 => 0,
         ]);
         $this->setWarnings([
             4 => 0,
@@ -182,6 +183,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
            79 => 1,
           118 => 0,
           122 => 0,
+          152 => 0,
         ]);
 
         // Let's do all the hard work!
