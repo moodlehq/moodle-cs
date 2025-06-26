@@ -29,25 +29,6 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  */
 class InlineCommentSniffTest extends MoodleCSBaseTestCase
 {
-    public function testCommentBeforeAttribute(): void {
-        // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
-        $this->setSniff('moodle.Commenting.InlineComment');
-        $this->setFixture(__DIR__ . '/../../fixtures/Commenting/InlineCommentAttributeAfter.php');
-
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $errors = [];
-        $warnings = [];
-        $this->setErrors($errors);
-        $this->setWarnings($warnings);
-
-        // Let's do all the hard work!
-        $this->verifyCsResults();
-    }
-
     /**
      * @dataProvider commentsProvider
      */
@@ -70,6 +51,12 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
     }
 
     public static function commentsProvider(): \Generator {
+        yield '' => [
+            'fixture' => 'attributes',
+            'fixtureFilename' => null,
+            'errors' => [],
+            'warnings' => [],
+        ];
         yield 'Closing punctuation behaves correctly' => [
             'fixture' => 'punctuation',
             'fixtureFilename' => null,
