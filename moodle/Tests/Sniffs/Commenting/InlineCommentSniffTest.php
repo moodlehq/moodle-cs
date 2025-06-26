@@ -47,4 +47,41 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
         // Let's do all the hard work!
         $this->verifyCsResults();
     }
+
+    /**
+     * @dataProvider commentsProvider
+     */
+    public function testComments(
+        string $fixture,
+        ?string $fixtureFilename,
+        array $errors,
+        array $warnings
+    ): void {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Commenting.InlineComment');
+        $this->setFixture(sprintf("%s/fixtures/InlineComment/%s.php", __DIR__, $fixture), $fixtureFilename);
+        $this->setWarnings($warnings);
+        $this->setErrors($errors);
+        $this->setComponentMapping([
+            'local_codechecker' => dirname(__DIR__),
+        ]);
+
+        $this->verifyCsResults();
+    }
+
+    public static function commentsProvider(): \Generator {
+        yield 'Closing punctuation behaves correctly' => [
+            'fixture' => 'punctuation',
+            'fixtureFilename' => null,
+            'errors' => [
+            ],
+            'warnings' => [
+                38 => 'Inline comments must end in ',
+                54 => 'Inline comments must end in ',
+                61 => 'Inline comments must end in ',
+                63 => 'Inline comments must end in ',
+                65 => 'Inline comments must end in ',
+            ],
+        ];
+    }
 }
