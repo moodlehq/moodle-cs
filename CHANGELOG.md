@@ -6,8 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.4.11] - 2025-06-26
 ### Fixed
 - The `moodle.Commenting.InlineComment` sniff will now accept a full-stop inside a closing parentheses as valid English.
+- The `@Transform` tag is now an accepted tag for Behat tests
+- The `moodle.Commenting.InlineComment` sniff is now aware of PHP `enum` types.
+
 
 ## [v3.4.10] - 2024-07-04
 ### Changed
