@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Fixed
+- The `moodle.Commenting.InlineComment` sniff will now accept a full-stop inside a closing parentheses as valid English.
+
 ## [v3.4.10] - 2024-07-04
 ### Changed
 - The `moodle.NamingConventions.ValidFunctionName` sniff will now ignore errors on methods employing the `#[\Override]` attribute.
