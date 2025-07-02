@@ -11,6 +11,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
   - `squizlabs/php_codesniffer` to 3.13.2
   - `phpcsstandards/phpcsextra` to 1.4.0
   - `dealerdirect/phpcodesniffer-composer-installer` to 1.1.1
+- A number of legacy Moodle rules have been removed. See MDLSITE-7597 for further information.
 
 ## [v3.4.11] - 2025-06-26
 ### Fixed
