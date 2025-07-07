@@ -9,11 +9,6 @@
     <!-- Extend the standard Moodle coding style -->
     <rule ref="moodle"/>
 
-    <!-- Best practice improvements -->
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax">
-        <type>error</type>
-    </rule>
-
     <!--
         Moodle contains a lot of code which pre-dates PHP 7.1 and did not support constant visibility.
         We do not warn about these in the `moodle` standard, but we do want to detect them here with the view to warning about them in the future.
