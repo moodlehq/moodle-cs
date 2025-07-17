@@ -58,7 +58,9 @@
     <exclude name="moodle.NamingConventions.ValidVariableName.VariableNameLowerCase" phpcbf-only="true" />
 
     <!-- Disallow the Long Array syntax `array()` -->
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax">
+        <type>error</type>
+    </rule>
 
     <!--
         Trailing commas in multi-line Arrays.
