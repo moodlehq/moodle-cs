@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+## [v3.5.0] - 2025-07-17
 ### Changed
 - Bumped dependencies for:
   - `squizlabs/php_codesniffer` to 3.13.2
@@ -13,6 +14,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
   - `dealerdirect/phpcodesniffer-composer-installer` to 1.1.1
 - A number of legacy Moodle rules have been removed. See MDLSITE-7597 for further information.
 - The `Generic.Arrays.DisallowLongArraySyntax` rule has been changed to an error as planned in #58.
+- The list of global variables has been updated to reflect the complete list of globals used in Moodle #182.
 
 ## [v3.4.11] - 2025-06-26
 ### Fixed
