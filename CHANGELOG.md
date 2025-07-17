@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- Bumped dependencies for:
+  - `squizlabs/php_codesniffer` to 3.13.2
+  - `phpcsstandards/phpcsextra` to 1.4.0
+  - `dealerdirect/phpcodesniffer-composer-installer` to 1.1.1
+
 ## [v3.4.11] - 2025-06-26
 ### Fixed
 - The `moodle.Commenting.InlineComment` sniff will now accept a full-stop inside a closing parentheses as valid English.
