@@ -16,7 +16,7 @@ class cpp_only {
         /**
          * The page to do it on.
          *
-         * @deprecated
+         * @throws \Exception
          * @var \moodle_page
          */
         public readonly \moodle_page $page,

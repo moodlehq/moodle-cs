@@ -79,7 +79,7 @@ class class_only {
      * Other tag (not supported).
      *
      * @var string
-     * @deprecated Since 4.4.0
+     * @throws \Exception
      */
     protected string $hasothertag;
 
