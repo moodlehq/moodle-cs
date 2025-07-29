@@ -60,7 +60,7 @@ class VariableCommentSniffTest extends MoodleCSBaseTestCase
                     90 => 'The @var tag must be the first tag in a member variable comment',
                 ],
                 'warnings' => [
-                    82 => '@deprecated tag is not allowed in member variable comment',
+                    82 => '@throws tag is not allowed in member variable comment',
                 ],
             ],
             'Single line variable declarations' => [
@@ -98,6 +98,13 @@ class VariableCommentSniffTest extends MoodleCSBaseTestCase
                 'warnings' => [
                 ],
             ],
+            'Other allowed tags' => [
+                'fixture' => 'other_allowed_tags',
+                'errors' => [
+                ],
+                'warnings' => [
+                ],
+            ],
         ];
 
         if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
@@ -110,7 +117,7 @@ class VariableCommentSniffTest extends MoodleCSBaseTestCase
                     20 => 'The @var tag must be the first tag in a member variable commen',
                 ],
                 'warnings' => [
-                    19 => '@deprecated tag is not allowed in member variable comment',
+                    19 => '@throws tag is not allowed in member variable comment',
                 ],
             ];
         }
@@ -125,7 +132,7 @@ class VariableCommentSniffTest extends MoodleCSBaseTestCase
                     20 => 'The @var tag must be the first tag in a member variable commen',
                 ],
                 'warnings' => [
-                    19 => '@deprecated tag is not allowed in member variable comment',
+                    19 => '@throws tag is not allowed in member variable comment',
                 ],
             ];
         }
