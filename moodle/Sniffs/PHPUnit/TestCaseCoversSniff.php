@@ -417,13 +417,7 @@ class TestCaseCoversSniff implements Sniff
                 continue; // No attribute found, skip.
             }
 
-            $qualifiedClassname = ClassnameUtil::qualifyClassname(
-                $file,
-                $attributePtr,
-                $attribute['attribute_name']
-            );
-
-            if (in_array($qualifiedClassname, $validAttributes)) {
+            if (in_array($attribute['qualified_name'], $validAttributes)) {
                 // Valid attribute found.
                 return true;
             }

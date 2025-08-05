@@ -18,8 +18,6 @@
 namespace MoodleHQ\MoodleCS\moodle\Util;
 
 use PHP_CodeSniffer\Files\File;
-use PHPCSUtils\Utils\Context;
-use PHPCSUtils\Utils\Namespaces;
 use PHPCSUtils\Utils\ObjectDeclarations;
 
 /**
@@ -92,6 +90,7 @@ abstract class Attributes
             'attribute_opener' => $opener,
             'attribute_closer' => $closer,
             'attribute_name' => null,
+            'qualified_name' => null,
         ];
 
         $stopAt = [
@@ -105,7 +104,13 @@ abstract class Attributes
             $properties['attribute_name'] .= $tokens[$i]['content'];
         }
 
-        // TODO Get the qualified name.
+        if ($properties['attribute_name'] !== null) {
+            $properties['qualified_name'] = NamespaceScopeUtil::getQualifiedName(
+                $phpcsFile,
+                $stackPtr,
+                $properties['attribute_name']
+            );
+        }
 
         return $properties;
     }
