@@ -17,6 +17,8 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 
+use MoodleHQ\MoodleCS\moodle\Util\Attributes;
+use MoodleHQ\MoodleCS\moodle\Util\ClassnameUtil;
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
@@ -58,6 +60,11 @@ class TestCaseCoversSniff implements Sniff
             return; // @codeCoverageIgnore
         }
 
+        $supportsAttributes = true;
+        if (MoodleUtil::meetsMinimumMoodleVersion($file, 500) === false) {
+            $supportsAttributes = false;
+        }
+
         // We have all we need from core, let's start processing the file.
 
         // Get the file tokens, for ease of use.
@@ -96,6 +103,32 @@ class TestCaseCoversSniff implements Sniff
             // Ignore non ended "_test|_testcase" classes.
             if (substr($class, -5) !== '_test' && substr($class, -9) != '_testcase') {
                 continue;
+            }
+
+            if ($supportsAttributes) {
+                // From PHPUnit 10 onwards, the class may be annotated with attributes.
+                // The following attributes exist:
+                // - #[\PHPUnit\Framework\Attributes\CoversClass]
+                // - #[\PHPUnit\Framework\Attributes\CoversTrait]
+                // - #[\PHPUnit\Framework\Attributes\CoversMethod]
+                // - #[\PHPUnit\Framework\Attributes\CoversFunction]
+                // - #[\PHPUnit\Framework\Attributes\CoversNothing]
+
+                // All of these may be at the class level.
+                // Only the `CoversNothing` attribute is allowed to be used at the method level.
+
+                // Check if any valid Covers attributes are defined for this class.
+                $validAttributes = [
+                    \PHPUnit\Framework\Attributes\CoversClass::class,
+                    \PHPUnit\Framework\Attributes\CoversTrait::class,
+                    \PHPUnit\Framework\Attributes\CoversMethod::class,
+                    \PHPUnit\Framework\Attributes\CoversFunction::class,
+                    \PHPUnit\Framework\Attributes\CoversNothing::class,
+                ];
+                if ($this->containsCoversAttribute($file, $cStart, $validAttributes)) {
+                    // If the class has any of the valid attributes, we can skip the rest of the checks.
+                    continue;
+                }
             }
 
             // Let's see if the class has any phpdoc block (first non skip token must be end of phpdoc comment).
@@ -165,6 +198,21 @@ class TestCaseCoversSniff implements Sniff
             // Iterate over all the methods in the class.
             $mStart = $cStart;
             while ($mStart = $file->findNext(T_FUNCTION, $mStart + 1, $tokens[$cStart]['scope_closer'])) {
+                if ($supportsAttributes) {
+                    // From PHPUnit 10 onwards, the class may be annotated with attributes.
+                    // The following method-level attributes exist:
+                    // - #[\PHPUnit\Framework\Attributes\CoversNothing]
+
+                    // Check if any valid Covers attributes are defined for this class.
+                    $validAttributes = [
+                        \PHPUnit\Framework\Attributes\CoversNothing::class,
+                    ];
+                    if ($this->containsCoversAttribute($file, $mStart, $validAttributes)) {
+                        // If the class has any of the valid attributes, we can skip the rest of the checks.
+                        continue;
+                    }
+                }
+
                 $method = $file->getDeclarationName($mStart);
                 $methodCovers = false; // To control when the method has a @covers tag.
                 $methodCoversNothing = false; // To control when the method has a @coversNothing tag.
@@ -346,5 +394,41 @@ class TestCaseCoversSniff implements Sniff
                 );
             }
         }
+    }
+
+    /**
+     * Checks if the class contains any of the valid @coversXXX attributes.
+     *
+     * @param File $file The file being scanned.
+     * @param int $pointer The position in the stack.
+     * @param array $validAttributes List of valid attributes to check against.
+     * @return bool True if any valid attribute is found, false otherwise.
+     */
+    protected function containsCoversAttribute(
+        File $file,
+        int $pointer,
+        array $validAttributes
+    ): bool {
+        // Find all the attributes for this class.
+        $attributes = Attributes::getAttributePointers($file, $pointer);
+        foreach ($attributes as $attributePtr) {
+            $attribute = Attributes::getAttributeProperties($file, $attributePtr);
+            if ($attribute === null) {
+                continue; // No attribute found, skip.
+            }
+
+            $qualifiedClassname = ClassnameUtil::qualifyClassname(
+                $file,
+                $attributePtr,
+                $attribute['attribute_name']
+            );
+
+            if (in_array($qualifiedClassname, $validAttributes)) {
+                // Valid attribute found.
+                return true;
+            }
+        }
+
+        return false;
     }
 }

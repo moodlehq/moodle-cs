@@ -34,6 +34,18 @@ class TestCaseCoversTest extends MoodleCSBaseTestCase
      */
     public function phpunitTestCaseCoversProvider() {
         return [
+            'Attribute' => [
+                'fixture' => 'testcasecovers_attribute',
+                'errors' => [],
+                'warnings' => [],
+            ],
+            'Method Attribute' => [
+                'fixture' => 'testcasecovers_method_attribute',
+                'errors' => [],
+                'warnings' => [
+                    19 => 'test_three() is missing any coverage information, own or at class level',
+                ],
+            ],
             'Correct' => [
                 'fixture' => 'testcasecovers_correct',
                 'errors' => [],
