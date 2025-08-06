@@ -17,6 +17,7 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 
+use MoodleHQ\MoodleCS\moodle\Util\Attributes;
 use MoodleHQ\MoodleCS\moodle\Util\NamespaceScopeUtil;
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
@@ -38,6 +39,14 @@ class TestCaseProviderSniff implements Sniff
      * @var bool
      */
     public $autofixStaticProviders = false;
+
+    private static $internalProvidersAttributes = [
+        \PHPUnit\Framework\Attributes\DataProvider::class,
+    ];
+
+    private static $externalProvidersAttributes = [
+        \PHPUnit\Framework\Attributes\DataProviderExternal::class,
+    ];
 
     /**
      * Register for open tag (only process once per file).
@@ -68,6 +77,11 @@ class TestCaseProviderSniff implements Sniff
         // If the file is not a unit test file, nothing to check.
         if (!MoodleUtil::isUnitTest($file) && !MoodleUtil::isUnitTestRunning()) {
             return; // @codeCoverageIgnore
+        }
+
+        $supportsAttributes = true;
+        if (MoodleUtil::meetsMinimumMoodleVersion($file, 500) === false) {
+            $supportsAttributes = false;
         }
 
         // We have all we need from core, let's start processing the file.
@@ -103,6 +117,73 @@ class TestCaseProviderSniff implements Sniff
                 // Ignore non test_xxxx() methods.
                 if (strpos($method, 'test_') !== 0) {
                     continue;
+                }
+
+                // First check for Provider attributes.
+                if ($supportsAttributes) {
+                    $attributes = Attributes::getAttributePropertiesFromPointer(
+                        $file,
+                        $mStart,
+                        self::$internalProvidersAttributes + self::$externalProvidersAttributes
+                    );
+                    foreach ($attributes as $attributePointer => $attributeProps) {
+                        // Check if the attribute is a data provider.
+                        if (in_array($attributeProps['qualified_name'], self::$externalProvidersAttributes, true)) {
+                            // At this time we cannot verify external data providers.
+                            // Skip the rest of the checks.
+                            continue;
+                        }
+
+                        if (!in_array($attributeProps['qualified_name'], self::$internalProvidersAttributes, true)) {
+                            // TODO What is this..?
+                            continue;
+                        }
+
+                        if ($attributeProps['parenthesis_opener'] === null || $attributeProps['parenthesis_closer'] === null) {
+                            // If the attribute has no parenthesis, it's invalid.
+                            $file->addError(
+                                'Invalid data provider attribute %s, it must have an opening and a closing parenthesis.',
+                                $attributePointer,
+                                'dataProviderInvalid',
+                                [$attributeProps['attribute_name']]
+                            );
+                        } else {
+                            $commaPtr = $file->findNext(
+                                T_COMMA,
+                                $attributeProps['parenthesis_opener'] + 1,
+                                $attributeProps['parenthesis_closer']
+                            );
+                            if ($commaPtr !== false) {
+                                // If there is a comma, it is invalid.
+                                $file->addError(
+                                    'Invalid data provider attribute %s, it must not have any parameters.',
+                                    $attributePointer,
+                                    'dataProviderInvalid',
+                                    [$attributeProps['attribute_name']]
+                                );
+                            } else {
+                                // Find the name up to the closing parenthesis.
+                                $methodName = '';
+                                $i = $attributeProps['parenthesis_opener'] + 1;
+                                do {
+                                    $methodName .= $tokens[$i]['content'];
+                                    $i++;
+                                } while ($i < $attributeProps['parenthesis_closer']);
+
+                                $methodName = str_replace(
+                                    ['"', "'"],
+                                    '',
+                                    trim($methodName)
+                                );
+
+                                $this->checkDataProvider(
+                                    $file,
+                                    $attributePointer,
+                                    $methodName
+                                );
+                            }
+                        }
+                    }
                 }
 
                 // Let's see if the method has any phpdoc block (first non skip token must be end of phpdoc comment).
@@ -185,6 +266,112 @@ class TestCaseProviderSniff implements Sniff
             $pointer + 2,
             $methodName
         );
+    }
+
+    /**
+     * Check for Data Provider in attributes.
+     *
+     * @return array
+     */
+    protected function checkProviderAttributes(
+        File $file,
+        int $mStart,
+        bool $supportsAttributes
+    ) {
+        // First check for Provider attributes.
+        if ($supportsAttributes) {
+            $attributes = Attributes::getAttributePropertiesFromPointer(
+                $file,
+                $mStart,
+                array_merge(self::$internalProvidersAttributes, self::$externalProvidersAttributes)
+            );
+            foreach ($attributes as $attributePointer => $attributeProps) {
+                $this->checkProviderAttribute(
+                    $file,
+                    $attributePointer,
+                    $attributeProps
+                );
+            }
+        }
+    }
+    protected function checkProviderAttribute(
+        File $file,
+        int $attributePointer,
+        array $attributeProps
+    ) {
+        // Check if the attribute is a data provider.
+        if (in_array($attributeProps['qualified_name'], self::$externalProvidersAttributes, true)) {
+            // At this time we cannot verify external data providers.
+            // Skip the rest of the checks.
+            return;
+        }
+
+        if (!in_array($attributeProps['qualified_name'], self::$internalProvidersAttributes, true)) {
+            // @codeCoverageIgnoreStart
+            $file->addError(
+                'Invalid data provider attribute %s, it must be one of %s.',
+                $attributePointer,
+                'dataProviderInvalid',
+                [
+                    $attributeProps['attribute_name'],
+                    implode(
+                        ', ',
+                        self::$internalProvidersAttributes + self::$externalProvidersAttributes,
+                    ),
+                ]
+            );
+
+            return;
+            // @codeCoverageIgnoreEnd
+        }
+
+        if ($attributeProps['parenthesis_opener'] === null || $attributeProps['parenthesis_closer'] === null) {
+            // If the attribute has no parenthesis, it's invalid.
+            $file->addError(
+                'Invalid data provider attribute %s, it must have an opening and a closing parenthesis.',
+                $attributePointer,
+                'dataProviderInvalid',
+                [$attributeProps['attribute_name']]
+            );
+            return;
+        }
+        $commaPtr = $file->findNext(
+            T_COMMA,
+            $attributeProps['parenthesis_opener'] + 1,
+            $attributeProps['parenthesis_closer']
+        );
+        if ($commaPtr !== false) {
+            // If there is a comma, it is invalid.
+            $file->addError(
+                'Invalid data provider attribute %s, it must not have any parameters.',
+                $attributePointer,
+                'dataProviderInvalid',
+                [$attributeProps['attribute_name']]
+            );
+
+            return;
+        }
+        // Find the name up to the closing parenthesis.
+        $methodName = '';
+        $i = $attributeProps['parenthesis_opener'] + 1;
+        do {
+            $methodName .= $tokens[$i]['content'];
+            $i++;
+        } while ($i < $attributeProps['parenthesis_closer']);
+
+        $methodName = str_replace(
+            ['"', "'"],
+            '',
+            trim($methodName)
+        );
+
+        $this->checkDataProvider(
+            $file,
+            $attributePointer,
+            $methodName
+        );
+
+        return;
     }
 
     protected function checkDataProvider(

@@ -91,6 +91,8 @@ abstract class Attributes
             'attribute_closer' => $closer,
             'attribute_name' => null,
             'qualified_name' => null,
+            'parenthesis_opener' => null,
+            'parenthesis_closer' => null,
         ];
 
         $stopAt = [
@@ -112,7 +114,46 @@ abstract class Attributes
             );
         }
 
+        // Find the parenthesis if they exist.
+        $openParen = $phpcsFile->findNext(
+            T_OPEN_PARENTHESIS,
+            $opener + 1,
+            $closer
+        );
+
+        if ($openParen !== false) {
+            $properties['parenthesis_opener'] = $openParen;
+            $properties['parenthesis_closer'] = $tokens[$openParen]['parenthesis_closer'];
+        }
+
         return $properties;
+    }
+
+    public static function getAttributePropertiesFromPointer(
+        File $file,
+        int $pointer,
+        array $attributeNameFilter = []
+    ): array {
+        $attributesWithProperties = [];
+
+        $attributes = Attributes::getAttributePointers($file, $pointer);
+        foreach ($attributes as $attributePtr) {
+            $attribute = Attributes::getAttributeProperties($file, $attributePtr);
+            if ($attribute === null) {
+                continue;
+            }
+
+            if (count($attributeNameFilter) > 0) {
+                // If the attribute name is not in the filter, skip it.
+                if (!in_array($attribute['qualified_name'], $attributeNameFilter, true)) {
+                    continue;
+                }
+            }
+
+            // If the attribute is already in the array, skip it.
+            $attributesWithProperties[$attributePtr] = $attribute;
+        }
+        return $attributesWithProperties;
     }
 
     /**
