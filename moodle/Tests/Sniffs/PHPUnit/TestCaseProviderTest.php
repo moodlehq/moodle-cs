@@ -99,7 +99,6 @@ class TestCaseProviderTest extends MoodleCSBaseTestCase
                 'errors' => [
                     12 => 'Data provider method "provider_no_return" must return an array, a Generator or an Iterable.',
                     23 => 'Data provider method "provider_wrong_return" must return an array, a Generator or an Iterable.',
-                    34 => 'Data provider method "provider_returns_generator" must return an array, a Generator or an Iterable.',
                     47 => 'Data provider method "provider_returns_iterator" must return an array, a Generator or an Iterable.',
                 ],
                 'warnings' => [

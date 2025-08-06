@@ -17,6 +17,7 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 
+use MoodleHQ\MoodleCS\moodle\Util\NamespaceScopeUtil;
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
@@ -272,7 +273,12 @@ class TestCaseProviderSniff implements Sniff
         }
 
         // Check the return type.
-        switch ($methodProps['return_type']) {
+        $returnType = NamespaceScopeUtil::getQualifiedName(
+            $file,
+            $providerPointer,
+            $methodProps['return_type']
+        );
+        switch ($returnType) {
             case 'array':
             case 'Generator':
             case 'Iterable':

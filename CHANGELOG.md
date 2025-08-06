@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Fixed
 - The branch detector was not able to detect the Moodle version following MDL-83424.
+- The `moodle.PHPUnit.TestCaseProvider` sniff can now detect fully-qualified class names.
 ### Added
 - A new `NamespaceScopeUtil` helper was added with methods to help qualify names within a file.
 ## [v3.5.1] - 2025-07-30
