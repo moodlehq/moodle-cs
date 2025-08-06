@@ -119,7 +119,7 @@ class TestCaseProviderSniff implements Sniff
                             switch ($docTagLC) {
                                 case '@dataprovider':
                                     // Validate basic syntax (FQCN or ::).
-                                    $this->checkDataProvider($file, $docPointer);
+                                    $this->checkDataProviderDocBlock($file, $docPointer);
                                     break;
                             }
                         }
@@ -139,7 +139,7 @@ class TestCaseProviderSniff implements Sniff
      * @param int $pointer pointer to the token that contains the tag. Calculations are based on that.
      * @return void
      */
-    protected function checkDataProvider(
+    protected function checkDataProviderDocBlock(
         File $file,
         int $pointer
     ) {
@@ -180,11 +180,24 @@ class TestCaseProviderSniff implements Sniff
         }
 
         // Check that the method name is valid.
+        $this->checkDataProvider(
+            $file,
+            $pointer + 2,
+            $methodName
+        );
+    }
+
+    protected function checkDataProvider(
+        File $file,
+        int $methodNamePointer,
+        string $methodName
+    ) {
+        // Check that the method name is valid.
         // It must _not_ start with `test_`.
         if (substr($methodName, 0, 5) === 'test_') {
             $file->addError(
                 'Data provider must not start with "test_". "%s" provided.',
-                $pointer + 2,
+                $methodNamePointer,
                 'dataProviderSyntaxMethodnameInvalid',
                 [
                     $methodName,
@@ -195,7 +208,7 @@ class TestCaseProviderSniff implements Sniff
         if (substr($methodName, -2) === '()') {
             $fix = $file->addFixableWarning(
                 'Data provider should not end with "()". "%s" provided.',
-                $pointer + 2,
+                $methodNamePointer,
                 'dataProviderSyntaxMethodnameContainsParenthesis',
                 [
                     $methodName,
@@ -205,18 +218,18 @@ class TestCaseProviderSniff implements Sniff
             $methodName = substr($methodName, 0, -2);
             if ($fix) {
                 $file->fixer->beginChangeset();
-                $file->fixer->replaceToken($pointer + 2, $methodName);
+                $file->fixer->replaceToken($methodNamePointer, $methodName);
                 $file->fixer->endChangeset();
             }
         }
 
         // Find the method itself.
-        $classPointer = $file->findPrevious(T_CLASS, $pointer - 1);
+        $classPointer = $file->findPrevious(T_CLASS, $methodNamePointer - 1);
         $providerPointer = MoodleUtil::findClassMethodPointer($file, $classPointer, $methodName);
         if ($providerPointer === null) {
             $file->addError(
                 'Data provider method "%s" not found.',
-                $pointer + 2,
+                $methodNamePointer,
                 'dataProviderSyntaxMethodNotFound',
                 [
                     $methodName,
@@ -296,6 +309,7 @@ class TestCaseProviderSniff implements Sniff
                 );
         }
 
+        $tokens = $file->getTokens();
         // In preparation for PHPUnit 10, we want to recommend that data providers are statically defined.
         if (!$methodProps['is_static']) {
             $supportAutomatedFix = true;
