@@ -129,6 +129,38 @@ abstract class Attributes
         return $properties;
     }
 
+    /**
+     * Check if an Attribute exists on an Attributable object.
+     *
+     * @param File $file
+     * @param int $pointer
+     * @param string $attributeName The name of the attribute to check for.
+     * @return bool True if the attribute exists, false otherwise.
+     */
+    public static function hasAttribute(
+        File $file,
+        int $pointer,
+        string $attributeName
+    ) {
+        $attributes = self::getAttributePointers($file, $pointer);
+        foreach ($attributes as $attributePtr) {
+            $attribute = self::getAttributeProperties($file, $attributePtr);
+            if ($attribute['qualified_name'] === $attributeName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the properties of an Attribute from a pointer.
+     *
+     * @param File $file
+     * @param int $pointer The pointer to the attribute.
+     * @param array $attributeNameFilter An optional filter for attribute names.
+     * @return array An array of attributes with their properties.
+     */
     public static function getAttributePropertiesFromPointer(
         File $file,
         int $pointer,
@@ -140,7 +172,7 @@ abstract class Attributes
         foreach ($attributes as $attributePtr) {
             $attribute = Attributes::getAttributeProperties($file, $attributePtr);
             if ($attribute === null) {
-                continue;
+                continue; // @codeCoverageIgnore
             }
 
             if (count($attributeNameFilter) > 0) {

@@ -50,6 +50,8 @@ class AttributesTest extends MoodleCSBaseTestCase
         $searchPtr = $phpcsFile->findNext($stackPtrSearch, 0);
 
         $pointers = Attributes::getAttributePointers($phpcsFile, $searchPtr);
+        $pointersWithProperties = Attributes::getAttributePropertiesFromPointer($phpcsFile, $searchPtr);
+        Attributes::getAttributePropertiesFromPointer($phpcsFile, $searchPtr, $expectations);
         if (count($expectations)) {
             foreach ($expectations as $expectation) {
                 $this->assertCount(
@@ -57,6 +59,14 @@ class AttributesTest extends MoodleCSBaseTestCase
                     array_filter($pointers, function ($pointer) use ($expectation, $phpcsFile) {
                         $properties = Attributes::getAttributeProperties($phpcsFile, $pointer);
 
+                        return $properties['attribute_name'] === $expectation['name'];
+                    })
+                );
+
+                $this->assertCount(
+                    $expectation['count'],
+                    array_filter($pointersWithProperties, function ($properties) use ($expectation) {
+                        // Check the attribute name matches the expectation.
                         return $properties['attribute_name'] === $expectation['name'];
                     })
                 );
@@ -185,7 +195,60 @@ class AttributesTest extends MoodleCSBaseTestCase
         $this->assertNull(Attributes::getAttributeProperties($phpcsFile, $searchPtr));
     }
 
-/**
+    /**
+     * @dataProvider hasAttributeProvider
+     */
+    public function testHasAttribute(
+        string $content,
+        $stackPtrSearch,
+        string $attributeName,
+        bool $expected
+    ): void {
+        $config = new Config([]);
+        $ruleset = new Ruleset($config);
+
+        $phpcsFile = new DummyFile($content, $ruleset, $config);
+        $phpcsFile->process();
+
+        $searchPtr = $phpcsFile->findNext($stackPtrSearch, 0);
+
+        $this->assertEquals($expected, Attributes::hasAttribute($phpcsFile, $searchPtr, $attributeName));
+    }
+
+    public static function hasAttributeProvider(): \Generator {
+        yield 'Has attribute' => [
+            '<?php
+            #[\Example\Attribute]
+            class Example {
+            }',
+            T_CLASS,
+            \Example\Attribute::class,
+            true,
+        ];
+        yield 'Has attribute with namespace' => [
+            '<?php
+            namespace Example;
+            #[MyFirstAttribute]
+            class Example {
+            }',
+            T_CLASS,
+            \Example\MyFirstAttribute::class,
+            true,
+        ];
+
+        yield 'Has not attribute' => [
+            '<?php
+            #[MyFirstAttribute]
+            class Example {
+            }',
+            T_CLASS,
+            \Example\MyFirstAttribute::class,
+            false,
+        ];
+    }
+
+
+    /**
      * @dataProvider hasOverrideAttributeProvider
      */
     public function testHasOverrideAttribute(
