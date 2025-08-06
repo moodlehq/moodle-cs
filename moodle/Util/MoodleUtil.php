@@ -320,7 +320,6 @@ abstract class MoodleUtil
      * @return int|null the numeric branch in moodle root version.php or null if not found
      */
     public static function getMoodleBranch(?File $file = null, bool $selfPath = true): ?int {
-
         // Return already calculated value if available.
         if (self::$moodleBranch !== false) {
             return self::$moodleBranch;
@@ -352,7 +351,23 @@ abstract class MoodleUtil
             // this is to avoid some nasty argv notices.
             $config = new Config(['--parallel=1']);
             $ruleset = new Ruleset($config);
-            $versionFile = new DummyFile(file_get_contents($moodleRoot . '/version.php'), $ruleset, $config);
+
+            // From Moodle 5.1 onwards the version.php will be in the `public` directory which is
+            // a child of the moodle root.
+            if (is_readable($moodleRoot . '/public/version.php')) {
+                $versionFile = new DummyFile(file_get_contents($moodleRoot . '/public/version.php'), $ruleset, $config);
+            } elseif (is_readable($moodleRoot . '/version.php')) {
+                $versionFile = new DummyFile(file_get_contents($moodleRoot . '/version.php'), $ruleset, $config);
+            } else {
+                // Before Moodle 5.1, the version.php was in the root directory.
+                // @codeCoverageIgnoreStart
+                throw new DeepExitException(
+                    "ERROR: Cannot find 'version.php' file in moodle root: '$moodleRoot'",
+                    3
+                );
+                // @codeCoverageIgnoreEnd
+            }
+
             $versionFile->parse();
             // Find the $branch variable declaration.
             if ($varToken = $versionFile->findNext(T_VARIABLE, 0, null, false, '$branch')) {
@@ -416,6 +431,14 @@ abstract class MoodleUtil
             $path = $lastPath = $file->path;
             while (($path = pathinfo($path, PATHINFO_DIRNAME)) !== $lastPath) {
                 // If we find both a version.php and config-dist.php file then we have arrived to moodle root.
+                // From Moodle 5.1 onwards the version.php will be in the `public` directory which is
+                // a child of the moodle root.
+                if (is_readable($path . '/public/version.php') && is_readable($path . '/config-dist.php')) {
+                    self::$moodleRoot = $path;
+                    return self::$moodleRoot;
+                }
+
+                // Before Moodle 5.1, the version.php was in the root directory.
                 if (is_readable($path . '/version.php') && is_readable($path . '/config-dist.php')) {
                     self::$moodleRoot = $path;
                     return self::$moodleRoot;
