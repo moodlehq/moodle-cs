@@ -26,6 +26,7 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseCoversSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\AbstractTestCaseSniff
  */
 class TestCaseCoversTest extends MoodleCSBaseTestCase
 {
@@ -132,6 +133,11 @@ class TestCaseCoversTest extends MoodleCSBaseTestCase
                 'warnings' => [
                     11 => 'has @coversNothing, but class also has it, redundant',
                 ],
+            ],
+            'Abstract classes are not tested' => [
+                'fixture' => 'testcasecovers_abstract',
+                'errors' => [],
+                'warnings' => [],
             ],
         ];
     }
