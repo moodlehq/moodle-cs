@@ -18,9 +18,6 @@
 namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 
 use MoodleHQ\MoodleCS\moodle\Util\Attributes;
-use MoodleHQ\MoodleCS\moodle\Util\ClassnameUtil;
-use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\ObjectDeclarations;
@@ -31,7 +28,7 @@ use PHPCSUtils\Utils\ObjectDeclarations;
  * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class TestCaseCoversSniff implements Sniff
+class TestCaseCoversSniff extends AbstractTestCaseSniff
 {
     /**
      * Register for open tag (only process once per file).
@@ -47,23 +44,12 @@ class TestCaseCoversSniff implements Sniff
      * @param int $pointer The position in the stack.
      */
     public function process(File $file, $pointer) {
-        // Before starting any check, let's look for various things.
-
-        // If we aren't checking Moodle 4.0dev (400) and up, nothing to check.
-        // Make and exception for codechecker phpunit tests, so they are run always.
-        if (!MoodleUtil::meetsMinimumMoodleVersion($file, 400) && !MoodleUtil::isUnitTestRunning()) {
+        if (!$this->shouldCheckFile($file)) {
+            // Nothing to check.
             return; // @codeCoverageIgnore
         }
 
-        // If the file is not a unit test file, nothing to check.
-        if (!MoodleUtil::isUnitTest($file) && !MoodleUtil::isUnitTestRunning()) {
-            return; // @codeCoverageIgnore
-        }
-
-        $supportsAttributes = true;
-        if (MoodleUtil::meetsMinimumMoodleVersion($file, 500) === false) {
-            $supportsAttributes = false;
-        }
+        $supportsAttributes = $this->shouldCheckTestCaseAttributes($file);
 
         // We have all we need from core, let's start processing the file.
 
@@ -80,30 +66,19 @@ class TestCaseCoversSniff implements Sniff
             return; // @codeCoverageIgnore
         }
 
-        // Iterate over all the classes (hopefully only one, but that's not this sniff problem).
-        $cStart = $pointer;
-        while ($cStart = $file->findNext(T_CLASS, $cStart + 1)) {
+        foreach ($this->getTestCasesInFile($file, $pointer) as $cStart => $className) {
             $classInfo = ObjectDeclarations::getClassProperties($file, $cStart);
             if ($classInfo['is_abstract']) {
                 // Abstract classes are not tested.
                 // Coverage information belongs to the concrete classes that extend them.
                 continue;
             }
+
+
             $class = $file->getDeclarationName($cStart);
             $classCovers = false; // To control when the class has a @covers tag.
             $classCoversNothing = false; // To control when the class has a @coversNothing tag.
             $classCoversDefaultClass = []; // To annotate all the existing @coversDefaultClass tags.
-
-            // Only if the class is extending something.
-            // TODO: We could add a list of valid classes once we have a class-map available.
-            if (!$file->findNext(T_EXTENDS, $cStart + 1, $tokens[$cStart]['scope_opener'])) {
-                continue;
-            }
-
-            // Ignore non ended "_test|_testcase" classes.
-            if (substr($class, -5) !== '_test' && substr($class, -9) != '_testcase') {
-                continue;
-            }
 
             if ($supportsAttributes) {
                 // From PHPUnit 10 onwards, the class may be annotated with attributes.
@@ -196,31 +171,24 @@ class TestCaseCoversSniff implements Sniff
             }
 
             // Iterate over all the methods in the class.
-            $mStart = $cStart;
-            while ($mStart = $file->findNext(T_FUNCTION, $mStart + 1, $tokens[$cStart]['scope_closer'])) {
+            // From PHPUnit 10 onwards, the class may be annotated with attributes.
+            // The following method-level attributes exist:
+            // - #[\PHPUnit\Framework\Attributes\CoversNothing]
+            $validAttributes = [
+                \PHPUnit\Framework\Attributes\CoversNothing::class,
+            ];
+            foreach ($this->getTestMethodsInClass($file, $cStart) as $method => $mStart) {
                 if ($supportsAttributes) {
-                    // From PHPUnit 10 onwards, the class may be annotated with attributes.
-                    // The following method-level attributes exist:
-                    // - #[\PHPUnit\Framework\Attributes\CoversNothing]
-
                     // Check if any valid Covers attributes are defined for this class.
-                    $validAttributes = [
-                        \PHPUnit\Framework\Attributes\CoversNothing::class,
-                    ];
                     if ($this->containsCoversAttribute($file, $mStart, $validAttributes)) {
                         // If the class has any of the valid attributes, we can skip the rest of the checks.
                         continue;
                     }
                 }
 
-                $method = $file->getDeclarationName($mStart);
                 $methodCovers = false; // To control when the method has a @covers tag.
                 $methodCoversNothing = false; // To control when the method has a @coversNothing tag.
 
-                // Ignore non test_xxxx() methods.
-                if (strpos($method, 'test_') !== 0) {
-                    continue;
-                }
 
                 // Let's see if the method has any phpdoc block (first non skip token must be end of phpdoc comment).
                 $docPointer = $file->findPrevious($skipTokens, $mStart - 1, null, true);
@@ -414,7 +382,8 @@ class TestCaseCoversSniff implements Sniff
         foreach ($attributes as $attributePtr) {
             $attribute = Attributes::getAttributeProperties($file, $attributePtr);
             if ($attribute === null) {
-                continue; // No attribute found, skip.
+                // No attribute found, skip.
+                continue; // @codeCoverageIgnore
             }
 
             if (in_array($attribute['qualified_name'], $validAttributes)) {
