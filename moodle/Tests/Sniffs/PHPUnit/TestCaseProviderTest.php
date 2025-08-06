@@ -34,6 +34,15 @@ class TestCaseProviderTest extends MoodleCSBaseTestCase
      */
     public function phpunitTestCaseProviderProvider() {
         return [
+            'Attributes' => [
+                'fixture' => 'attributes_test',
+                'errors' => [
+                    26 => 'Invalid data provider attribute \PHPUnit\Framework\Attributes\DataProvider, it must not have any parameters.',
+                    27 => 'Data provider method "missing_provider" not found.',
+                    28 => 'Invalid data provider attribute \PHPUnit\Framework\Attributes\DataProvider, it must have an opening and a closing parenthesis.',
+                ],
+                'warnings' => [],
+            ],
             'Correct' => [
                 'fixture' => 'correct_test',
                 'errors' => [],
