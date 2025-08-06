@@ -20,7 +20,6 @@ namespace MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit;
 use MoodleHQ\MoodleCS\moodle\Util\Attributes;
 use MoodleHQ\MoodleCS\moodle\Util\NamespaceScopeUtil;
 use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\FunctionDeclarations;
@@ -31,7 +30,7 @@ use PHPCSUtils\Utils\FunctionDeclarations;
  * @copyright  2022 onwards Eloy Lafuente (stronk7) {@link https://stronk7.com}
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class TestCaseProviderSniff implements Sniff
+class TestCaseProviderSniff extends AbstractTestCaseSniff
 {
     /**
      * Whether to autofix static providers.
@@ -66,23 +65,12 @@ class TestCaseProviderSniff implements Sniff
      */
     public function process(File $file, $pointer): void
     {
-        // Before starting any check, let's look for various things.
-
-        // If we aren't checking Moodle 4.0dev (400) and up, nothing to check.
-        // Make and exception for codechecker phpunit tests, so they are run always.
-        if (!MoodleUtil::meetsMinimumMoodleVersion($file, 400) && !MoodleUtil::isUnitTestRunning()) {
+        if (!$this->shouldCheckFile($file)) {
+            // Nothing to check.
             return; // @codeCoverageIgnore
         }
 
-        // If the file is not a unit test file, nothing to check.
-        if (!MoodleUtil::isUnitTest($file) && !MoodleUtil::isUnitTestRunning()) {
-            return; // @codeCoverageIgnore
-        }
-
-        $supportsAttributes = true;
-        if (MoodleUtil::meetsMinimumMoodleVersion($file, 500) === false) {
-            $supportsAttributes = false;
-        }
+        $supportsAttributes = $this->shouldCheckTestCaseAttributes($file);
 
         // We have all we need from core, let's start processing the file.
 
@@ -93,98 +81,10 @@ class TestCaseProviderSniff implements Sniff
         // and whitespace, create an array for all them.
         $skipTokens = Tokens::$methodPrefixes + [T_WHITESPACE => T_WHITESPACE];
 
-        // Iterate over all the classes (hopefully only one, but that's not this sniff problem).
-        $cStart = $pointer;
-        while ($cStart = $file->findNext(T_CLASS, $cStart + 1)) {
-            $class = $file->getDeclarationName($cStart);
-
-            // Only if the class is extending something.
-            // TODO: We could add a list of valid classes once we have a class-map available.
-            if (!$file->findNext(T_EXTENDS, $cStart + 1, $tokens[$cStart]['scope_opener'])) {
-                continue;
-            }
-
-            // Ignore any classname which does not end in "_test".
-            if (substr($class, -5) !== '_test') {
-                continue;
-            }
-
-            // Iterate over all the methods in the class.
-            $mStart = $cStart;
-            while ($mStart = $file->findNext(T_FUNCTION, $mStart + 1, $tokens[$cStart]['scope_closer'])) {
-                $method = $file->getDeclarationName($mStart);
-
-                // Ignore non test_xxxx() methods.
-                if (strpos($method, 'test_') !== 0) {
-                    continue;
-                }
-
+        foreach ($this->getTestCasesInFile($file, $pointer) as $classPointer => $className) {
+            foreach ($this->getTestMethodsInClass($file, $classPointer) as $methodName => $mStart) {
                 // First check for Provider attributes.
-                if ($supportsAttributes) {
-                    $attributes = Attributes::getAttributePropertiesFromPointer(
-                        $file,
-                        $mStart,
-                        self::$internalProvidersAttributes + self::$externalProvidersAttributes
-                    );
-                    foreach ($attributes as $attributePointer => $attributeProps) {
-                        // Check if the attribute is a data provider.
-                        if (in_array($attributeProps['qualified_name'], self::$externalProvidersAttributes, true)) {
-                            // At this time we cannot verify external data providers.
-                            // Skip the rest of the checks.
-                            continue;
-                        }
-
-                        if (!in_array($attributeProps['qualified_name'], self::$internalProvidersAttributes, true)) {
-                            // TODO What is this..?
-                            continue;
-                        }
-
-                        if ($attributeProps['parenthesis_opener'] === null || $attributeProps['parenthesis_closer'] === null) {
-                            // If the attribute has no parenthesis, it's invalid.
-                            $file->addError(
-                                'Invalid data provider attribute %s, it must have an opening and a closing parenthesis.',
-                                $attributePointer,
-                                'dataProviderInvalid',
-                                [$attributeProps['attribute_name']]
-                            );
-                        } else {
-                            $commaPtr = $file->findNext(
-                                T_COMMA,
-                                $attributeProps['parenthesis_opener'] + 1,
-                                $attributeProps['parenthesis_closer']
-                            );
-                            if ($commaPtr !== false) {
-                                // If there is a comma, it is invalid.
-                                $file->addError(
-                                    'Invalid data provider attribute %s, it must not have any parameters.',
-                                    $attributePointer,
-                                    'dataProviderInvalid',
-                                    [$attributeProps['attribute_name']]
-                                );
-                            } else {
-                                // Find the name up to the closing parenthesis.
-                                $methodName = '';
-                                $i = $attributeProps['parenthesis_opener'] + 1;
-                                do {
-                                    $methodName .= $tokens[$i]['content'];
-                                    $i++;
-                                } while ($i < $attributeProps['parenthesis_closer']);
-
-                                $methodName = str_replace(
-                                    ['"', "'"],
-                                    '',
-                                    trim($methodName)
-                                );
-
-                                $this->checkDataProvider(
-                                    $file,
-                                    $attributePointer,
-                                    $methodName
-                                );
-                            }
-                        }
-                    }
-                }
+                $this->checkProviderAttributes($file, $mStart, $supportsAttributes);
 
                 // Let's see if the method has any phpdoc block (first non skip token must be end of phpdoc comment).
                 $docPointer = $file->findPrevious($skipTokens, $mStart - 1, null, true);
@@ -270,8 +170,6 @@ class TestCaseProviderSniff implements Sniff
 
     /**
      * Check for Data Provider in attributes.
-     *
-     * @return array
      */
     protected function checkProviderAttributes(
         File $file,
@@ -294,6 +192,14 @@ class TestCaseProviderSniff implements Sniff
             }
         }
     }
+
+    /**
+     * Check the data provider attribute.
+     *
+     * @param File $file The file being scanned.
+     * @param int $attributePointer The pointer to the attribute.
+     * @param array $attributeProps The properties of the attribute.
+     */
     protected function checkProviderAttribute(
         File $file,
         int $attributePointer,
@@ -351,6 +257,9 @@ class TestCaseProviderSniff implements Sniff
 
             return;
         }
+
+        $tokens = $file->getTokens();
+
         // Find the name up to the closing parenthesis.
         $methodName = '';
         $i = $attributeProps['parenthesis_opener'] + 1;
@@ -374,6 +283,13 @@ class TestCaseProviderSniff implements Sniff
         return;
     }
 
+    /**
+     * Check the data provider method.
+     *
+     * @param File $file The file being scanned.
+     * @param int $methodNamePointer The pointer to the method name.
+     * @param string $methodName The name of the method.
+     */
     protected function checkDataProvider(
         File $file,
         int $methodNamePointer,
