@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Fixed
+- The branch detector was not able to detect the Moodle version following MDL-83424.
 ## [v3.5.1] - 2025-07-30
 ### Fixed
 - The `moodle.Commenting.VariableComment` sniff now accepts the following tags as valid on a `@var`:

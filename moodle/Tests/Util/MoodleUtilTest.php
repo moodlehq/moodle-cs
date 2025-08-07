@@ -260,6 +260,12 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
                 'return' => ['value' => 9876],
             ],
 
+            // Passing a file to check with correct $branch information at moodle root.
+            'Moodle 5.1 onwards' => [
+                'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/moodle501/public/lib/lib.php'],
+                'return' => ['value' => 9876],
+            ],
+
             // Passing a file to check with incorrect $branch information at moodle root.
             'moodleBranch_pass_file_bad' => [
                 'config' => ['file' => dirname(__FILE__) . '/fixtures/moodleutil/bad/lib/lib.php'],
