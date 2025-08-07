@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\Tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\PHPUnit;
+
+use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 
 /**
  * Test the TestCaseCoversSniff sniff.
@@ -24,21 +26,34 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseProviderSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\AbstractTestCaseSniff
  */
-class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
+class TestCaseProviderTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testPHPUnitTestCaseProvider
      */
     public function phpunitTestCaseProviderProvider() {
         return [
+            'Attributes' => [
+                'fixture' => 'attributes_test',
+                'errors' => [
+                    31 => 'Invalid data provider attribute \PHPUnit\Framework\Attributes\DataProvider, ' .
+                        'it must not have any parameters.',
+                    32 => 'Data provider method "missing_provider" not found.',
+                    33 => 'Invalid data provider attribute \PHPUnit\Framework\Attributes\DataProvider, ' .
+                        'it must have an opening and a closing parenthesis.',
+                    37 => 'Data provider method "missing_provider" not found.',
+                ],
+                'warnings' => [],
+            ],
             'Correct' => [
-                'fixture' => 'fixtures/phpunit/provider/correct_test.php',
+                'fixture' => 'correct_test',
                 'errors' => [],
                 'warnings' => [],
             ],
             'Provider Casing' => [
-                'fixture' => 'fixtures/phpunit/provider/provider_casing_test.php',
+                'fixture' => 'provider_casing_test',
                 'errors' => [
                     6 => 'Wrong @dataProvider tag: @dataprovider provided, @dataProvider expected',
                 ],
@@ -46,7 +61,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Provider has Parenthesis' => [
-                'fixture' => 'fixtures/phpunit/provider/provider_parents_test.php',
+                'fixture' => 'provider_parents_test',
                 'errors' => [
                 ],
                 'warnings' => [
@@ -54,7 +69,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Provider Visibility' => [
-                'fixture' => 'fixtures/phpunit/provider/provider_visibility_test.php',
+                'fixture' => 'provider_visibility_test',
                 'errors' => [
                     12 => 'Data provider method "provider" must be public.',
                     23 => 'Data provider method "provider_without_visibility" visibility should be specified.',
@@ -65,7 +80,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Provider Naming conflicts with test names' => [
-                'fixture' => 'fixtures/phpunit/provider/provider_prefix_test.php',
+                'fixture' => 'provider_prefix_test',
                 'errors' => [
                     6 => 'Data provider must not start with "test_". "test_provider" provided.',
                 ],
@@ -73,7 +88,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Static Providers' => [
-                'fixture' => 'fixtures/phpunit/provider/static_providers_test.php',
+                'fixture' => 'static_providers_test',
                 'errors' => [
                 ],
                 'warnings' => [
@@ -83,7 +98,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Static Providers Applying fixes' => [
-                'fixture' => 'fixtures/phpunit/provider/static_providers_fix_test.php',
+                'fixture' => 'static_providers_fix_test',
                 'errors' => [
                 ],
                 'warnings' => [
@@ -93,18 +108,17 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Provider Return Type checks' => [
-                'fixture' => 'fixtures/phpunit/provider/provider_returntype_test.php',
+                'fixture' => 'provider_returntype_test',
                 'errors' => [
                     12 => 'Data provider method "provider_no_return" must return an array, a Generator or an Iterable.',
                     23 => 'Data provider method "provider_wrong_return" must return an array, a Generator or an Iterable.',
-                    34 => 'Data provider method "provider_returns_generator" must return an array, a Generator or an Iterable.',
                     47 => 'Data provider method "provider_returns_iterator" must return an array, a Generator or an Iterable.',
                 ],
                 'warnings' => [
                 ],
             ],
             'Provider not found' => [
-                'fixture' => 'fixtures/phpunit/provider/provider_not_found_test.php',
+                'fixture' => 'provider_not_found_test',
                 'errors' => [
                     6 => 'Data provider method "provider" not found.',
                     13 => 'Wrong @dataProvider tag specified for test test_two, it must be followed by a space and a method name.',
@@ -113,7 +127,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Complex test with multiple classes' => [
-                'fixture' => 'fixtures/phpunit/provider/complex_provider_test.php',
+                'fixture' => 'complex_provider_test',
                 'errors' => [
                     7 => 'Data provider method "provider" not found.',
                 ],
@@ -140,7 +154,7 @@ class PHPUnitTestCaseProviderTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.TestCaseProvider');
-        $this->setFixture(__DIR__ . '/' . $fixture);
+        $this->setFixture(sprintf("%s/fixtures/Provider/%s.php", __DIR__, $fixture));
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or

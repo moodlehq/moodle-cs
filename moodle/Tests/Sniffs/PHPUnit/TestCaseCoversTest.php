@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\Tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\PHPUnit;
 
-use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
+use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 
 /**
  * Test the TestCaseCoversSniff sniff.
@@ -26,21 +26,34 @@ use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseCoversSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\AbstractTestCaseSniff
  */
-class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
+class TestCaseCoversTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testPHPUnitTestCaseCovers
      */
     public function phpunitTestCaseCoversProvider() {
         return [
+            'Attribute' => [
+                'fixture' => 'testcasecovers_attribute',
+                'errors' => [],
+                'warnings' => [],
+            ],
+            'Method Attribute' => [
+                'fixture' => 'testcasecovers_method_attribute',
+                'errors' => [],
+                'warnings' => [
+                    19 => 'test_three() is missing any coverage information, own or at class level',
+                ],
+            ],
             'Correct' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_correct.php',
+                'fixture' => 'testcasecovers_correct',
                 'errors' => [],
                 'warnings' => [],
             ],
             'Contradiction' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_contradiction.php',
+                'fixture' => 'testcasecovers_contradiction',
                 'errors' => [
                     7 => 'contradiction_test has both',
                     8 => 'TestCaseCovers.ContradictoryClass',
@@ -54,14 +67,14 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Missing' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_missing.php',
+                'fixture' => 'testcasecovers_missing',
                 'errors' => [],
                 'warnings' => [
                     8 => 'test_something() is missing any coverage information',
                 ],
             ],
             'Mixed' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_mixed.php',
+                'fixture' => 'testcasecovers_mixed',
                 'errors' => [],
                 'warnings' => [
                     7 => 'contradictionmixed_test has @coversNothing, but there are methods covering stuff',
@@ -69,19 +82,19 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
                 ],
             ],
             'Redundant' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_redundant.php',
+                'fixture' => 'testcasecovers_redundant',
                 'errors' => [],
                 'warnings' => [
                     11 => 'has @coversNothing, but class also has it, redundant',
                 ],
             ],
             'Skipped' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_skipped.php',
+                'fixture' => 'testcasecovers_skipped',
                 'errors' => [],
                 'warnings' => [],
             ],
             'Covers' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_covers.php',
+                'fixture' => 'testcasecovers_covers',
                 'errors' => [
                     9 => 'it must be FQCN (\\ prefixed) or point to method (:: prefixed)',
                     10 => 'it must contain some value',
@@ -91,7 +104,7 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'CoversDefaultClass' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_coversdefaultclass.php',
+                'fixture' => 'testcasecovers_coversdefaultclass',
                 'errors' => [
                     8 => [
                         'Wrong @coversDefaultClass annotation, it must be FQCN (\\ prefixed)',
@@ -112,7 +125,7 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'CoversNothing' => [
-                'fixture' => 'fixtures/phpunit/testcasecovers_coversnothing.php',
+                'fixture' => 'testcasecovers_coversnothing',
                 'errors' => [
                     7 => '@coversNothing annotation, it must be empty',
                     11 => 'TestCaseCovers.NotEmpty',
@@ -120,6 +133,11 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
                 'warnings' => [
                     11 => 'has @coversNothing, but class also has it, redundant',
                 ],
+            ],
+            'Abstract classes are not tested' => [
+                'fixture' => 'testcasecovers_abstract',
+                'errors' => [],
+                'warnings' => [],
             ],
         ];
     }
@@ -137,7 +155,7 @@ class PHPUnitTestCaseCoversTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.TestCaseCovers');
-        $this->setFixture(__DIR__ . '/' . $fixture);
+        $this->setFixture(sprintf("%s/fixtures/Covers/%s.php", __DIR__, $fixture));
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
