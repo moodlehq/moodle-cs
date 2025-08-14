@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Removed
+- Automated fixes for the following sniffs were removed as they can cause unwanted changes:
+   - `moodle.NamingConventions.ValidFunctionName`
+   - `moodle.NamingConventions.ValidVariableName`
 
 ## [v3.5.2] - 2025-08-14
 ### Fixed
