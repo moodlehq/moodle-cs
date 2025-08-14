@@ -17,8 +17,6 @@
 
 namespace MoodleHQ\MoodleCS\moodle\Tests;
 
-use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
-
 /**
  * Test the ValidFunctionName sniff.
  *
