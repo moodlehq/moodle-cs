@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace MoodleHQ\MoodleCS\moodle\Tests;
+namespace MoodleHQ\MoodleCS\moodle\Tests\NamingConventions;
+
+use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 
 /**
  * Test the ValidFunctionName sniff.
@@ -25,7 +27,7 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\NamingConventions\ValidFunctionNameSniff
  */
-class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase
+class ValidFunctionNameTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testNamingConventionsValidFunctionName
@@ -33,12 +35,12 @@ class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase
     public function providerNamingConventionsValidFunctionName() {
         return [
             'Correct' => [
-                'fixture' => 'fixtures/namingconventions/validfunctionname_correct.php',
+                'fixture' => 'validfunctionname_correct',
                 'errors' => [],
                 'warnings' => [],
             ],
             'Lower' => [
-                'fixture' => 'fixtures/namingconventions/validfunctionname_lower.php',
+                'fixture' => 'validfunctionname_lower',
                 'errors' => [
                     5 => 'Public method name "class_with_correct_function_names::notUpperPlease" must be in lower-case',
                     11 => 'moodle.NamingConventions.ValidFunctionName.LowercaseMethod',
@@ -48,7 +50,7 @@ class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'Global' => [
-                'fixture' => 'fixtures/namingconventions/validfunctionname_global.php',
+                'fixture' => 'validfunctionname_global',
                 'errors' => [
                     4 => 'moodle.NamingConventions.ValidFunctionName.MagicLikeFunction',
                     8 => '"jsonSerialize" must be lower-case letters only',
@@ -56,7 +58,7 @@ class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'Scoped' => [
-                'fixture' => 'fixtures/namingconventions/validfunctionname_scoped.php',
+                'fixture' => 'validfunctionname_scoped',
                 'errors' => [
                     '5' => '__magiclike" is invalid; only PHP magic methods should be prefixed with a double underscore',
                 ],
@@ -78,7 +80,7 @@ class NamingConventionsValidFunctionNameTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.NamingConventions.ValidFunctionName');
-        $this->setFixture(__DIR__ . '/' . $fixture);
+        $this->setFixture(sprintf("%s/fixtures/ValidFunctionName/%s.php", __DIR__, $fixture));
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
