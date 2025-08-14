@@ -26,6 +26,7 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseProviderSniff
+ * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\AbstractTestCaseSniff
  */
 class TestCaseProviderTest extends MoodleCSBaseTestCase
 {
@@ -34,6 +35,18 @@ class TestCaseProviderTest extends MoodleCSBaseTestCase
      */
     public function phpunitTestCaseProviderProvider() {
         return [
+            'Attributes' => [
+                'fixture' => 'attributes_test',
+                'errors' => [
+                    31 => 'Invalid data provider attribute \PHPUnit\Framework\Attributes\DataProvider, ' .
+                        'it must not have any parameters.',
+                    32 => 'Data provider method "missing_provider" not found.',
+                    33 => 'Invalid data provider attribute \PHPUnit\Framework\Attributes\DataProvider, ' .
+                        'it must have an opening and a closing parenthesis.',
+                    37 => 'Data provider method "missing_provider" not found.',
+                ],
+                'warnings' => [],
+            ],
             'Correct' => [
                 'fixture' => 'correct_test',
                 'errors' => [],
