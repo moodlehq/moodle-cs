@@ -83,7 +83,6 @@
 
     <rule ref="Generic.ControlStructures.InlineControlStructure"/>
 
-    <rule ref="Generic.Functions.CallTimePassByReference"/>
     <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
 
     <rule ref="Generic.NamingConventions.ConstructorName"/>
@@ -94,7 +93,6 @@
         </properties>
     </rule>
 
-    <rule ref="Squiz.Classes.DuplicateProperty"/>
     <rule ref="Squiz.Classes.LowercaseClassKeywords"/>
     <rule ref="Squiz.Classes.SelfMemberReference"/>
 

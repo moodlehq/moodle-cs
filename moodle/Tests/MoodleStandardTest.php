@@ -717,31 +717,6 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     }
 
     /**
-     * Test call time pass by reference.
-     *
-     * @covers \PHPCompatibility\Sniffs\Syntax\ForbiddenCallTimePassByReferenceSniff
-     */
-    public function testPHPCompatibilitySyntaxForbiddenCallTimePassByReference() {
-
-        // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
-        $this->setSniff('PHPCompatibility.Syntax.ForbiddenCallTimePassByReference');
-        $this->setFixture(__DIR__ . '/fixtures/phpcompatibility_php_forbiddencalltimepassbyreference.php');
-
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $this->setErrors([
-            6 => ['call-time pass-by-reference is deprecated'],
-            7 => ['@Source: PHPCompat']]);
-        $this->setWarnings([]);
-
-        // Let's do all the hard work!
-        $this->verifyCsResults();
-    }
-
-    /**
      * Test variable naming standards
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\NamingConventions\ValidVariableNameSniff
