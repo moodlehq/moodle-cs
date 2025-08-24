@@ -14,6 +14,8 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - Dropped the following deprecated sniffs:
   - `Squiz.Classes.DuplicateProperty` - JS only
   - `Generic.Functions.CallTimePassByReference` - PHP support dropped in PHP 5.4
+### Fixed
+- Update incorrect use of legacy ruleset format.
 
 ## [v3.5.2] - 2025-08-14
 ### Fixed
