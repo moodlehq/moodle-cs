@@ -10,6 +10,12 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - Automated fixes for the following sniffs were removed as they can cause unwanted changes:
    - `moodle.NamingConventions.ValidFunctionName`
    - `moodle.NamingConventions.ValidVariableName`
+### Changed
+- Dropped the following deprecated sniffs:
+  - `Squiz.Classes.DuplicateProperty` - JS only
+  - `Generic.Functions.CallTimePassByReference` - PHP support dropped in PHP 5.4
+### Fixed
+- Update incorrect use of legacy ruleset format.
 
 ## [v3.5.2] - 2025-08-14
 ### Fixed
