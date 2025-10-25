@@ -57,11 +57,13 @@ class MissingDocblockSniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
+     * @return int The position in the stack we checked up to.
      */
     public function process(File $phpcsFile, $stackPtr) {
         $this->processScopes($phpcsFile, $stackPtr);
         $this->processFunctions($phpcsFile, $stackPtr);
         $this->processConstants($phpcsFile, $stackPtr);
+        return $phpcsFile->numTokens;
     }
 
     protected function processScopes(File $phpcsFile, int $stackPtr): void {
