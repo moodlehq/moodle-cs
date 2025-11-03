@@ -171,7 +171,11 @@
     <rule ref="Universal.Constants.ModifierKeywordOrder"/>
 
     <!-- Enforce that the names used in a class/enum "implements" statement or an interface "extends" statement are listed in alphabetic order -->
-    <rule ref="Universal.OOStructures.AlphabeticExtendsImplements"/>
+    <rule ref="Universal.OOStructures.AlphabeticExtendsImplements">
+        <properties>
+            <property name="orderby" value="full"/>
+        </properties>
+    </rule>
 
     <!-- Enforce the use of a single space after the use, function, const keywords and both before and after the as keyword in import use statements -->
     <rule ref="Universal.UseStatements.KeywordSpacing"/>
