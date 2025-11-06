@@ -7,6 +7,7 @@ $_badvariable3 = 0;
 $REALLY_badvar4 = 0;
 $goodvariable = 1;
 $ACCESSLIB_PRIVATE = null;
+$fromglobals = $GLOBALS['attemptobj'];
 
 class foo {
     public $bad_variable = null;
