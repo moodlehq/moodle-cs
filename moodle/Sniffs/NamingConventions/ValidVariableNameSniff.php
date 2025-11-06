@@ -39,6 +39,7 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         '_REQUEST',
         '_SERVER',
         '_SESSION',
+        'GLOBALS',
 
         // PHP Predefined variables.
         'http_response_header',
