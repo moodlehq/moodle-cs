@@ -12,7 +12,7 @@
     <!--
         Add the complete PHPCompatibility standard to warn about features of unsupported PHP versions.
     -->
-    <rule ref="PHPCompatibility" />
+    <!-- <rule ref="PHPCompatibility" /> -->
 
     <!--
         Include the PSR-12 ruleset with relevant Moodle exclusions

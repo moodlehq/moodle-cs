@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
+## [Unreleased]
+### Removed
+- Support for PHPCompatibility until moodle-cs is upgraded to support PHP_CodeSniffer version 4.
+
 ## [v3.6.0] - 2025-09-09
 
 ## [v3.6.0] - 2025-09-09

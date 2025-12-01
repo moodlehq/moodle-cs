@@ -33,14 +33,4 @@
     <rule ref="NormalizedArrays.Arrays.CommaAfterLast">
         <exclude name="NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine" />
     </rule>
-
-    <!--PHPCompatibility configuration-->
-    <rule ref="./vendor/phpcompatibility/php-compatibility/PHPCompatibility/ruleset.xml"/>
-    <config name="testVersion" value="7.4-"/>
-
-    <!-- These are false positives because CodeSniffer creates them when needed.
-        TODO: Delete this once we raise minimum requirements to PHP 8.0. -->
-    <rule ref="PHPCompatibility.Constants.NewConstants">
-        <exclude name="PHPCompatibility.Constants.NewConstants.newConstants.t_enumFound"/>
-    </rule>
 </ruleset>
