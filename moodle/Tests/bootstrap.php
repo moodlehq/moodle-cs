@@ -19,4 +19,3 @@ $root = dirname(dirname(__DIR__));
 
 require_once("{$root}/vendor/autoload.php");
 require_once("{$root}/vendor/squizlabs/php_codesniffer/tests/bootstrap.php");
-require_once("{$root}/vendor/phpcompatibility/php-compatibility/PHPCSAliases.php");

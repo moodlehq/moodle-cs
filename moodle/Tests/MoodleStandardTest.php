@@ -692,31 +692,6 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     }
 
     /**
-     * Test external sniff incorporated to moodle standard.
-     *
-     * @covers \PHPCompatibility\Sniffs\FunctionUse\RemovedFunctionsSniff
-     */
-    public function testPHPCompatibilityFunctionUseRemovedFunctions() {
-
-        // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
-        $this->setSniff('PHPCompatibility.FunctionUse.RemovedFunctions');
-        $this->setFixture(__DIR__ . '/fixtures/phpcompatibility_php_deprecatedfunctions.php');
-
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $this->setErrors([
-            5 => ['Function ereg_replace', 'Use call_user_func() instead', '@Source: PHPCompat'],
-        ]);
-        $this->setWarnings([]);
-
-        // Let's do all the hard work!
-        $this->verifyCsResults();
-    }
-
-    /**
      * Test variable naming standards
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\NamingConventions\ValidVariableNameSniff
