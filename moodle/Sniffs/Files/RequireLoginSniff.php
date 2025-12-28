@@ -33,6 +33,8 @@ class RequireLoginSniff implements Sniff
     public $ignorewhendefined = ['NO_MOODLE_COOKIES', 'CLI_SCRIPT', 'ABORT_AFTER_CONFIG'];
     /**
      * Register for open tag (only process once per file).
+     *
+     * @return (int|string)[]
      */
     public function register() {
         return [T_OPEN_TAG];
@@ -43,6 +45,7 @@ class RequireLoginSniff implements Sniff
      *
      * @param File $file The file being scanned.
      * @param int $pointer The position in the stack.
+     * @return int|null
      */
     public function process(File $file, $pointer) {
         // We only want to do this once per file.

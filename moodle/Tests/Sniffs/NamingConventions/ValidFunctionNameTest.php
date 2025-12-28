@@ -31,6 +31,8 @@ class ValidFunctionNameTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testNamingConventionsValidFunctionName
+     *
+     * @return array
      */
     public function providerNamingConventionsValidFunctionName() {
         return [

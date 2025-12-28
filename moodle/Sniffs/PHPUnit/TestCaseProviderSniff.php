@@ -49,6 +49,8 @@ class TestCaseProviderSniff extends AbstractTestCaseSniff
 
     /**
      * Register for open tag (only process once per file).
+     *
+     * @return (int|string)[]
      */
     public function register(): array
     {
@@ -62,8 +64,9 @@ class TestCaseProviderSniff extends AbstractTestCaseSniff
      *
      * @param File $file The file being scanned.
      * @param int $pointer The position in the stack.
+     * @return int|null
      */
-    public function process(File $file, $pointer): void
+    public function process(File $file, $pointer)
     {
         if (!$this->shouldCheckFile($file)) {
             // Nothing to check.

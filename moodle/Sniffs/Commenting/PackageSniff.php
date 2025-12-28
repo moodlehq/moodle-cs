@@ -33,6 +33,8 @@ class PackageSniff implements Sniff
 {
     /**
      * Register for open tag (only process once per file).
+     *
+     * @return (int|string)[]
      */
     public function register() {
         return [
@@ -45,6 +47,7 @@ class PackageSniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
+     * @return int|null
      */
     public function process(File $phpcsFile, $stackPtr) {
         $tokens = $phpcsFile->getTokens();
@@ -90,7 +93,7 @@ class PackageSniff implements Sniff
      *
      * @param File $phpcsFile
      * @param int $stackPtr
-     * @param array $docblock
+     * @param int $docPtr
      * @return bool Whether any package tag was found, whether or not it was correct
      */
     protected function checkDocblock(

@@ -32,6 +32,8 @@ class ConstructorReturnSniff implements Sniff
 {
     /**
      * Register for class tags.
+     *
+     * @return (int|string)[]
      */
     public function register() {
 
@@ -45,6 +47,7 @@ class ConstructorReturnSniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
+     * @return int|null
      */
     public function process(File $phpcsFile, $stackPtr) {
         $tokens = $phpcsFile->getTokens();

@@ -307,7 +307,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $errors error results produced by the CS execution.
      */
-    private function verifyErrors($errors) {
+    private function verifyErrors($errors): void {
         if (!is_array($errors)) {
             $this->fail('Unexpected errors structure received from CS execution.');
         }
@@ -320,7 +320,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $warnings warning results produced by the CS execution
      */
-    private function verifyWarnings($warnings) {
+    private function verifyWarnings($warnings): void {
         if (!is_array($warnings)) {
             $this->fail('Unexpected warnings structure received from CS execution.');
         }
@@ -335,7 +335,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * @param array $results error|warning generated results.
      * @param string $type results being asserted (errors, warnings). Used for output only.
      */
-    private function assertResults($expectations, $results, $type) {
+    private function assertResults($expectations, $results, $type): void {
         foreach ($expectations as $line => $expectation) {
             // Build some information to be shown in case of problems.
             $info = '';

@@ -461,7 +461,7 @@ abstract class MoodleUtil
      * Get the path to the version.php file from the given path.
      *
      * @param string $path
-     * @return array|string|null
+     * @return string|null
      */
     private static function findVersionFileFromPath(string $path): ?string {
         $lastPath = $path;
@@ -600,7 +600,7 @@ abstract class MoodleUtil
      * If a version could not be determined, null is returned.
      *
      * @param File $phpcsFile The file to check
-     * @param int The minimum version to check against as a 2, or 3 digit number.
+     * @param int $version The minimum version to check against as a 2, or 3 digit number.
      * @return null|bool
      */
     public static function meetsMinimumMoodleVersion(
@@ -662,7 +662,7 @@ abstract class MoodleUtil
     /**
      * Get the standardised filename for the file.
      *
-     * @param File @phpcsFile
+     * @param File $phpcsFile
      * @return string
      */
     public static function getStandardisedFilename(File $phpcsFile): string {
