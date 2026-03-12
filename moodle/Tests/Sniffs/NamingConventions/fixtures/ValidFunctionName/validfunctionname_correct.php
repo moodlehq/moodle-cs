@@ -1,6 +1,8 @@
 <?php
 defined('MOODLE_INTERNAL') || die(); // Make this always the 1st line in all CS fixtures.
 
+use Override;
+
 class class_with_correct_function_names {
     public function __construct() {
         echo 'hi';
@@ -68,6 +70,13 @@ return new class {
 class example extends class_with_correct_function_names {
     #[\Override]
     public function childMethod(): void {
+        echo 'hi';
+    }
+}
+
+class imported_override_example extends class_with_correct_function_names {
+    #[Override]
+    public function childMethodImported(): void {
         echo 'hi';
     }
 }
