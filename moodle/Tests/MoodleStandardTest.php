@@ -533,6 +533,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
             15 => 0,
             16 => 0,
             17 => 0,
+            20 => 'function unserialize() is forbidden',
             ]);
         $this->setWarnings([]);
 
