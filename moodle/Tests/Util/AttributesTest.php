@@ -331,6 +331,16 @@ class AttributesTest extends MoodleCSBaseTestCase
                 T_FUNCTION,
                 true,
             ],
+            'In a class, extends, has imported Override' => [
+                '<?php
+                use Override;
+                class Example extends OtherExample {
+                    #[Override]
+                    function exampleFunction(string $param): void {}
+                }',
+                T_FUNCTION,
+                true,
+            ],
             'In a class, implements, has Override' => [
                 '<?php
                 class Example implements OtherExample {
