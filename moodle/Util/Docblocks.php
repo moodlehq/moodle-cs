@@ -108,7 +108,7 @@ abstract class Docblocks
     /**
      * List of tags that should be renamed.
      *
-     * @var string[string]
+     * @var array<string, string>
      */
     private static array $renameTags = [
         // Rename returns to return.
@@ -119,7 +119,7 @@ abstract class Docblocks
      * A list of phpdoc tags allowed to be used under certain directories.
      * keys are tags, values are arrays of allowed paths (regexp patterns).
      *
-     * @var array(string => array(string))
+     * @var array<string, string[]>
      */
     private static array $pathRestrictedTags = [
         'Given' => ['#.*/tests/behat/.*#'],
@@ -295,6 +295,7 @@ abstract class Docblocks
      * @param File $phpcsFile
      * @param int|null $stackPtr The pointer of the docblock
      * @param string $tagName
+     * @return int[]
      */
     public static function getMatchingDocTags(
         File $phpcsFile,

@@ -106,6 +106,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
 
     /**
      * Provider for test_getMoodleComponent.
+     *
+     * @return array
      */
     public function getMoodleComponentProvider() {
         return [
@@ -228,6 +230,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
 
     /**
      * Provider for test_getMoodleBranch.
+     *
+     * @return array
      */
     public function getMoodleBranchProvider() {
         return [
@@ -329,6 +333,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
 
     /**
      * Provider for test_getMoodleRoot.
+     *
+     * @return array
      */
     public function getMoodleRootProvider() {
         return [
@@ -386,9 +392,9 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
      *
      * @param array $config get the Config from provider.
      * @param array $return expected result of the test.
+     * @param bool $requireMockMoodle Whether a mock Moodle root is required for this test.
      * @param bool $reset to decide if static caches should be reset before the test.
      * @param bool $selfPath to decide if moodle-cs own path is good to find a valid moodle root.
-     * @param bool $requireMockMoodle Whether a mock Moodle root is required for this test.
      *
      * @dataProvider getMoodleRootProvider
      */

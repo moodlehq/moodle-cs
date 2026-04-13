@@ -29,6 +29,8 @@ class PHPUnitTestReturnTypeTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testPHPUnitTestReturnType
+     *
+     * @return array
      */
     public function providerPHPUnitTestReturnType(): array {
         return [

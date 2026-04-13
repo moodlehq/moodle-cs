@@ -47,6 +47,8 @@ class ParentSetUpTearDownSniff implements Sniff
 
     /**
      * Register for open tag (only process once per file).
+     *
+     * @return (int|string)[]
      */
     public function register(): array {
         return [T_OPEN_TAG];
@@ -57,8 +59,9 @@ class ParentSetUpTearDownSniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
+     * @return int|null
      */
-    public function process(File $phpcsFile, $stackPtr): void {
+    public function process(File $phpcsFile, $stackPtr) {
 
         // Before starting any check, let's look for various things.
 
