@@ -57,6 +57,12 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
             'errors' => [],
             'warnings' => [],
         ];
+        yield 'Readonly class doc block' => [
+            'fixture' => 'readonly_with_namespace',
+            'fixtureFilename' => null,
+            'errors' => [],
+            'warnings' => [],
+        ];
         yield 'Closing punctuation behaves correctly' => [
             'fixture' => 'punctuation',
             'fixtureFilename' => null,

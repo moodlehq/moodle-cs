@@ -153,6 +153,11 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
                 [],
                 [],
             ],
+            [
+                'readonly_ok',
+                [],
+                [],
+            ],
         ];
     }
 }
