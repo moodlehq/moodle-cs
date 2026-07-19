@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Added
+- Add new `moodle.PHP.ForbiddenContainerInjection` sniff to prevent application code from receiving the dependency injection
+  container instead of declaring its actual service dependencies.
+- Add new opt-in `MoodleExtra.PHP.DiscouragedContainerLookup` sniff to warn when classes access the dependency injection
+  container instead of declaring dependencies.
+
 ### Removed
 - Support for PHPCompatibility until moodle-cs is upgraded to support PHP_CodeSniffer version 4.
 

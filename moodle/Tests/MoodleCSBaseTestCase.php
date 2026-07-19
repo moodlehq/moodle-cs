@@ -213,6 +213,14 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         $config->ignored   = [];
         $ruleset = new \PHP_CodeSniffer\Ruleset($config);
 
+        // PHPCS test mode assumes that the standard directory and the first part of the sniff code match.
+        // Fall back to loading the standard before selecting the sniff when a standard uses a different namespace.
+        if (empty($ruleset->sniffCodes)) {
+            $config->sniffs = [];
+            $ruleset = new \PHP_CodeSniffer\Ruleset($config);
+            $this->restrictRulesetToSniff($ruleset, $this->sniff);
+        }
+
         // We don't accept undefined errors and warnings.
         if (is_null($this->errors) && is_null($this->warnings)) {
             $this->fail('Error and warning expectations undefined. You must define at least one.');
@@ -274,6 +282,43 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         if (empty($fixerrors) === false) {
             $this->fail(implode(PHP_EOL, $fixerrors));
         }
+    }
+
+    /**
+     * Restrict a loaded ruleset to a single sniff.
+     *
+     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset to restrict.
+     * @param string $sniffCode The sniff code to retain.
+     * @return void
+     */
+    private function restrictRulesetToSniff(\PHP_CodeSniffer\Ruleset $ruleset, string $sniffCode): void {
+        $matchedCode = null;
+        $matchedClass = null;
+        foreach ($ruleset->sniffCodes as $code => $class) {
+            if (strcasecmp($code, $sniffCode) === 0) {
+                $matchedCode = $code;
+                $matchedClass = $class;
+                break;
+            }
+        }
+
+        if ($matchedClass === null) {
+            throw new \InvalidArgumentException("Sniff {$sniffCode} is not part of standard {$this->standard}.");
+        }
+
+        foreach ($ruleset->tokenListeners as $token => $listeners) {
+            foreach (array_keys($listeners) as $class) {
+                if ($class !== $matchedClass) {
+                    unset($ruleset->tokenListeners[$token][$class]);
+                }
+            }
+            if (empty($ruleset->tokenListeners[$token])) {
+                unset($ruleset->tokenListeners[$token]);
+            }
+        }
+
+        $ruleset->sniffs = [$matchedClass => $ruleset->sniffs[$matchedClass]];
+        $ruleset->sniffCodes = [$matchedCode => $matchedClass];
     }
 
     /**

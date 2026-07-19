@@ -13,6 +13,7 @@
   <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
     <include>
         <directory suffix=".php">moodle/Sniffs</directory>
+        <directory suffix=".php">moodle-extra/Sniffs</directory>
         <directory suffix=".php">moodle/Util</directory>
     </include>
     <report>
