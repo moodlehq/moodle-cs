@@ -34,7 +34,8 @@ class TestReturnTypeSniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_OPEN_TAG,
         ];

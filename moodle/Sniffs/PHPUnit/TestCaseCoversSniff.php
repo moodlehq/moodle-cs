@@ -33,7 +33,8 @@ class TestCaseCoversSniff extends AbstractTestCaseSniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [T_OPEN_TAG];
     }
 
@@ -43,7 +44,8 @@ class TestCaseCoversSniff extends AbstractTestCaseSniff
      * @param File $file The file being scanned.
      * @param int $pointer The position in the stack.
      */
-    public function process(File $file, $pointer) {
+    public function process(File $file, $pointer)
+    {
         if (!$this->shouldCheckFile($file)) {
             // Nothing to check.
             return; // @codeCoverageIgnore
@@ -291,7 +293,8 @@ class TestCaseCoversSniff extends AbstractTestCaseSniff
      * @param string $tag $coversXXX tag to be checked. Verifications are different based on that.
      * @return void
      */
-    protected function checkCoversTagsSyntax(File $file, int $pointer, string $tag) {
+    protected function checkCoversTagsSyntax(File $file, int $pointer, string $tag)
+    {
         // Get the file tokens, for ease of use.
         $tokens = $file->getTokens();
 

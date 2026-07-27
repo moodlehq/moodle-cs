@@ -33,7 +33,8 @@ use PHP_CodeSniffer\Ruleset;
  */
 class DocblocksTest extends MoodleCSBaseTestCase
 {
-    public static function getNullDocBlockPointerProvider(): array {
+    public static function getNullDocBlockPointerProvider(): array
+    {
         return [
             'global_scope_code' => ['none_global_scope.php'],
             'oop_scope_code' => ['none.php'],
@@ -43,7 +44,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
     /**
      * @dataProvider getNullDocBlockPointerProvider
      */
-    public function testGetNullDocBlockPointer(string $fixture): void {
+    public function testGetNullDocBlockPointer(string $fixture): void
+    {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -59,7 +61,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $this->assertNull($docBlock);
     }
 
-    public function testGetDocBlockTags(): void {
+    public function testGetDocBlockTags(): void
+    {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -107,7 +110,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $this->assertEquals($startDocPointer, $docblock);
     }
 
-    public function testGetDocBlockClassOnly(): void {
+    public function testGetDocBlockClassOnly(): void
+    {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -137,7 +141,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
      * Test that a file docblock and a class with no docblock correctly associated the docblock with the file
      * and not the class.
      */
-    public function testGetDocBlockClassWithoutDocblock(): void {
+    public function testGetDocBlockClassWithoutDocblock(): void
+    {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -161,7 +166,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
      * Test that a file docblock and a class with no docblock correctly associated the docblock with the file
      * and not the class when the class has an Attribute.
      */
-    public function testGetDocBlockClassWithAttribute(): void {
+    public function testGetDocBlockClassWithAttribute(): void
+    {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -207,7 +213,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $this->assertEquals($expected, Docblocks::isValidTag($phpcsFile, $testPtr));
     }
 
-    public static function validTagsProvider(): array {
+    public static function validTagsProvider(): array
+    {
         return [
             'Regular file: Valid' => [
                 'lib/classes/example.php',
@@ -307,7 +314,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $this->assertEquals($expected, Docblocks::isRecommendedTag($tagName));
     }
 
-    public static function isRecommendedTagProvider(): array {
+    public static function isRecommendedTagProvider(): array
+    {
         return [
             ['uses', true],
             ['abstract', false],
@@ -328,7 +336,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $this->assertEquals($expected, Docblocks::shouldRemoveTag($tagName));
     }
 
-    public static function shouldRemoveTagProvider(): array {
+    public static function shouldRemoveTagProvider(): array
+    {
         return [
             ['uses', false],
             ['abstract', false],
@@ -350,7 +359,8 @@ class DocblocksTest extends MoodleCSBaseTestCase
         $this->assertEquals($renameTo, Docblocks::getRenameTag($tagName));
     }
 
-    public static function getRenameTagProvider(): array {
+    public static function getRenameTagProvider(): array
+    {
         return [
             ['returns', 'return'],
             ['inheritdoc', null],

@@ -51,7 +51,8 @@ class FileExpectedTagsSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function fixtureProvider(): array {
+    public static function fixtureProvider(): array
+    {
         $cases = [
             'Single artifact, Single docblock' => [
                 'fixture' => 'single_artifact_single_docblock',

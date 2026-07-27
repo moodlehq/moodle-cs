@@ -51,7 +51,8 @@ class LangFilesOrderingTest extends MoodleCSBaseTestCase
      *
      * @return array
      */
-    public static function filesOrderingProvider(): array {
+    public static function filesOrderingProvider(): array
+    {
         return [
             'processed correct' => [
                 'lang/en/correct.php',

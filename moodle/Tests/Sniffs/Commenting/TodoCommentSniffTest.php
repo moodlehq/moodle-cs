@@ -29,7 +29,8 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  */
 class TodoCommentSniffTest extends MoodleCSBaseTestCase
 {
-    public function testComentingTodoComment(): void {
+    public function testComentingTodoComment(): void
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.TodoComment');
@@ -58,7 +59,8 @@ class TodoCommentSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testEmptyConfigValue(): void {
+    public function testEmptyConfigValue(): void
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.TodoComment');
@@ -80,7 +82,8 @@ class TodoCommentSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testCustomConfigValue(): void {
+    public function testCustomConfigValue(): void
+    {
             // Define the standard, sniff and fixture to use.
             $this->setStandard('moodle');
             $this->setSniff('moodle.Commenting.TodoComment');

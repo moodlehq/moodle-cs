@@ -46,7 +46,8 @@ class MissingDocblockSniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_OPEN_TAG,
         ];
@@ -58,13 +59,15 @@ class MissingDocblockSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
         $this->processScopes($phpcsFile, $stackPtr);
         $this->processFunctions($phpcsFile, $stackPtr);
         $this->processConstants($phpcsFile, $stackPtr);
     }
 
-    protected function processScopes(File $phpcsFile, int $stackPtr): void {
+    protected function processScopes(File $phpcsFile, int $stackPtr): void
+    {
         $tokens = $phpcsFile->getTokens();
 
         // Each class, interface, trait, and enum must have a docblock.
@@ -131,7 +134,8 @@ class MissingDocblockSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    protected function processFunctions(File $phpcsFile, int $stackPtr): void {
+    protected function processFunctions(File $phpcsFile, int $stackPtr): void
+    {
         // Missing docblocks for unit tests are treated as warnings.
         $isUnitTestFile = MoodleUtil::isUnitTest($phpcsFile);
 
@@ -224,7 +228,8 @@ class MissingDocblockSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    protected function processConstants(File $phpcsFile, int $stackPtr): void {
+    protected function processConstants(File $phpcsFile, int $stackPtr): void
+    {
         $tokens = $phpcsFile->getTokens();
 
         $typePtr = $stackPtr + 1;

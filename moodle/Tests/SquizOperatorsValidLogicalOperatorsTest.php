@@ -30,7 +30,8 @@ class SquizOperatorsValidLogicalOperatorsTest extends MoodleCSBaseTestCase
     /**
      * Test the Squid.Operators.ValidLogicalOperators sniff
      */
-    public function testSquizOperatorsValidLogicalOperators() {
+    public function testSquizOperatorsValidLogicalOperators()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');

@@ -50,7 +50,8 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function docblockCorrectnessProvider(): array {
+    public static function docblockCorrectnessProvider(): array
+    {
         $cases = [
             'Multiple artifacts in a file, check messages' => [
                 'fixture' => 'multiple_artifacts',

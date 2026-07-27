@@ -75,7 +75,8 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
     /**
      * Constructs a moodle_sniffs_namingconventions_validfunctionnamesniff.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(Tokens::$ooScopeTokens, [T_FUNCTION], true);
     }
 
@@ -88,7 +89,8 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenWithinScope(File $phpcsfile, $stackptr, $currscope) {
+    protected function processTokenWithinScope(File $phpcsfile, $stackptr, $currscope)
+    {
         $classname  = $phpcsfile->getDeclarationName($currscope);
         $methodname = $phpcsfile->getDeclarationName($stackptr);
 
@@ -141,7 +143,8 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenOutsideScope(File $phpcsfile, $stackptr) {
+    protected function processTokenOutsideScope(File $phpcsfile, $stackptr)
+    {
         $functionname = $phpcsfile->getDeclarationName($stackptr);
 
         // Is this a magic function. IE. is prefixed with "__".

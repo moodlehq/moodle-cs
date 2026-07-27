@@ -30,12 +30,14 @@ use PHP_CodeSniffer\Files\File;
 
 class LineLengthSniff extends GenericLineLengthSniff
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->lineLimit = 132;
         $this->absoluteLineLimit = 180;
     }
 
-    public function process(File $file, $stackptr) {
+    public function process(File $file, $stackptr)
+    {
         // Lang files are allowed to have long lines.
         if (strpos($file->getFilename(), DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR) !== false) {
             return;

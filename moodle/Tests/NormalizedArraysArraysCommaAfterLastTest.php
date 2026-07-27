@@ -30,7 +30,8 @@ class NormalizedArraysArraysCommaAfterLastTest extends MoodleCSBaseTestCase
     /**
      * Test the NormalizedArrays.Arrays.CommaAfterLast sniff
      */
-    public function testNormalizedArraysArraysCommaAfterLast() {
+    public function testNormalizedArraysArraysCommaAfterLast()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');

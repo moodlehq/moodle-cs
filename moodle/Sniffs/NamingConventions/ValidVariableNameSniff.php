@@ -80,7 +80,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processMemberVar(File $phpcsfile, $stackptr) {
+    protected function processMemberVar(File $phpcsfile, $stackptr)
+    {
         $tokens = $phpcsfile->getTokens();
         $membername = ltrim($tokens[$stackptr]['content'], '$');
 
@@ -114,7 +115,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariable(File $phpcsfile, $stackptr) {
+    protected function processVariable(File $phpcsfile, $stackptr)
+    {
         $tokens = $phpcsfile->getTokens();
         $membername     = ltrim($tokens[$stackptr]['content'], '$');
         $this->validateMoodleVariableName($membername, $phpcsfile, $stackptr);
@@ -128,7 +130,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariableInString(File $phpcsfile, $stackptr) {
+    protected function processVariableInString(File $phpcsfile, $stackptr)
+    {
         $tokens = $phpcsfile->getTokens();
 
         if (
@@ -156,7 +159,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    private function validateMoodleVariableName($varname, File $phpcsfile, $stackptr) {
+    private function validateMoodleVariableName($varname, File $phpcsfile, $stackptr)
+    {
         if (preg_match('/[A-Z]+/', $varname) && !in_array($varname, self::$allowedglobals)) {
             $error = "Variable \"$varname\" must be all lower-case";
             $phpcsfile->addError($error, $stackptr, 'VariableNameLowerCase');

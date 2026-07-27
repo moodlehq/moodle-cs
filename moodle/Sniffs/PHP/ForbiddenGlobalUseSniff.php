@@ -54,14 +54,16 @@ class ForbiddenGlobalUseSniff extends AbstractVariableSniff
     /**
      * @inheritDoc
      */
-    protected function processMemberVar(File $phpcsFile, $stackPtr) {
+    protected function processMemberVar(File $phpcsFile, $stackPtr)
+    {
         // Won't be a global.
     }
 
     /**
      * @inheritDoc
      */
-    protected function processVariable(File $phpcsFile, $stackPtr) {
+    protected function processVariable(File $phpcsFile, $stackPtr)
+    {
         $tokens  = $phpcsFile->getTokens();
         $varName = ltrim($tokens[$stackPtr]['content'], '$');
 
@@ -71,7 +73,8 @@ class ForbiddenGlobalUseSniff extends AbstractVariableSniff
     /**
      * @inheritDoc
      */
-    protected function processVariableInString(File $phpcsFile, $stackPtr) {
+    protected function processVariableInString(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
 
         if (preg_match_all('|[^\\\]\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)|', $tokens[$stackPtr]['content'], $matches) !== 0) {
@@ -88,7 +91,8 @@ class ForbiddenGlobalUseSniff extends AbstractVariableSniff
      * @param File $phpcsFile The PHP_CodeSniffer file where this token was found.
      * @param int $stackPtr The position where the token was found.
      */
-    protected function checkVariableUsage($varname, File $phpcsFile, $stackPtr) {
+    protected function checkVariableUsage($varname, File $phpcsFile, $stackPtr)
+    {
         foreach ($this->forbiddencombinations as $forbiddencombination) {
             $this->checkOneCombination($varname, $forbiddencombination, $phpcsFile, $stackPtr);
         }

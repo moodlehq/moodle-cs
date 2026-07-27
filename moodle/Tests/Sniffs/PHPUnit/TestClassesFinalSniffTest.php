@@ -32,7 +32,8 @@ class TestclassesFinalSniffTest extends MoodleCSBaseTestCase
     /**
      * Data provider for self::testPHPUnitClassesFinal
      */
-    public static function phpunitClassesFinalProvider(): array {
+    public static function phpunitClassesFinalProvider(): array
+    {
         return [
             'Standard fixes' => [
                 'fixture' => 'testclassesfinal',

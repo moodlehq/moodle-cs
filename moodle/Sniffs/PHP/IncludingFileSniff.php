@@ -35,11 +35,13 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class IncludingFileSniff implements Sniff
 {
-    public function register() {
+    public function register()
+    {
         return [T_INCLUDE_ONCE, T_REQUIRE_ONCE, T_REQUIRE, T_INCLUDE];
     }
 
-    public function process(File $file, $stackptr) {
+    public function process(File $file, $stackptr)
+    {
         $tokens = $file->getTokens();
 
         if ($tokens[$stackptr + 1]['code'] !== T_OPEN_PARENTHESIS) {

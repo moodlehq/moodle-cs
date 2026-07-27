@@ -33,7 +33,8 @@ class TestCaseProviderTest extends MoodleCSBaseTestCase
     /**
      * Data provider for self::testPHPUnitTestCaseProvider
      */
-    public function phpunitTestCaseProviderProvider() {
+    public function phpunitTestCaseProviderProvider()
+    {
         return [
             'Attributes' => [
                 'fixture' => 'attributes_test',

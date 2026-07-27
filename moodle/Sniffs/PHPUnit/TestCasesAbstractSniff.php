@@ -30,13 +30,15 @@ use PHPCSUtils\Utils\ObjectDeclarations;
  */
 class TestCasesAbstractSniff implements Sniff
 {
-    public function register() {
+    public function register()
+    {
         return [
             T_OPEN_TAG,
         ];
     }
 
-    public function process(File $file, $pointer) {
+    public function process(File $file, $pointer)
+    {
         // If the file is not a unit test file, nothing to check.
         if (!MoodleUtil::isUnitTest($file) && !MoodleUtil::isUnitTestRunning()) {
             return; // @codeCoverageIgnore

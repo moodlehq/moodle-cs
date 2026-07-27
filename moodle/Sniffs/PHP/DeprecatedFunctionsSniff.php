@@ -82,7 +82,8 @@ class DeprecatedFunctionsSniff extends GenericDeprecatedFunctionsSniff
      * @todo: This method can be removed once/if this PR accepted:
      *        https://github.com/squizlabs/PHP_CodeSniffer/pull/3295
      */
-    protected function addError($phpcsFile, $stackPtr, $function, $pattern = null) {
+    protected function addError($phpcsFile, $stackPtr, $function, $pattern = null)
+    {
         $data  = [$function];
         $error = 'Function %s() has been deprecated';
         $type  = 'Deprecated';

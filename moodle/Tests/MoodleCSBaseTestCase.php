@@ -82,7 +82,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * In charge of resetting all the internal properties and removing any
      * custom config option or mockup mapping.
      */
-    protected function tearDown(): void {
+    protected function tearDown(): void
+    {
         // Reset all the internal properties.
         $this->standard = null;
         $this->sniff = null;
@@ -100,11 +101,13 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         parent::tearDown();
     }
 
-    public function setComponentMapping(array $mapping): void {
+    public function setComponentMapping(array $mapping): void
+    {
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedComponentMappings($mapping);
     }
 
-    public function setApiMappings(array $mapping): void {
+    public function setApiMappings(array $mapping): void
+    {
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedApiMappings($mapping);
     }
 
@@ -113,7 +116,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param string $standard name of the standard to be tested.
      */
-    protected function setStandard(string $standard) {
+    protected function setStandard(string $standard)
+    {
         if (\PHP_CodeSniffer\Util\Standards::isInstalledStandard($standard) === false) {
             // They didn't select a valid coding standard, so help them
             // out by letting them know which standards are installed.
@@ -138,7 +142,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *                        - moodle.Commenting.InlineComment
      *                        - PEAR.WhiteSpace.ScopeIndent
      */
-    protected function setSniff($sniff) {
+    protected function setSniff($sniff)
+    {
         $this->sniff = $sniff;
     }
 
@@ -164,7 +169,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $errors error expectations to ve verified against execution results.
      */
-    protected function setErrors(array $errors) {
+    protected function setErrors(array $errors)
+    {
         $this->errors = $errors;
         // Let's normalize numeric, empty and string errors.
         foreach ($this->errors as $line => $errordef) {
@@ -183,7 +189,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $warnings warning expectations to ve verified against execution results.
      */
-    protected function setWarnings(array $warnings) {
+    protected function setWarnings(array $warnings)
+    {
         $this->warnings = $warnings;
         // Let's normalize numeric, empty and string warnings.
         foreach ($this->warnings as $line => $warningdef) {
@@ -205,7 +212,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * the CS is called and finally its results are tested against the
      * defined expectations.
      */
-    protected function verifyCsResults() {
+    protected function verifyCsResults()
+    {
         $config = new \PHP_CodeSniffer\Config();
         $config->cache     = false;
         $config->standards = [$this->standard];
@@ -279,7 +287,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
     /**
      * Helper to skip tests where a real Moodle Root is required.
      */
-    protected function requireRealMoodleRoot(): void {
+    protected function requireRealMoodleRoot(): void
+    {
         $moodleRoot = \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::getMoodleRoot();
         if (!empty($moodleRoot)) {
             return;
@@ -297,7 +306,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * @param string $key config key or name.
      * @param string $value config value.
      */
-    protected function addCustomConfig(string $key, string $value): void {
+    protected function addCustomConfig(string $key, string $value): void
+    {
         $this->customConfigs[$key] = $value;
         Config::setConfigData($key, $value, true);
     }
@@ -307,7 +317,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $errors error results produced by the CS execution.
      */
-    private function verifyErrors($errors) {
+    private function verifyErrors($errors)
+    {
         if (!is_array($errors)) {
             $this->fail('Unexpected errors structure received from CS execution.');
         }
@@ -320,7 +331,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param array $warnings warning results produced by the CS execution
      */
-    private function verifyWarnings($warnings) {
+    private function verifyWarnings($warnings)
+    {
         if (!is_array($warnings)) {
             $this->fail('Unexpected warnings structure received from CS execution.');
         }
@@ -335,7 +347,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * @param array $results error|warning generated results.
      * @param string $type results being asserted (errors, warnings). Used for output only.
      */
-    private function assertResults($expectations, $results, $type) {
+    private function assertResults($expectations, $results, $type)
+    {
         foreach ($expectations as $line => $expectation) {
             // Build some information to be shown in case of problems.
             $info = '';
@@ -383,7 +396,8 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * @param array $results raw CS results (errors or warnings),
      * @return array normalized array.
      */
-    private function normalizeCsResults($results) {
+    private function normalizeCsResults($results)
+    {
         $normalized = [];
         foreach ($results as $line => $lineerrors) {
             foreach ($lineerrors as $errors) {

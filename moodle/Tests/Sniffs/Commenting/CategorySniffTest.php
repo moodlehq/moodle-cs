@@ -53,7 +53,8 @@ class CategorySniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function provider(): array {
+    public static function provider(): array
+    {
         return [
             'Standard fixes' => [
                 'fixture' => 'category_tags',

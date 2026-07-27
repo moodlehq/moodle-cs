@@ -32,7 +32,8 @@ class ParentSetUpTearDownSniffTest extends MoodleCSBaseTestCase
     /**
      * Data provider for self::testParentSetUpTearDown
      */
-    public static function parentSetUpTearDownProvider(): array {
+    public static function parentSetUpTearDownProvider(): array
+    {
         return [
             'Correct' => [
                 'fixture' => 'ParentSetUpTearDownCorrect',

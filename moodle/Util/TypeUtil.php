@@ -53,7 +53,8 @@ class TypeUtil
      * @param string $type The type to standardise.
      * @return string|null
      */
-    public static function standardiseType(string $type): ?string {
+    public static function standardiseType(string $type): ?string
+    {
         $type = strtolower($type);
         if (in_array($type, self::$allowedTypes, true)) {
             return $type;

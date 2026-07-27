@@ -29,7 +29,8 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  */
 class MethodDeclarationSpacingSniffTest extends MoodleCSBaseTestCase
 {
-    public function testMethodDeclarationSpacing(): void {
+    public function testMethodDeclarationSpacing(): void
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.Methods.MethodDeclarationSpacing');

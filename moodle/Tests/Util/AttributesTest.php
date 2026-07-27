@@ -76,7 +76,8 @@ class AttributesTest extends MoodleCSBaseTestCase
         }
     }
 
-    public static function validTagsProvider(): array {
+    public static function validTagsProvider(): array
+    {
         return [
             'No attributes' => [
                 '<?php
@@ -177,7 +178,8 @@ class AttributesTest extends MoodleCSBaseTestCase
         ];
     }
 
-    public function testGetAttributePropertiesNotAnAttribute(): void {
+    public function testGetAttributePropertiesNotAnAttribute(): void
+    {
         $config = new Config([]);
         $ruleset = new Ruleset($config);
 
@@ -215,7 +217,8 @@ class AttributesTest extends MoodleCSBaseTestCase
         $this->assertEquals($expected, Attributes::hasAttribute($phpcsFile, $searchPtr, $attributeName));
     }
 
-    public static function hasAttributeProvider(): \Generator {
+    public static function hasAttributeProvider(): \Generator
+    {
         yield 'Has attribute' => [
             '<?php
             #[\Example\Attribute]
@@ -267,7 +270,8 @@ class AttributesTest extends MoodleCSBaseTestCase
         $this->assertEquals($expected, Attributes::hasOverrideAttribute($phpcsFile, $searchPtr));
     }
 
-    public static function hasOverrideAttributeProvider(): array {
+    public static function hasOverrideAttributeProvider(): array
+    {
         return [
             'Not in a method' => [
                 '<?php

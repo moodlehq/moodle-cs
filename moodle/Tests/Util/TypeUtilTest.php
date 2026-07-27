@@ -36,7 +36,8 @@ final class TypeUtilTest extends MoodleCSBaseTestCase
     /**
      * @dataProvider getValidTypesProvider
      */
-    public function testGetValidTypes(string $type, string $expected): void {
+    public function testGetValidTypes(string $type, string $expected): void
+    {
         $config = new Config();
         $fileContent = <<<EOF
         <?php
@@ -53,7 +54,8 @@ final class TypeUtilTest extends MoodleCSBaseTestCase
         );
     }
 
-    public static function getValidTypesProvider(): array {
+    public static function getValidTypesProvider(): array
+    {
         return [
             ['string', 'string'],
             ['int', 'int'],

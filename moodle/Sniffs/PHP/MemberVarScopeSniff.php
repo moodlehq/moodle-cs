@@ -43,7 +43,8 @@ class MemberVarScopeSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processMemberVar(File $file, $stackptr) {
+    protected function processMemberVar(File $file, $stackptr)
+    {
         $tokens = $file->getTokens();
 
         $modifier = $file->findPrevious(Tokens::$scopeModifiers, $stackptr);
@@ -64,7 +65,8 @@ class MemberVarScopeSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariable(File $file, $stackptr) {
+    protected function processVariable(File $file, $stackptr)
+    {
         return;
     }
 
@@ -76,7 +78,8 @@ class MemberVarScopeSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariableInString(File $file, $stackptr) {
+    protected function processVariableInString(File $file, $stackptr)
+    {
         return;
     }
 }

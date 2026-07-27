@@ -57,7 +57,8 @@ class VariableCommentSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    public function processMemberVar(File $phpcsFile, $stackPtr) {
+    public function processMemberVar(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
 
         $ignore = [
@@ -177,7 +178,8 @@ class VariableCommentSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariable(File $phpcsFile, $stackPtr) {
+    protected function processVariable(File $phpcsFile, $stackPtr)
+    {
         // Find the method that this variable is declared in.
         $methodPtr = $phpcsFile->findPrevious(T_FUNCTION, $stackPtr);
         if ($methodPtr === false) {
@@ -220,6 +222,7 @@ class VariableCommentSniff extends AbstractVariableSniff
     /**
      * @codeCoverageIgnore
      */
-    protected function processVariableInString(File $phpcsFile, $stackPtr) {
+    protected function processVariableInString(File $phpcsFile, $stackPtr)
+    {
     }
 }

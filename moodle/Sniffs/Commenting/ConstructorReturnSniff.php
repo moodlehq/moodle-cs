@@ -33,7 +33,8 @@ class ConstructorReturnSniff implements Sniff
     /**
      * Register for class tags.
      */
-    public function register() {
+    public function register()
+    {
 
         return [
             T_CLASS,
@@ -46,7 +47,8 @@ class ConstructorReturnSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
         $endClassPtr = $tokens[$stackPtr]['scope_closer'];
 
@@ -64,7 +66,8 @@ class ConstructorReturnSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    protected function processClassMethod(File $phpcsFile, int $stackPtr): void {
+    protected function processClassMethod(File $phpcsFile, int $stackPtr): void
+    {
         $objectName = TokenUtil::getObjectName($phpcsFile, $stackPtr);
         if ($objectName !== '__constructor') {
             // We only care about constructors.

@@ -32,7 +32,8 @@ class TestCasesAbstractSniffTest extends MoodleCSBaseTestCase
     /**
      * Data provider for self::testPHPUnitTestCasesAbstract
      */
-    public static function phpunitTestCasesAbstractProvider(): array {
+    public static function phpunitTestCasesAbstractProvider(): array
+    {
         return [
             'Standard fixes' => [
                 'fixture' => 'testcaseclassesabstract',

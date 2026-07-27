@@ -54,7 +54,8 @@ class TokenUtilTest extends MoodleCSBaseTestCase
         $this->assertEquals($expectedName, TokenUtil::getObjectName($phpcsFile, $stackPtr));
     }
 
-    public static function objectPropertiesProvider(): array {
+    public static function objectPropertiesProvider(): array
+    {
         $cases = [
             'Class name' => [
                 '<?php class Example {}',
@@ -139,7 +140,8 @@ class TokenUtilTest extends MoodleCSBaseTestCase
         $this->assertEquals($expectedCount, TokenUtil::countGlobalScopesInFile($phpcsFile));
     }
 
-    public static function countGlobalScopesInFileProvider(): array {
+    public static function countGlobalScopesInFileProvider(): array
+    {
         $cases = [
             'No global scopes' => [
                 '<?php $a = 1;',
@@ -181,7 +183,8 @@ class TokenUtilTest extends MoodleCSBaseTestCase
         return $cases;
     }
 
-    public function testObjectPropertiesInvalidPointer(): void {
+    public function testObjectPropertiesInvalidPointer(): void
+    {
         $config = new Config([]);
         $ruleset = new Ruleset($config);
 

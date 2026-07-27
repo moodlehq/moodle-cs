@@ -63,7 +63,8 @@ class NamespaceScopeUtilTest extends MoodleCSBaseTestCase
         );
     }
 
-    public static function validTagsProvider(): \Generator {
+    public static function validTagsProvider(): \Generator
+    {
         yield 'No namespace or imports' => [
             '<?php
             class Example {}',
@@ -190,7 +191,8 @@ class NamespaceScopeUtilTest extends MoodleCSBaseTestCase
         );
     }
 
-    public static function getClassImportsProvider(): \Generator {
+    public static function getClassImportsProvider(): \Generator
+    {
         yield 'Simple import' => [
             '<?php
             use Example\Thing\Example;

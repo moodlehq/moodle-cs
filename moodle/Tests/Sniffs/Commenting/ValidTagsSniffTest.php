@@ -49,7 +49,8 @@ class ValidTagsSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function provider(): array {
+    public static function provider(): array
+    {
         return [
             'Unit test file' => [
                 'fixturePath' => 'lib/tests/example_test.php',

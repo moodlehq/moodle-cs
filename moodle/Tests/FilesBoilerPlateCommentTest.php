@@ -27,7 +27,8 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  */
 class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
 {
-    public function testMoodleFilesBoilerplateCommentOk() {
+    public function testMoodleFilesBoilerplateCommentOk()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/ok.php');
@@ -58,7 +59,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentNoPHP() {
+    public function testMoodleFilesBoilerplateCommentNoPHP()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/nophp.php');
@@ -71,7 +73,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentBlank() {
+    public function testMoodleFilesBoilerplateCommentBlank()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/blank.php');
@@ -84,7 +87,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentShort() {
+    public function testMoodleFilesBoilerplateCommentShort()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short.php');
@@ -97,7 +101,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentShortEmpty() {
+    public function testMoodleFilesBoilerplateCommentShortEmpty()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_empty.php');
@@ -110,7 +115,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentShortNotEof() {
+    public function testMoodleFilesBoilerplateCommentShortNotEof()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_not_eof.php');
@@ -123,7 +129,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentWrongLine() {
+    public function testMoodleFilesBoilerplateCommentWrongLine()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/wrongline.php');
@@ -137,7 +144,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentGnuHttp() {
+    public function testMoodleFilesBoilerplateCommentGnuHttp()
+    {
 
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
@@ -152,7 +160,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     /**
      * Assert that www.gnu.org can be referred to via https URL in the boilerplate.
      */
-    public function testMoodleFilesBoilerplateCommentGnuHttps() {
+    public function testMoodleFilesBoilerplateCommentGnuHttps()
+    {
 
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
@@ -167,7 +176,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     /**
      * Assert that boilerplate is found if it is not the first thing in the file.
      */
-    public function testMoodleFilesBoilerplateCommentWrongPlace() {
+    public function testMoodleFilesBoilerplateCommentWrongPlace()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/wrong_place.php');
@@ -184,7 +194,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     /**
      * Assert that boilerplate is followed by a single newline (detect and remove excessive)
      */
-    public function testMoodleFilesBoilerplateCommentTrailingWhitespace() {
+    public function testMoodleFilesBoilerplateCommentTrailingWhitespace()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/trailing_whitespace.php');
@@ -200,7 +211,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     /**
      * Assert that boilerplate is followed by a single newline (detect and fix missing)
      */
-    public function testMoodleFilesBoilerplateCommentTrailingWhitespaceMissing() {
+    public function testMoodleFilesBoilerplateCommentTrailingWhitespaceMissing()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/trailing_whitespace_missing.php');
@@ -213,7 +225,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentFirstlineComment() {
+    public function testMoodleFilesBoilerplateCommentFirstlineComment()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/firstline_comment.php');
@@ -227,7 +240,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentWithPhpcsTag() {
+    public function testMoodleFilesBoilerplateCommentWithPhpcsTag()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/with_phpcs_tag.php');
@@ -241,7 +255,8 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public function testMoodleFilesBoilerplateCommentMissingLines() {
+    public function testMoodleFilesBoilerplateCommentMissingLines()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
         $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/missing_lines.php');

@@ -62,7 +62,8 @@ abstract class MoodleUtil
      *
      * @throws \Exception
      */
-    public static function setMockedComponentMappings(array $mappings): void {
+    public static function setMockedComponentMappings(array $mappings): void
+    {
         if (!defined('PHPUNIT_TEST') || !PHPUNIT_TEST) {
             throw new \Exception('Not running in a unit test'); // @codeCoverageIgnore
         }
@@ -76,7 +77,8 @@ abstract class MoodleUtil
      * @param array $mappings
      * @throws \Exception
      */
-    public static function setMockedApiMappings(array $mappings): void {
+    public static function setMockedApiMappings(array $mappings): void
+    {
         if (!defined('PHPUNIT_TEST') || !PHPUNIT_TEST) {
             throw new \Exception('Not running in a unit test'); // @codeCoverageIgnore
         }
@@ -90,7 +92,8 @@ abstract class MoodleUtil
      * @param string $moodleRoot Full path to a valid moodle.root
      * @return bool True if the file has been loaded, false if not.
      */
-    protected static function loadCoreComponent(string $moodleRoot): bool {
+    protected static function loadCoreComponent(string $moodleRoot): bool
+    {
         global $CFG;
 
         // Safety check, in case core_component is missing.
@@ -120,7 +123,8 @@ abstract class MoodleUtil
      * @param string $moodleRoot Full path to a valid moodle.root
      * @return array Associative array of components as keys and paths as values or null if not found.
      */
-    protected static function calculateAllComponents(string $moodleRoot): ?array {
+    protected static function calculateAllComponents(string $moodleRoot): ?array
+    {
         // If we have calculated the components already, straight return them.
         if (!empty(self::$moodleComponents)) {
             return self::$moodleComponents;
@@ -225,7 +229,8 @@ abstract class MoodleUtil
      *
      * @return string|null a valid moodle component for the file or null if not found.
      */
-    public static function getMoodleComponent(File $file, $selfPath = true): ?string {
+    public static function getMoodleComponent(File $file, $selfPath = true): ?string
+    {
         if (defined('PHPUNIT_TEST') && PHPUNIT_TEST && !empty(self::$mockedComponentMappings)) {
             $components = self::$mockedComponentMappings; // @codeCoverageIgnore
         } else {
@@ -269,7 +274,8 @@ abstract class MoodleUtil
      * @param bool $selfPath
      * @return null|array
      */
-    public static function getMoodleApis(File $file, bool $selfPath = true): ?array {
+    public static function getMoodleApis(File $file, bool $selfPath = true): ?array
+    {
         if (defined('PHPUNIT_TEST') && PHPUNIT_TEST && !empty(self::$mockedApisList)) {
             return array_keys(self::$mockedApisList); // @codeCoverageIgnore
         }
@@ -319,7 +325,8 @@ abstract class MoodleUtil
      *
      * @return int|null the numeric branch in moodle root version.php or null if not found
      */
-    public static function getMoodleBranch(?File $file = null, bool $selfPath = true): ?int {
+    public static function getMoodleBranch(?File $file = null, bool $selfPath = true): ?int
+    {
         // Return already calculated value if available.
         if (self::$moodleBranch !== false) {
             return self::$moodleBranch;
@@ -402,7 +409,8 @@ abstract class MoodleUtil
      *
      * @return string|null the full path to moodle root or null if not found.
      */
-    public static function getMoodleRoot(?File $file = null, bool $selfPath = true): ?string {
+    public static function getMoodleRoot(?File $file = null, bool $selfPath = true): ?string
+    {
         // Return already calculated value if available.
         if (self::$moodleRoot !== false) {
             return self::$moodleRoot;
@@ -463,7 +471,8 @@ abstract class MoodleUtil
      * @param string $path
      * @return array|string|null
      */
-    private static function findVersionFileFromPath(string $path): ?string {
+    private static function findVersionFileFromPath(string $path): ?string
+    {
         $lastPath = $path;
         while (($path = pathinfo($path, PATHINFO_DIRNAME)) !== $lastPath) {
             // If we find both a version.php and config-dist.php file then we have arrived to moodle root.
@@ -665,7 +674,8 @@ abstract class MoodleUtil
      * @param File @phpcsFile
      * @return string
      */
-    public static function getStandardisedFilename(File $phpcsFile): string {
+    public static function getStandardisedFilename(File $phpcsFile): string
+    {
         return str_replace('\\', '/', $phpcsFile->getFilename());
     }
 }

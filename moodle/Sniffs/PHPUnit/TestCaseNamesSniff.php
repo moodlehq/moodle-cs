@@ -47,7 +47,8 @@ class TestCaseNamesSniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [T_OPEN_TAG];
     }
 
@@ -58,7 +59,8 @@ class TestCaseNamesSniff implements Sniff
      * @param File $file The file being scanned.
      * @param int $pointer The position in the stack.
      */
-    public function process(File $file, $pointer) {
+    public function process(File $file, $pointer)
+    {
         // Before starting any check, let's look for various things.
 
         // Guess moodle component (from $file being processed).
@@ -312,7 +314,8 @@ class TestCaseNamesSniff implements Sniff
      *
      * So we fill them here when it's detected that we are running PHPUnit.
      */
-    private function prepareCachesForPHPUnit() {
+    private function prepareCachesForPHPUnit()
+    {
         $this->foundClasses['local_codechecker\testcasenames_duplicate_exists'][] = [
             'file' => 'phpunit_fake_exists',
             'line' => -999,

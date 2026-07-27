@@ -53,7 +53,8 @@ class FileExpectedTagsSniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_OPEN_TAG,
         ];
@@ -65,7 +66,8 @@ class FileExpectedTagsSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
         // Get the stack pointer for the file-level docblock.
         $stackPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
         if ($stackPtr === null) {
@@ -92,7 +94,8 @@ class FileExpectedTagsSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    private function processFileCopyright(File $phpcsFile, $stackPtr): void {
+    private function processFileCopyright(File $phpcsFile, $stackPtr): void
+    {
         $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
         $copyrightTokens = Docblocks::getMatchingDocTags($phpcsFile, $docPtr, '@copyright');
         if (empty($copyrightTokens)) {
@@ -115,7 +118,8 @@ class FileExpectedTagsSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    private function processFileLicense(File $phpcsFile, $stackPtr): void {
+    private function processFileLicense(File $phpcsFile, $stackPtr): void
+    {
         $tokens = $phpcsFile->getTokens();
         $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
         $foundTokens = Docblocks::getMatchingDocTags($phpcsFile, $docPtr, '@license');

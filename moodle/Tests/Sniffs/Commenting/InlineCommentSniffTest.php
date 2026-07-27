@@ -50,7 +50,8 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function commentsProvider(): \Generator {
+    public static function commentsProvider(): \Generator
+    {
         yield '' => [
             'fixture' => 'attributes',
             'fixtureFilename' => null,

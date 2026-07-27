@@ -34,7 +34,8 @@ class WhiteSpaceInStringsSniff implements Sniff
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_CONSTANT_ENCAPSED_STRING,
             T_DOUBLE_QUOTED_STRING,
@@ -51,7 +52,8 @@ class WhiteSpaceInStringsSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsfile, $stackptr) {
+    public function process(File $phpcsfile, $stackptr)
+    {
         $tokens = $phpcsfile->getTokens();
         // Look for final whitespace endings but not in whitespace tokens
         // (not sure which cases are covered by this, because it seems to
