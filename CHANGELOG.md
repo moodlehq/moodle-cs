@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- The `moodle600` standard now requires opening braces of functions, methods and classes on a new line (PSR-12):
+  - Enabled `PSR2.Classes.ClassDeclaration.OpenBraceNewLine`.
+  - Enabled `Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine`.
+  - Disabled `Generic.Functions.OpeningFunctionBraceKernighanRitchie`.
 
 ## [v3.9.0] - 2026-11-05
 ### Added
