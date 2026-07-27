@@ -7,10 +7,8 @@
     <exclude-pattern>*/Tests/fixtures/*</exclude-pattern>
     <exclude-pattern>*/Tests/*/fixtures/*</exclude-pattern>
 
-    <!-- PSR12 with a few exceptions and adjustments -->
-    <rule ref="PSR12">
-        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
-    </rule>
+    <!-- PSR12 with project adjustments -->
+    <rule ref="PSR12"/>
 
     <!-- Some more chars don't hurt too much -->
     <rule ref="Generic.Files.LineLength">

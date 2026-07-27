@@ -34,17 +34,12 @@
         <!-- Moodle does not support camel case at all -->
         <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
 
-        <!-- Moodle does not place the opening brace on a new line -->
-        <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine"/>
-
         <!-- Moodle allows use of else if-->
         <exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed"/>
 
         <!-- Moodle casing rules do not allow camel case at all -->
         <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
 
-        <!-- Moodle currently places the brace in the same line -->
-        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
     </rule>
 
     <!--
@@ -82,8 +77,6 @@
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
 
     <rule ref="Generic.ControlStructures.InlineControlStructure"/>
-
-    <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
 
     <rule ref="Generic.NamingConventions.ConstructorName"/>
 

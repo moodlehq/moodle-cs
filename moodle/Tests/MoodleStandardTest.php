@@ -391,38 +391,6 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     }
 
     /**
-     * Test the Generic.Functions.OpeningFunctionBraceKernighanRitchie sniff.
-     *
-     * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Functions\OpeningFunctionBraceKernighanRitchieSniff
-     */
-    public function testGenericFunctionsOpeningFunctionBraceKernighanRitchie() {
-
-        // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
-        $this->setSniff('Generic.Functions.OpeningFunctionBraceKernighanRitchie');
-        $this->setFixture(__DIR__ . '/fixtures/generic_functions_openingfunctionbracekerninghanritchie.php');
-
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $this->setErrors([
-            6 => 'Expected 1 space before opening brace; found 0',
-            9 => 1,
-           12 => 'Expected 1 space before opening brace; found 3',
-           15 => 1,
-           20 => 'Expected 1 space before opening brace; found 0',
-           23 => 1,
-           26 => 'Expected 1 space before opening brace; found 3',
-           29 => 1]);
-
-        $this->setWarnings([]);
-
-        // Let's do all the hard work!
-        $this->verifyCsResults();
-    }
-
-    /**
      * Test the Generic.Classes.OpeningBraceSameLine sniff.
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Classes\OpeningBraceSameLineSniff
