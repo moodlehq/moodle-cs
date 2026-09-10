@@ -89,6 +89,14 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
      * @return void
      */
     protected function processTokenWithinScope(File $phpcsfile, $stackptr, $currscope) {
+        $tokens = $phpcsfile->getTokens();
+
+        // The T_ANON_CLASS is part of the OO scope tokens, but anonymous classes
+        // have no name and therefore the class name cannot (and need not) be checked.
+        if ($tokens[$currscope]['code'] === T_ANON_CLASS) {
+            return;
+        }
+
         $classname  = $phpcsfile->getDeclarationName($currscope);
         $methodname = $phpcsfile->getDeclarationName($stackptr);
 
