@@ -42,17 +42,6 @@ use PHP_CodeSniffer\Util\Tokens;
 class InlineCommentSniff implements Sniff
 {
     /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var array
-     */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
-
-    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @return array
@@ -101,7 +90,6 @@ class InlineCommentSniff implements Sniff
                 T_ABSTRACT,
                 T_CONST,
                 T_ENUM,
-                T_PROPERTY,
                 T_INCLUDE,
                 T_INCLUDE_ONCE,
                 T_REQUIRE,
@@ -135,24 +123,6 @@ class InlineCommentSniff implements Sniff
             // Allow phpdoc before define() token (see CONTRIB-4150).
             if ($tokens[$nextToken]['code'] == T_STRING && $tokens[$nextToken]['content'] == 'define') {
                 return;
-            }
-
-            if ($phpcsFile->tokenizerType === 'JS') {
-                // We allow block comments if a function or object
-                // is being assigned to a variable.
-                $ignore    = Tokens::$emptyTokens;
-                $ignore[]  = T_EQUAL;
-                $ignore[]  = T_STRING;
-                $ignore[]  = T_OBJECT_OPERATOR;
-                $nextToken = $phpcsFile->findNext($ignore, ($nextToken + 1), null, true);
-                if (
-                    $tokens[$nextToken]['code'] === T_FUNCTION ||
-                    $tokens[$nextToken]['code'] === T_CLOSURE ||
-                    $tokens[$nextToken]['code'] === T_OBJECT ||
-                    $tokens[$nextToken]['code'] === T_PROTOTYPE
-                ) {
-                    return;
-                }
             }
 
             $prevToken = $phpcsFile->findPrevious(
@@ -427,11 +397,6 @@ class InlineCommentSniff implements Sniff
             }
 
             return ($lastCommentToken + 1);
-        }
-
-        // Respect eslint configuration comments in JS files.
-        if ($phpcsFile->tokenizerType === 'JS' && preg_match('!^eslint(-|\s)!', $commentText)) {
-            return;
         }
 
         // Enforce capital letter, digit or 3-dots sequence. Also allow @codeCoverageIgnore
