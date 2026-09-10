@@ -324,7 +324,12 @@ class InlineCommentSniff implements Sniff
 
         $commentText = '';
         foreach ($commentTokens as $lastCommentToken) {
-            $comment = rtrim($tokens[$lastCommentToken]['content']);
+            // PHPCS 4 expands tabs in comment tokens to spaces (based on the tab-width).
+            // Use the original content, when available, so that a tab in a comment can still be detected.
+            $rawComment = isset($tokens[$lastCommentToken]['orig_content'])
+                ? $tokens[$lastCommentToken]['orig_content']
+                : $tokens[$lastCommentToken]['content'];
+            $comment = rtrim($rawComment);
 
             // Count slashes.
             $slashCount = strlen(preg_replace('!^(/*).*!', '\\1', trim($comment)));
