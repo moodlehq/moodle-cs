@@ -191,40 +191,6 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     }
 
     /**
-     * Test the moodle.Commenting.InlineComment sniff.
-     *
-     * Note that, while this test continues passing, because
-     * we load the .js file manually, now the moodle standard
-     * by default enforces --extensions=php, so no .js file
-     * will be inspected by default ever.
-     *
-     * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Commenting\InlineCommentSniff
-     */
-    public function testMoodleCommentingInlineCommentJS() {
-
-        // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
-        $this->setSniff('moodle.Commenting.InlineComment');
-        $this->setFixture(__DIR__ . '/fixtures/moodle_comenting_inlinecomment.js');
-
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $this->setErrors([
-            1 => ['3 slashes comments are not allowed'],
-            3 => 1,
-            5 => 'No space found before comment text',
-        ]);
-        $this->setWarnings([
-            3 => [null, 'Commenting.InlineComment.InvalidEndChar'],
-        ]);
-
-        // Let's do all the hard work!
-        $this->verifyCsResults();
-    }
-
-    /**
      * Test the moodle.ControlStructures.ControlSignature sniff.
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\ControlStructures\ControlSignatureSniff
@@ -344,7 +310,11 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGenericFilesEndFileNewLine() {
 
         // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
+        //
+        // Note: these sniffs are not part of the "moodle" standard, so the
+        // "Generic" standard is used to register the sniff (PHPCS 4 strictly
+        // honours the --sniffs selection).
+        $this->setStandard('Generic');
         $this->setSniff('Generic.Files.EndFileNewline');
         $this->setFixture(__DIR__ . '/fixtures/generic_files_endfilenewline.php');
 
@@ -430,7 +400,11 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testGenericClassesOpeningBraceSameLine() {
 
         // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
+        //
+        // Note: these sniffs are not part of the "moodle" standard, so the
+        // "Generic" standard is used to register the sniff (PHPCS 4 strictly
+        // honours the --sniffs selection).
+        $this->setStandard('Generic');
         $this->setSniff('Generic.Classes.OpeningBraceSameLine');
         $this->setFixture(__DIR__ . '/fixtures/generic_classes_openingclassbrace.php');
 
