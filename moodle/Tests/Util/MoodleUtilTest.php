@@ -62,7 +62,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         );
 
         // Set codechecker config to point to it.
-        Config::setConfigData('moodleComponentsListPath', $vfs->url() . '/components.txt', true);
+        $this->setConfigData('moodleComponentsListPath', $vfs->url() . '/components.txt');
 
         // Let's run calculateAllComponents() and evaluate results.
         $method = new \ReflectionMethod(MoodleUtil::class, 'calculateAllComponents');
@@ -89,7 +89,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         // Now be evil and try with an unreadable file, it must throw an exception.
 
         $this->cleanMoodleUtilCaches(); // Need to clean previous cached values.
-        Config::setConfigData('moodleComponentsListPath', '/path/to/non/readable/file', true);
+        $this->setConfigData('moodleComponentsListPath', '/path/to/non/readable/file');
 
         // We cannot use expectException() here, because we need to clean caches at the end.
         try {
@@ -101,7 +101,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
 
         // Ensure cached information doesn't affect other tests.
         $this->cleanMoodleUtilCaches();
-        Config::setConfigData('moodleComponentsListPath', null, true);
+        $this->setConfigData('moodleComponentsListPath', null);
     }
 
     /**
@@ -177,7 +177,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
             $vfs = vfsStream::setup('mocksite', null, []);
             vfsStream::copyFromFileSystem(__DIR__ . '/fixtures/moodleutil/complete', $vfs);
             $config['moodleRoot'] = $vfs->url(); // Let's add it to the standard config and immediately use it.
-            Config::setConfigData('moodleRoot', $config['moodleRoot'], true);
+            $this->setConfigData('moodleRoot', $config['moodleRoot']);
             $this->requireRealMoodleRoot();
 
             // Also, we need to set the config['file'] to point to the vfs one.
@@ -195,7 +195,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
                     $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
                     // Normal config.
-                    Config::setConfigData($key, $value, true);
+                    $this->setConfigData($key, $value);
                 }
             }
         }
@@ -221,7 +221,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         // We need to unset all config options when passed.
         if ($config) {
             foreach ($config as $key => $value) {
-                Config::setConfigData($key, null, true);
+                $this->setConfigData($key, null);
             }
         }
     }
@@ -296,7 +296,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
                     $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
                     // Normal config.
-                    Config::setConfigData($key, $value, true);
+                    $this->setConfigData($key, $value);
                 }
             }
         }
@@ -322,7 +322,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         // We need to unset all config options when passed.
         if ($config) {
             foreach ($config as $key => $value) {
-                Config::setConfigData($key, null, true);
+                $this->setConfigData($key, null);
             }
         }
     }
@@ -407,7 +407,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
                     'config-dist.php' => 'come config contents, not important for this test',
                 ]);
                 $config['moodleRoot'] = $vfs->url(); // Let's add it to the standard config and immediately use it.
-                Config::setConfigData('moodleRoot', $config['moodleRoot'], true);
+                $this->setConfigData('moodleRoot', $config['moodleRoot']);
                 $this->requireRealMoodleRoot();
 
                 // We also have to mock the passed expectation for the test.
@@ -427,7 +427,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
                     $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
                     // Normal config.
-                    Config::setConfigData($key, $value, true);
+                    $this->setConfigData($key, $value);
                 }
             }
         }
@@ -453,7 +453,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         // We need to unset all config options when passed.
         if ($config) {
             foreach ($config as $key => $value) {
-                Config::setConfigData($key, null, true);
+                $this->setConfigData($key, null);
             }
         }
     }
@@ -716,7 +716,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         int $minVersion,
         array $return
     ): void {
-        Config::setConfigData('moodleBranch', $moodleVersion, true);
+        $this->setConfigData('moodleBranch', $moodleVersion);
 
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
@@ -739,7 +739,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         $this->cleanMoodleUtilCaches();
 
         // We need to unset all config options when passed.
-        Config::setConfigData('moodleBranch', null, true);
+        $this->setConfigData('moodleBranch', null);
     }
 
     public static function findClassMethodPointerProvider(): array

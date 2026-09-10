@@ -94,10 +94,24 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedComponentMappings([]);
         // If there is any custom config setup, remove it.
         foreach (array_keys($this->customConfigs) as $key) {
-            Config::setConfigData($key, null, true);
+            $this->setConfigData($key, null);
         }
         // Call to parent, always.
         parent::tearDown();
+    }
+
+    /**
+     * Set config data for tests.
+     *
+     * As of PHPCS 4.0, the PHP_CodeSniffer\Config::setConfigData() method is no longer static,
+     * so it must be invoked on a Config instance.
+     *
+     * @param string $key The name of the config value.
+     * @param string|null $value The value to set. If null, the config entry is deleted.
+     */
+    protected function setConfigData(string $key, ?string $value): void {
+        $config = new Config();
+        $config->setConfigData($key, $value, true);
     }
 
     public function setComponentMapping(array $mapping): void {
@@ -299,7 +313,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected function addCustomConfig(string $key, string $value): void {
         $this->customConfigs[$key] = $value;
-        Config::setConfigData($key, $value, true);
+        $this->setConfigData($key, $value);
     }
 
     /**
