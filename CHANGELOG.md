@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Removed
 - Support for PHPCompatibility until moodle-cs is upgraded to support PHP_CodeSniffer version 4.
+- Dropped Support for PHP 7.4 and below.
 
 ## [v3.6.0] - 2025-09-09
 
