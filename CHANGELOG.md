@@ -10,7 +10,19 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - Support for PHPCompatibility until moodle-cs is upgraded to support PHP_CodeSniffer version 4.
 - Dropped Support for PHP 7.4 and below.
 
-## [v3.6.0] - 2025-09-09
+### Changed
+- Support for PHP_CodeSniffer version 4.
+  - Updated the `moodle-extra` and `moodle` rulesets to use the new PHPCS ruleset schema URL.
+  - Removed support for JS scanning (removed upstream in PHPCS 4.0).
+  - `moodle.Commenting.InlineComment`: detect tabs in comments using the token `orig_content` as PHPCS 4 expands tabs.
+  - `moodle.Commenting.ValidTags`: flag the legacy `@codingStandards*` docblock tags as invalid, as that annotation syntax was removed in PHPCS 4.0.
+  - `moodle.Files.BoilerplateComment`: account for the fact that the `T_OPEN_TAG` token no longer contains trailing whitespace.
+  - `moodle.Namespaces.NamespaceStatement`: support the new PHPCS 4 name tokenization (`T_NAME_FULLY_QUALIFIED`).
+  - `moodle.NamingConventions.ValidFunctionName`: skip anonymous class scopes as `T_ANON_CLASS` is now a scope token.
+  - `moodle.PHPUnit.TestCaseNames`: retrieve namespace names in a cross-version compatible way (via PHPCSUtils).
+  - `moodle.WhiteSpace.WhiteSpaceInStrings`: detect tabs in whitespace using the token `orig_content` as PHPCS 4 expands tabs.
+  - Updated the test suite for PHPCS 4 (instance-based `Config::setConfigData()`, removed JS-specific test, tab/namespace handling).
+  - Updated the GitHub Actions integration tests to expect the new PHPCS 4 exit codes.
 
 ## [v3.6.0] - 2025-09-09
 ### Removed
