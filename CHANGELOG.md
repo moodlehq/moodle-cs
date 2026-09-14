@@ -6,8 +6,26 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Fixed
+- Preserve Moodle header spacing and class naming exclusions with the PHPCS 4 error codes.
+- `moodle.NamingConventions.ValidFunctionName`: continue checking methods in anonymous classes.
+- `moodle.Files.RequireLogin`: recognise fully qualified global login calls and exemption definitions.
+- `moodle.Files.BoilerplateComment`: reject code between the opening tag and boilerplate, including on the opening line.
+
 ### Changed
 - Unit test locations were standardised to match the location of code under test.
+- Support for PHP_CodeSniffer version 4.
+  - Updated the `moodle-extra` and `moodle` rulesets to use the new PHPCS ruleset schema URL.
+  - Removed support for JS scanning (removed upstream in PHPCS 4.0).
+  - `moodle.Commenting.InlineComment`: detect tabs in comments using the token `orig_content` as PHPCS 4 expands tabs.
+  - `moodle.Commenting.ValidTags`: flag the legacy `@codingStandards*` docblock tags as invalid, as that annotation syntax was removed in PHPCS 4.0.
+  - `moodle.Files.BoilerplateComment`: account for the fact that the `T_OPEN_TAG` token no longer contains trailing whitespace.
+  - `moodle.Namespaces.NamespaceStatement`: support the new PHPCS 4 name tokenization (`T_NAME_FULLY_QUALIFIED`).
+  - `moodle.NamingConventions.ValidFunctionName`: skip anonymous class scopes as `T_ANON_CLASS` is now a scope token.
+  - `moodle.PHPUnit.TestCaseNames`: retrieve namespace names in a cross-version compatible way (via PHPCSUtils).
+  - `moodle.WhiteSpace.WhiteSpaceInStrings`: detect tabs in whitespace using the token `orig_content` as PHPCS 4 expands tabs.
+  - Updated the test suite for PHPCS 4 (instance-based `Config::setConfigData()`, removed JS-specific test, tab/namespace handling).
+  - Updated the GitHub Actions integration tests to expect the new PHPCS 4 exit codes.
 
 ## [v3.7.0] - 2025-12-02
 ### Removed
