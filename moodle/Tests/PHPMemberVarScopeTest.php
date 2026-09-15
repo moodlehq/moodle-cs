@@ -27,7 +27,8 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  */
 class PHPMemberVarScopeTest extends MoodleCSBaseTestCase
 {
-    public function testPHPMemberVarScope() {
+    public function testPHPMemberVarScope()
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHP.MemberVarScope');

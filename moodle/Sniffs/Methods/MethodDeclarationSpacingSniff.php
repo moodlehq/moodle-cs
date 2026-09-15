@@ -41,7 +41,8 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class MethodDeclarationSpacingSniff extends AbstractScopeSniff
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(Tokens::$ooScopeTokens, [T_FUNCTION]);
     }
 
@@ -54,7 +55,8 @@ class MethodDeclarationSpacingSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope) {
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
+    {
         // List of tokens that require one space after them.
         $oneSpaceTokens = [
             // T_PUBLIC,    // Disabled. Squiz.WhiteSpace.ScopeKeywordSpacing handles it.
@@ -164,7 +166,8 @@ class MethodDeclarationSpacingSniff extends AbstractScopeSniff
         }
     }
 
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr) {
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    {
         return; // @codeCoverageIgnore
     }
 }

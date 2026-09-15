@@ -46,7 +46,8 @@ class ConstructorReturnSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function docblockCorrectnessProvider(): array {
+    public static function docblockCorrectnessProvider(): array
+    {
         $cases = [
             [
                 'fixture' => 'general',

@@ -34,7 +34,8 @@ class RequireLoginSniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [T_OPEN_TAG];
     }
 
@@ -44,7 +45,8 @@ class RequireLoginSniff implements Sniff
      * @param File $file The file being scanned.
      * @param int $pointer The position in the stack.
      */
-    public function process(File $file, $pointer) {
+    public function process(File $file, $pointer)
+    {
         // We only want to do this once per file.
         $prevopentag = $file->findPrevious(T_OPEN_TAG, $pointer - 1);
         if ($prevopentag !== false) {
@@ -80,7 +82,8 @@ class RequireLoginSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return int|false the position in the file or false if no require statement found.
      */
-    protected function getConfigInclusionPosition(File $file, $pointer) {
+    protected function getConfigInclusionPosition(File $file, $pointer)
+    {
         for ($i = $pointer; $i < $file->numTokens; $i++) {
             $i = $file->findNext([T_REQUIRE, T_REQUIRE_ONCE], $i);
             if ($i === false) {
@@ -103,7 +106,8 @@ class RequireLoginSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return bool true if it is a config inclusion
      */
-    protected function isConfigPhpInclusion(File $file, $pointer) {
+    protected function isConfigPhpInclusion(File $file, $pointer)
+    {
         $tokens = $file->getTokens();
 
         // It's a require() or require_once() statement. Is it require(config.php)?
@@ -123,7 +127,8 @@ class RequireLoginSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return bool true if the checks should be skipped
      */
-    protected function shouldSkipLoginChecks(File $file, $pointer) {
+    protected function shouldSkipLoginChecks(File $file, $pointer)
+    {
         $tokens = $file->getTokens();
 
         for ($i = $pointer; $i > 0; $i--) {
@@ -157,7 +162,8 @@ class RequireLoginSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return bool true if the current point in stack is a login function.
      */
-    protected function isLginFunction(File $file, $pointer) {
+    protected function isLginFunction(File $file, $pointer)
+    {
         $tokens = $file->getTokens();
 
         if (in_array($tokens[$pointer]['content'], $this->loginfunctions)) {
@@ -174,7 +180,8 @@ class RequireLoginSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return true if login function is present.
      */
-    protected function isLoginFunctionPresent(File $file, $pointer) {
+    protected function isLoginFunctionPresent(File $file, $pointer)
+    {
         for ($i = $pointer; $i < $file->numTokens; $i++) {
             $i = $file->findNext(T_STRING, $i);
             if ($i === false) {

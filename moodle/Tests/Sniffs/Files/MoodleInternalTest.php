@@ -49,7 +49,8 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
      * Data provider for testMoodleFilesMoodleInternal tests.
      * @return array
      */
-    public static function moodleFilesMoodleInternalProvider(): array {
+    public static function moodleFilesMoodleInternalProvider(): array
+    {
         return [
             [
                 'problem',

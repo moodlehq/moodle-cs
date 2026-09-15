@@ -34,7 +34,8 @@ class ForbiddenStringsSniff implements Sniff
      *
      * @return array tokens this sniff will handle.
      */
-    public function register() {
+    public function register()
+    {
         // We are going to handle strings here.
         return [T_CONSTANT_ENCAPSED_STRING];
     }
@@ -47,7 +48,8 @@ class ForbiddenStringsSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
         // Delegate the processing to specialised methods.
         $this->processSqlAsKeyword($phpcsFile, $stackPtr);
         $this->processRegexpSeparatorE($phpcsFile, $stackPtr);
@@ -62,7 +64,8 @@ class ForbiddenStringsSniff implements Sniff
      *
      * @return void
      */
-    protected function processSqlAsKeyword(File $phpcsFile, $stackPtr) {
+    protected function processSqlAsKeyword(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$stackPtr];
         $text = trim($token['content'], "'\"");
@@ -80,7 +83,8 @@ class ForbiddenStringsSniff implements Sniff
      *
      * @return void
      */
-    protected function processRegexpSeparatorE(File $phpcsFile, $stackPtr) {
+    protected function processRegexpSeparatorE(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$stackPtr];
         $text = trim($token['content'], " '\"\t\n");
@@ -111,7 +115,8 @@ class ForbiddenStringsSniff implements Sniff
      *
      * @return void
      */
-    protected function processStringWithBackticks(File $phpcsFile, $stackPtr) {
+    protected function processStringWithBackticks(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
         $token = $tokens[$stackPtr];
         $text = trim($token['content'], "'\"");

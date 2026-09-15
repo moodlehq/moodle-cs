@@ -35,7 +35,8 @@ class MoodleInternalSniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [T_OPEN_TAG];
     }
 
@@ -46,7 +47,8 @@ class MoodleInternalSniff implements Sniff
      * @param File $file The file being scanned.
      * @param int $pointer The position in the stack.
      */
-    public function process(File $file, $pointer) {
+    public function process(File $file, $pointer)
+    {
         // Guess moodle root, so we can do better dispensations below.
         $moodleRoot = MoodleUtil::getMoodleRoot($file);
         if ($moodleRoot) {
@@ -160,7 +162,8 @@ class MoodleInternalSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return int position in stack of relevant code.
      */
-    protected function getPositionOfRelevantCode(File $file, $pointer) {
+    protected function getPositionOfRelevantCode(File $file, $pointer)
+    {
         // Advance through tokens until we find some real code.
         $tokens = $file->getTokens();
         $relevantcodefound = false;
@@ -199,7 +202,8 @@ class MoodleInternalSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return bool true if is a moodle internal statement
      */
-    protected function isMoodleInternalOrDieCheck(File $file, $pointer) {
+    protected function isMoodleInternalOrDieCheck(File $file, $pointer)
+    {
         $tokens = $file->getTokens();
         if ($tokens[$pointer]['code'] !== T_STRING || $tokens[$pointer]['content'] !== 'defined') {
             return false;
@@ -236,7 +240,8 @@ class MoodleInternalSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return bool true if is a config.php inclusion.
      */
-    protected function isConfigPhpInclusion(File $file, $pointer) {
+    protected function isConfigPhpInclusion(File $file, $pointer)
+    {
         $tokens = $file->getTokens();
 
         if (
@@ -266,7 +271,8 @@ class MoodleInternalSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return bool true if is a moodle internal statement
      */
-    protected function isIfNotMoodleInternalDieCheck(File $file, $pointer) {
+    protected function isIfNotMoodleInternalDieCheck(File $file, $pointer)
+    {
         $tokens = $file->getTokens();
 
         // Detect 'if'.
@@ -313,7 +319,8 @@ class MoodleInternalSniff implements Sniff
      *
      * @return int the number of classes, interfaces and traits in the file.
      */
-    private function countArtifacts(File $file) {
+    private function countArtifacts(File $file)
+    {
         $position = 0;
         $counter = 0;
         while ($position !== false) {
@@ -335,7 +342,8 @@ class MoodleInternalSniff implements Sniff
      * @param int $end The token to search to.
      * @return bool true if side effect is detected in the code.
      */
-    private function codeChangesGlobalState(File $file, $start, $end) {
+    private function codeChangesGlobalState(File $file, $start, $end)
+    {
         $tokens = $file->getTokens();
         $symbols = [
             T_CLASS => T_CLASS,

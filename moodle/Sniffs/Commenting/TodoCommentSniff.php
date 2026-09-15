@@ -57,7 +57,8 @@ class TodoCommentSniff implements Sniff
      *
      * @return int[]|string[]
      */
-    public function register(): array {
+    public function register(): array
+    {
         return [T_COMMENT, T_DOC_COMMENT_TAG];
     }
 
@@ -69,7 +70,8 @@ class TodoCommentSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr): void {
+    public function process(File $phpcsFile, $stackPtr): void
+    {
         // If specified, get the regular expression from the config.
         if (($regex = Config::getConfigData('moodleTodoCommentRegex')) !== null) {
             $this->commentRequiredRegex = $regex;
@@ -91,7 +93,8 @@ class TodoCommentSniff implements Sniff
         }
     }
 
-    protected function processInlineComment(File $phpcsFile, int $stackPtr): void {
+    protected function processInlineComment(File $phpcsFile, int $stackPtr): void
+    {
         $tokens = $phpcsFile->getTokens();
 
         // If the previous token is also an inline comment, then
@@ -131,7 +134,8 @@ class TodoCommentSniff implements Sniff
         $this->evaluateComment($phpcsFile, $stackPtr, 'inline', $commentContent);
     }
 
-    protected function processDocCommentTag(File $phpcsFile, int $stackPtr): void {
+    protected function processDocCommentTag(File $phpcsFile, int $stackPtr): void
+    {
         $tokens = $phpcsFile->getTokens();
 
         // We are only interested in @todo tags.

@@ -27,7 +27,8 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  */
 class WhiteSpaceWhiteSpaceInStringsTest extends MoodleCSBaseTestCase
 {
-    public function testWhiteSpaceWhiteSpaceInStrings() {
+    public function testWhiteSpaceWhiteSpaceInStrings()
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.WhiteSpace.WhiteSpaceInStrings');

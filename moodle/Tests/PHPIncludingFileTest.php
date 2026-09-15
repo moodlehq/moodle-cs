@@ -27,7 +27,8 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  */
 class PHPIncludingFileTest extends MoodleCSBaseTestCase
 {
-    public function testPHPIncludingFile() {
+    public function testPHPIncludingFile()
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHP.IncludingFile');

@@ -30,7 +30,8 @@ class SquizArraysArrayBrackerSpacingTest extends MoodleCSBaseTestCase
     /**
      * Test the Squid.Arrays.ArrayBracketSpacing sniff
      */
-    public function testSquizArrayaArrayBracketSpacing() {
+    public function testSquizArrayaArrayBracketSpacing()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');

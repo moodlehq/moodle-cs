@@ -27,7 +27,8 @@ namespace MoodleHQ\MoodleCS\moodle\Tests;
  */
 class WhiteSpaceSpaceAfterCommaTest extends MoodleCSBaseTestCase
 {
-    public function testWhitespaceSpaceAfterComma() {
+    public function testWhitespaceSpaceAfterComma()
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.WhiteSpace.SpaceAfterComma');

@@ -46,7 +46,8 @@ class VariableCommentSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function fixtureProvider(): array {
+    public static function fixtureProvider(): array
+    {
         $cases = [
             'Multiline docblocks' => [
                 'fixture' => 'multiline',

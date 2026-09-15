@@ -30,7 +30,8 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
     /**
      * Data provider for self::testPHPUnitTestCaseNamesProvider
      */
-    public function phpunitTestCaseNamesProvider() {
+    public function phpunitTestCaseNamesProvider()
+    {
         return [
             'Missing' => [
                 'fixture' => 'fixtures/phpunit/testcasenames_missing.php',
@@ -148,7 +149,8 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
      * @dataProvider phpunitTestCaseNamesProvider
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
      */
-    public function testPHPUnitTestCaseNames(string $fixture, array $errors, array $warnings) {
+    public function testPHPUnitTestCaseNames(string $fixture, array $errors, array $warnings)
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.TestCaseNames');

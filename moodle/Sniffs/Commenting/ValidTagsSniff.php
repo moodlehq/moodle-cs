@@ -33,7 +33,8 @@ class ValidTagsSniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_OPEN_TAG,
         ];
@@ -45,7 +46,8 @@ class ValidTagsSniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
 
         while ($docPtr = $phpcsFile->findNext(T_DOC_COMMENT_OPEN_TAG, $stackPtr)) {
@@ -108,7 +110,8 @@ class ValidTagsSniff implements Sniff
      * @param int $ptr
      * @return int[]
      */
-    protected function getTokensOnTokenLine(File $phpcsFile, int $ptr): array {
+    protected function getTokensOnTokenLine(File $phpcsFile, int $ptr): array
+    {
         $tokens = $phpcsFile->getTokens();
         $line = $tokens[$ptr]['line'];
         $lineTokens = [];

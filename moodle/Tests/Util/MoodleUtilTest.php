@@ -43,7 +43,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
      * and it's already indirectly tested by {@see test_getMoodleComponent()}
      * but it has some feature that we need to test individually here.
      */
-    public function testCalculateAllComponents() {
+    public function testCalculateAllComponents()
+    {
         // Let's calculate moodleRoot.
         $vfs = vfsStream::setup('root', null, []);
         $moodleRoot = $vfs->url();
@@ -107,7 +108,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     /**
      * Provider for test_getMoodleComponent.
      */
-    public function getMoodleComponentProvider() {
+    public function getMoodleComponentProvider()
+    {
         return [
             'moodleComponent_file_without_moodleroot' => [
                 'config' => ['file' => sys_get_temp_dir() . '/notexists.php'],
@@ -229,7 +231,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     /**
      * Provider for test_getMoodleBranch.
      */
-    public function getMoodleBranchProvider() {
+    public function getMoodleBranchProvider()
+    {
         return [
             // Setting up moodleBranch config/runtime option.
             'moodleBranch_not_integer' => [
@@ -284,7 +287,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
      *
      * @dataProvider getMoodleBranchProvider
      */
-    public function testGetMoodleBranch(array $config, array $return, bool $reset = true, bool $selfPath = true) {
+    public function testGetMoodleBranch(array $config, array $return, bool $reset = true, bool $selfPath = true)
+    {
         $file = null;
         // Set config options when passed.
         if ($config) {
@@ -330,7 +334,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     /**
      * Provider for test_getMoodleRoot.
      */
-    public function getMoodleRootProvider() {
+    public function getMoodleRootProvider()
+    {
         return [
             // Setting up moodleRoot config/runtime option.
             'moodleRoot_not_exists' => [
@@ -461,7 +466,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     /**
      * Utility method to clean MoodleUtil own "caches" (class properties).
      */
-    protected function cleanMoodleUtilCaches() {
+    protected function cleanMoodleUtilCaches()
+    {
         $moodleUtil = new \ReflectionClass(MoodleUtil::class);
         $moodleRoot = $moodleUtil->getProperty('moodleRoot');
         $moodleRoot->setAccessible(true);
@@ -601,7 +607,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
      *
      * @return array
      */
-    public static function isUnitTestCaseClassProvider(): array {
+    public static function isUnitTestCaseClassProvider(): array
+    {
         return [
             'Not in tests directory' => [
                 'value' => '/path/to/standard/file_test.php',
@@ -807,7 +814,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         }
     }
 
-    public function testGetTokensOnLine(): void {
+    public function testGetTokensOnLine(): void
+    {
         $phpcsConfig = new Config();
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
@@ -833,7 +841,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         $this->assertEquals($expectedTokens, $tokens);
     }
 
-    public function testGetMoodleApis(): void {
+    public function testGetMoodleApis(): void
+    {
         $this->cleanMoodleUtilCaches();
         // Let's calculate moodleRoot.
         $vfs = vfsStream::setup('root', null, []);
@@ -876,7 +885,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         );
     }
 
-    public function testGetMoodleApisNoApis(): void {
+    public function testGetMoodleApisNoApis(): void
+    {
         $this->cleanMoodleUtilCaches();
 
         // Let's calculate moodleRoot.
@@ -896,7 +906,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         );
     }
 
-    public function testGetMoodleApisInvalidJson(): void {
+    public function testGetMoodleApisInvalidJson(): void
+    {
         $this->cleanMoodleUtilCaches();
         // Let's calculate moodleRoot.
         $vfs = vfsStream::setup('root', null, []);
@@ -926,7 +937,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     }
 
 
-    public function testGetMoodleApisNotAMoodle(): void {
+    public function testGetMoodleApisNotAMoodle(): void
+    {
         $this->cleanMoodleUtilCaches();
         // Let's calculate moodleRoot.
         $vfs = vfsStream::setup('root', null, []);
@@ -969,7 +981,8 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         );
     }
 
-    public function testGetMoodleApisMocked(): void {
+    public function testGetMoodleApisMocked(): void
+    {
         $this->cleanMoodleUtilCaches();
         // Let's calculate moodleRoot.
         $apis = [

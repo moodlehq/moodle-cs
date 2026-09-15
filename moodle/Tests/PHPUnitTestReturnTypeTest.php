@@ -30,7 +30,8 @@ class PHPUnitTestReturnTypeTest extends MoodleCSBaseTestCase
     /**
      * Data provider for self::testPHPUnitTestReturnType
      */
-    public function providerPHPUnitTestReturnType(): array {
+    public function providerPHPUnitTestReturnType(): array
+    {
         return [
             'Provider Casing' => [
                 'fixture' => 'fixtures/phpunit/TestReturnType/returntypes.php',

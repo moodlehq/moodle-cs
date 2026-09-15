@@ -32,7 +32,8 @@ class ValidFunctionNameTest extends MoodleCSBaseTestCase
     /**
      * Data provider for self::testNamingConventionsValidFunctionName
      */
-    public function providerNamingConventionsValidFunctionName() {
+    public function providerNamingConventionsValidFunctionName()
+    {
         return [
             'Correct' => [
                 'fixture' => 'validfunctionname_correct',
@@ -75,7 +76,8 @@ class ValidFunctionNameTest extends MoodleCSBaseTestCase
      * @param array $warnings array of warnings expected.
      * @dataProvider providerNamingConventionsValidFunctionName
      */
-    public function testNamingConventionsValidFunctionName(string $fixture, array $errors, array $warnings) {
+    public function testNamingConventionsValidFunctionName(string $fixture, array $errors, array $warnings)
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');

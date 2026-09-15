@@ -31,13 +31,15 @@ use PHP_CodeSniffer\Files\File;
 
 class ControlSignatureSniff extends AbstractPatternSniff
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(true);
     }
 
     /** @var array A list of tokenizers this sniff supports. */
 
-    protected function getPatterns() {
+    protected function getPatterns()
+    {
         return [
             'try {EOL...} catch (...) {EOL',
             'do {EOL...} while (...);EOL',

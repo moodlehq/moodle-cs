@@ -29,7 +29,8 @@ use PHP_CodeSniffer\Files\File;
 
 class SpaceAfterCommaSniff implements Sniff
 {
-    public function register() {
+    public function register()
+    {
         return [T_COMMA];
     }
 
@@ -41,7 +42,8 @@ class SpaceAfterCommaSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $file, $stackptr) {
+    public function process(File $file, $stackptr)
+    {
         $tokens = $file->getTokens();
 
         if ($tokens[$stackptr + 1]['code'] !== T_WHITESPACE) {

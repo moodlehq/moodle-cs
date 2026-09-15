@@ -33,7 +33,8 @@ class CategorySniff implements Sniff
     /**
      * Register for open tag (only process once per file).
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_DOC_COMMENT_OPEN_TAG,
         ];
@@ -45,7 +46,8 @@ class CategorySniff implements Sniff
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
         $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);
         if (empty($docPtr)) {
             // It should not be possible to reach this line. It is a safety check.

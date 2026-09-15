@@ -34,7 +34,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Functions\ReturnTypeDeclarationSniff
      */
-    public function testPSR12FunctionsReturnTypeDeclaration() {
+    public function testPSR12FunctionsReturnTypeDeclaration()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -63,7 +64,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Functions\NullableTypeDeclarationSniff
      */
-    public function testPSR12FunctionsNullableTypeDeclaration() {
+    public function testPSR12FunctionsNullableTypeDeclaration()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -91,7 +93,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\MethodDeclarationSniff
      */
-    public function testPSR2MethodsMethodDeclaration() {
+    public function testPSR2MethodsMethodDeclaration()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -128,7 +131,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Commenting\InlineCommentSniff
      */
-    public function testMoodleCommentingInlineComment() {
+    public function testMoodleCommentingInlineComment()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -200,7 +204,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Commenting\InlineCommentSniff
      */
-    public function testMoodleCommentingInlineCommentJS() {
+    public function testMoodleCommentingInlineCommentJS()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -229,7 +234,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\ControlStructures\ControlSignatureSniff
      */
-    public function testMoodleControlStructuresControlsignature() {
+    public function testMoodleControlStructuresControlsignature()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -257,7 +263,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\LineLengthSniff
      */
-    public function testMoodleFilesLineLength() {
+    public function testMoodleFilesLineLength()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -288,7 +295,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
      */
-    public function testGenericArraysDisallowLongArraySyntax(): void {
+    public function testGenericArraysDisallowLongArraySyntax(): void
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('Generic.Arrays.DisallowLongArraySyntax');
@@ -315,7 +323,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineEndingsSniff
      */
-    public function testGeneriFilesLineEndings() {
+    public function testGeneriFilesLineEndings()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -341,7 +350,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\EndFileNewlineSniff
      */
-    public function testGenericFilesEndFileNewLine() {
+    public function testGenericFilesEndFileNewLine()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -367,7 +377,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Whitespace\DisallowTabIndentSniff
      */
-    public function testGenericWhiteSpaceDisalowTabIndent() {
+    public function testGenericWhiteSpaceDisalowTabIndent()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -391,43 +402,12 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     }
 
     /**
-     * Test the Generic.Functions.OpeningFunctionBraceKernighanRitchie sniff.
-     *
-     * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Functions\OpeningFunctionBraceKernighanRitchieSniff
-     */
-    public function testGenericFunctionsOpeningFunctionBraceKernighanRitchie() {
-
-        // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
-        $this->setSniff('Generic.Functions.OpeningFunctionBraceKernighanRitchie');
-        $this->setFixture(__DIR__ . '/fixtures/generic_functions_openingfunctionbracekerninghanritchie.php');
-
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $this->setErrors([
-            6 => 'Expected 1 space before opening brace; found 0',
-            9 => 1,
-           12 => 'Expected 1 space before opening brace; found 3',
-           15 => 1,
-           20 => 'Expected 1 space before opening brace; found 0',
-           23 => 1,
-           26 => 'Expected 1 space before opening brace; found 3',
-           29 => 1]);
-
-        $this->setWarnings([]);
-
-        // Let's do all the hard work!
-        $this->verifyCsResults();
-    }
-
-    /**
      * Test the Generic.Classes.OpeningBraceSameLine sniff.
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Classes\OpeningBraceSameLineSniff
      */
-    public function testGenericClassesOpeningBraceSameLine() {
+    public function testGenericClassesOpeningBraceSameLine()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -457,7 +437,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ScopeIndentSniff
      */
-    public function testGenericWhiteSpaceScopeIndent() {
+    public function testGenericWhiteSpaceScopeIndent()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -484,7 +465,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\DeprecatedFunctionsSniff
      */
-    public function testMoodlePHPDeprecatedFunctions() {
+    public function testMoodlePHPDeprecatedFunctions()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -511,7 +493,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\ForbiddenFunctionsSniff
      */
-    public function testMoodlePHPForbiddenFunctions() {
+    public function testMoodlePHPForbiddenFunctions()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -546,7 +529,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\ForbiddenGlobalUseSniff
      */
-    public function testMoodlePHPForbiddenGlobalUse() {
+    public function testMoodlePHPForbiddenGlobalUse()
+    {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHP.ForbiddenGlobalUse');
@@ -630,7 +614,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\ForbiddenTokensSniff
      */
-    public function testMoodlePHPForbiddenTokens() {
+    public function testMoodlePHPForbiddenTokens()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -658,7 +643,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Strings\ForbiddenStringsSniff
      */
-    public function testMoodleStringsForbiddenStrings() {
+    public function testMoodleStringsForbiddenStrings()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -697,7 +683,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\NamingConventions\ValidVariableNameSniff
      */
-    public function testMoodleNamingConventionsValidVariableName() {
+    public function testMoodleNamingConventionsValidVariableName()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -737,7 +724,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\OperatorSpacingSniff
      */
-    public function testSquizWhiteSpaceOperatorSpacing() {
+    public function testSquizWhiteSpaceOperatorSpacing()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -819,7 +807,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ObjectOperatorSpacingSniff
      */
-    public function testSquizWhiteSpaceObjectOperatorSpacing() {
+    public function testSquizWhiteSpaceObjectOperatorSpacing()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -842,7 +831,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ObjectOperatorIndentSniff
      */
-    public function testPEARWhiteSpaceObjectOperatorIndent() {
+    public function testPEARWhiteSpaceObjectOperatorIndent()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -880,7 +870,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\CommentedOutCodeSniff
      */
-    public function testSquizPHPCommentedOutCode() {
+    public function testSquizPHPCommentedOutCode()
+    {
 
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
@@ -906,7 +897,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
-    public function testMoodleFilesRequireLoginProblem() {
+    public function testMoodleFilesRequireLoginProblem()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
         $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/problem.php');
@@ -924,7 +916,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
-    public function testMoodleFilesRequireLoginOk() {
+    public function testMoodleFilesRequireLoginOk()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
         $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/require_login_ok.php');
@@ -940,7 +933,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
-    public function testMoodleFilesRequireLoginCourseOk() {
+    public function testMoodleFilesRequireLoginCourseOk()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
         $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/require_course_login_ok.php');
@@ -956,7 +950,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
-    public function testMoodleFilesRequireLoginAdminExtenalPageOk() {
+    public function testMoodleFilesRequireLoginAdminExtenalPageOk()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
         $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/admin_externalpage_setup_ok.php');
@@ -972,7 +967,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
-    public function testMoodleFilesRequireLoginCLIScriptOk() {
+    public function testMoodleFilesRequireLoginCLIScriptOk()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
         $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/cliscript_ok.php');
@@ -988,7 +984,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\RequireLoginSniff
      */
-    public function testMoodleFilesRequireLoginNoMoodlCookiesOk() {
+    public function testMoodleFilesRequireLoginNoMoodlCookiesOk()
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
         $this->setFixture(__DIR__ . '/fixtures/moodle_files_requirelogin/nomoodlecookies_ok.php');

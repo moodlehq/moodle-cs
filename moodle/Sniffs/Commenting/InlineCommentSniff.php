@@ -57,7 +57,8 @@ class InlineCommentSniff implements Sniff
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return [
             T_COMMENT,
             T_DOC_COMMENT_OPEN_TAG,
@@ -73,7 +74,8 @@ class InlineCommentSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
 
         // If this is a function/class/interface doc block comment, skip it.
@@ -560,7 +562,8 @@ class InlineCommentSniff implements Sniff
      * @param int $pointer The position in the stack.
      * @return bool true if is an allowed to have phpdoc block return new class code.
      */
-    protected function isReturnNewClassExtends(File $file, $pointer) {
+    protected function isReturnNewClassExtends(File $file, $pointer)
+    {
 
         $ignoredtokens = Tokens::$emptyTokens;
 

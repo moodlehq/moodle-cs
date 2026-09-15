@@ -37,7 +37,8 @@ class ForbiddenTokensSniff implements Sniff
      *
      * @return array with tokens as keys and error messages as description.
      */
-    protected function getForbiddenTokens() {
+    protected function getForbiddenTokens()
+    {
         return [
             T_EVAL => 'The use of function eval() is forbidden',
             T_GOTO => 'The use of operator goto is forbidden',
@@ -51,7 +52,8 @@ class ForbiddenTokensSniff implements Sniff
      *
      * @return array tokens this sniff will handle.
      */
-    public function register() {
+    public function register()
+    {
         return array_keys($this->getForbiddenTokens());
     }
 
@@ -63,7 +65,8 @@ class ForbiddenTokensSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr)
+    {
 
         $tokens = $phpcsFile->getTokens();
         $forbidden = $this->getForbiddenTokens();

@@ -37,7 +37,8 @@ abstract class AbstractTestCaseSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $file
      * @return bool
      */
-    protected function shouldCheckFile(File $file) {
+    protected function shouldCheckFile(File $file)
+    {
         // Before starting any check, let's look for various things.
 
         // If we aren't checking Moodle 4.0dev (400) and up, nothing to check.
@@ -60,7 +61,8 @@ abstract class AbstractTestCaseSniff implements Sniff
      * @param \PHP_CodeSniffer\Files\File $file
      * @return bool
      */
-    protected function shouldCheckTestCaseAttributes(File $file): bool {
+    protected function shouldCheckTestCaseAttributes(File $file): bool
+    {
         return MoodleUtil::meetsMinimumMoodleVersion($file, 500) !== false;
     }
 

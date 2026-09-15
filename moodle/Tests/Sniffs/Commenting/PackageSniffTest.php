@@ -32,7 +32,8 @@ class PackageSniffTest extends MoodleCSBaseTestCase
     /**
      * Test that various checks are not performed when there isn't any component available.
      */
-    public function testPackageOnMissingComponent(): void {
+    public function testPackageOnMissingComponent(): void
+    {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.Package');
         $this->setFixture(__DIR__ . '/fixtures/package_tags_nocheck.php');
@@ -64,7 +65,8 @@ class PackageSniffTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function packageCorrectnessProvider(): array {
+    public static function packageCorrectnessProvider(): array
+    {
         return [
             'Standard fixes' => [
                 'fixture' => 'package_tags',
