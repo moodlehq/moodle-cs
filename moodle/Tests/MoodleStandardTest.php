@@ -626,6 +626,34 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     }
 
     /**
+     * Test the moodle.PHP.DeprecatedCFGProperties sniff.
+     *
+     * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\DeprecatedCFGPropertiesSniff
+     */
+    public function testMoodlePHPDeprecatedCFGProperties() {
+        // Define the standard, sniff and fixture to use.
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.PHP.DeprecatedCFGProperties');
+        $this->setFixture(__DIR__ . '/fixtures/moodle_php_deprecated_cfg_properties.php');
+
+        // Define expected results (errors and warnings). Format, array of:
+        // - line => number of problems,  or
+        // - line => array of contents for message / source problem matching.
+        // - line => string of contents for message / source problem matching (only 1).
+        $this->setErrors([]);
+        $this->setWarnings([
+            13 => '$CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead',
+            14 => '$CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead',
+            15 => '$CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead',
+            16 => 0,
+            27 => 0,
+        ]);
+
+        // Let's do all the hard work!
+        $this->verifyCsResults();
+    }
+
+    /**
      * Test the moodle.PHP.ForbiddenTokens sniff.
      *
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHP\ForbiddenTokensSniff
