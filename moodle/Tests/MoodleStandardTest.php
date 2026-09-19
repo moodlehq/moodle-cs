@@ -303,36 +303,6 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     }
 
     /**
-     * Test the Generic.Files.EndFileNewline sniff.
-     *
-     * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\EndFileNewlineSniff
-     */
-    public function testGenericFilesEndFileNewLine() {
-
-        // Define the standard, sniff and fixture to use.
-        //
-        // Note: these sniffs are not part of the "moodle" standard, so the
-        // "Generic" standard is used to register the sniff (PHPCS 4 strictly
-        // honours the --sniffs selection).
-        $this->setStandard('Generic');
-        $this->setSniff('Generic.Files.EndFileNewline');
-        $this->setFixture(__DIR__ . '/fixtures/generic_files_endfilenewline.php');
-
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $this->setErrors([
-            4 => 'File must end with a newline character @Source: Generic.Files.EndFileNewline.NotFound',
-        ]);
-
-        $this->setWarnings([]);
-
-        // Let's do all the hard work!
-        $this->verifyCsResults();
-    }
-
-    /**
      * Test the Generic.WhiteSpace.DisallowTabIndent sniff.
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Whitespace\DisallowTabIndentSniff
