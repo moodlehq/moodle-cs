@@ -67,6 +67,7 @@ class ValidTagsSniffTest extends MoodleCSBaseTestCase
                 'fixturePath' => 'lib/classes/example.php',
                 'fixtureSource' => 'general',
                 'errors' => [
+                    27 => 'Invalid docblock tag "@codingStandardsIgnoreLine"',
                     28 => 'Invalid docblock tag "@covers"',
                     29 => 'Invalid docblock tag "@dataProvider"',
                     30 => 'Invalid docblock tag "@group"',
