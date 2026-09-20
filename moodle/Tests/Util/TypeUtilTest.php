@@ -37,7 +37,7 @@ final class TypeUtilTest extends MoodleCSBaseTestCase
      * @dataProvider getValidTypesProvider
      */
     public function testGetValidTypes(string $type, string $expected): void {
-        $config = new Config();
+        $config = $this->makeConfig();
         $fileContent = <<<EOF
         <?php
 

@@ -130,7 +130,7 @@ class TokenUtilTest extends MoodleCSBaseTestCase
         string $content,
         int $expectedCount
     ): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);
@@ -182,7 +182,7 @@ class TokenUtilTest extends MoodleCSBaseTestCase
     }
 
     public function testObjectPropertiesInvalidPointer(): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile('<?php', $ruleset, $config);

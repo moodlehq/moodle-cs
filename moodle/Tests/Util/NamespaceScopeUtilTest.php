@@ -49,7 +49,7 @@ class NamespaceScopeUtilTest extends MoodleCSBaseTestCase
         string $classname,
         string $expectedQualifiedName
     ): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);
@@ -176,7 +176,7 @@ class NamespaceScopeUtilTest extends MoodleCSBaseTestCase
         $stackPtrSearch,
         array $imports
     ): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);

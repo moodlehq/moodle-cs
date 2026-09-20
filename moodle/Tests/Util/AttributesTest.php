@@ -41,7 +41,7 @@ class AttributesTest extends MoodleCSBaseTestCase
         $stackPtrSearch,
         ?array $expectations
     ): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);
@@ -178,7 +178,7 @@ class AttributesTest extends MoodleCSBaseTestCase
     }
 
     public function testGetAttributePropertiesNotAnAttribute(): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $content = <<<EOF
@@ -204,7 +204,7 @@ class AttributesTest extends MoodleCSBaseTestCase
         string $attributeName,
         bool $expected
     ): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);
@@ -256,7 +256,7 @@ class AttributesTest extends MoodleCSBaseTestCase
         $stackPtrSearch,
         bool $expected
     ): void {
-        $config = new Config([]);
+        $config = $this->makeConfig();
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);
@@ -273,7 +273,7 @@ class AttributesTest extends MoodleCSBaseTestCase
                 '<?php
                 protected $example;
                 function exampleFunction(string $param): void {}',
-                T_PROPERTY,
+                T_VARIABLE,
                 false,
             ],
             'Not in a class' => [

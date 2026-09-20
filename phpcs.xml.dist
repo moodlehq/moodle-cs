@@ -33,4 +33,15 @@
     <rule ref="NormalizedArrays.Arrays.CommaAfterLast">
         <exclude name="NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine" />
     </rule>
+
+    <!--PHPCompatibility configuration-->
+    <rule ref="./vendor/phpcompatibility/php-compatibility/PHPCompatibility/ruleset.xml">
+        <!--
+            This sniff requires an explicit $characters argument on trim()/ltrim()/rtrim() calls,
+            because the default changes as of PHP 8.6. That is only needed when an application must
+            intentionally preserve form-feed characters, which moodle-cs does not.
+        -->
+        <exclude name="PHPCompatibility.ParameterValues.NewTrimCharactersDefault" />
+    </rule>
+    <config name="testVersion" value="8.1-"/>
 </ruleset>

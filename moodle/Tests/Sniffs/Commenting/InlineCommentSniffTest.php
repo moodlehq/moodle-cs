@@ -70,5 +70,11 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
                 65 => 'Inline comments must end in ',
             ],
         ];
+        yield 'End-of-block comment after match closing brace is allowed' => [
+            'fixture' => 'end_of_block',
+            'fixtureFilename' => null,
+            'errors' => [],
+            'warnings' => [],
+        ];
     }
 }

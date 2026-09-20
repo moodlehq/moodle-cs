@@ -213,6 +213,40 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
+    /**
+     * Assert that a file with the open tag followed by a blank line (so the whitespace
+     * token is on a different line) is still fixed to start with the boilerplate.
+     */
+    public function testMoodleFilesBoilerplateCommentShortEmptyMultiline() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/short_empty_multiline.php');
+
+        $this->setErrors([
+            1 => 'moodle.Files.BoilerplateComment.NoBoilerplateComment',
+        ]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
+
+    /**
+     * Assert that a shifted boilerplate is moved to the first line when the file starts
+     * with a phpcs: annotation (so the target of the move is not the open tag).
+     */
+    public function testMoodleFilesBoilerplateCommentWithPhpcsTagShifted() {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/fixtures/files/boilerplatecomment/with_phpcs_tag_shifted.php');
+
+        $this->setErrors([
+            2 => 'not found at first line',
+        ]);
+        $this->setWarnings([]);
+
+        $this->verifyCsResults();
+    }
+
     public function testMoodleFilesBoilerplateCommentFirstlineComment() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
