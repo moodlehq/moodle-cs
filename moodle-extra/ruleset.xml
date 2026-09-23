@@ -19,6 +19,11 @@
 
     <!-- Draft rulesets -->
 
+    <!-- Warn when classes use the DI container as a service locator. -->
+    <rule ref="moodle-extra.PHP.DiscouragedContainerLookup">
+        <type>warning</type>
+    </rule>
+
     <!--
         Detect issues with Unit Test dataProviders:
         - private providers
