@@ -49,6 +49,7 @@ class TodoCommentSniff implements Sniff
      * - '(MDL|CONTRIB)-[0-9]+': A Moodle core or plugin issue is required.
      * - 'https://': Any URL is required.
      * - '' (empty string or null): No check is done.
+     * @var string|null
      */
     public ?string $commentRequiredRegex = 'MDL-[0-9]+';
 

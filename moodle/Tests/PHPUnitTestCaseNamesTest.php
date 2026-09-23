@@ -29,6 +29,8 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testPHPUnitTestCaseNamesProvider
+     *
+     * @return array
      */
     public function phpunitTestCaseNamesProvider() {
         return [

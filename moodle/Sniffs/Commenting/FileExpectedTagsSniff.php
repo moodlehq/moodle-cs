@@ -52,6 +52,8 @@ class FileExpectedTagsSniff implements Sniff
 
     /**
      * Register for open tag (only process once per file).
+     *
+     * @return (int|string)[]
      */
     public function register() {
         return [
@@ -64,6 +66,7 @@ class FileExpectedTagsSniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
+     * @return int|null
      */
     public function process(File $phpcsFile, $stackPtr) {
         // Get the stack pointer for the file-level docblock.

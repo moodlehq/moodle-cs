@@ -172,8 +172,8 @@ class VariableCommentSniff extends AbstractVariableSniff
     /**
      * Processes normal variables within a method.
      *
-     * @param File $file The file where this token was found.
-     * @param int $stackptr The position where the token was found.
+     * @param File $phpcsFile The file where this token was found.
+     * @param int $stackPtr The position where the token was found.
      *
      * @return void
      */

@@ -32,6 +32,8 @@ class TestCaseCoversTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testPHPUnitTestCaseCovers
+     *
+     * @return array
      */
     public function phpunitTestCaseCoversProvider() {
         return [

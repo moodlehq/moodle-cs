@@ -35,8 +35,11 @@ class ControlSignatureSniff extends AbstractPatternSniff
         parent::__construct(true);
     }
 
-    /** @var array A list of tokenizers this sniff supports. */
-
+    /**
+     * Returns the patterns that should be checked.
+     *
+     * @return string[]
+     */
     protected function getPatterns() {
         return [
             'try {EOL...} catch (...) {EOL',

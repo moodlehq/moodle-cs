@@ -32,6 +32,8 @@ class CategorySniff implements Sniff
 {
     /**
      * Register for open tag (only process once per file).
+     *
+     * @return (int|string)[]
      */
     public function register() {
         return [
@@ -44,6 +46,7 @@ class CategorySniff implements Sniff
      *
      * @param File $phpcsFile The file being scanned.
      * @param int $stackPtr The position in the stack.
+     * @return int|null
      */
     public function process(File $phpcsFile, $stackPtr) {
         $docPtr = Docblocks::getDocBlockPointer($phpcsFile, $stackPtr);

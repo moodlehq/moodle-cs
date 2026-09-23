@@ -49,7 +49,7 @@ class DeprecatedFunctionsSniff extends GenericDeprecatedFunctionsSniff
     /**
      * If true, an error will be thrown; otherwise a warning.
      *
-     * @var boolean
+     * @var bool
      */
     public $error = false; // Consider deprecations just warnings.
 

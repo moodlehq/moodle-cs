@@ -34,6 +34,8 @@ class MoodleInternalSniff implements Sniff
 {
     /**
      * Register for open tag (only process once per file).
+     *
+     * @return (int|string)[]
      */
     public function register() {
         return [T_OPEN_TAG];
@@ -45,6 +47,7 @@ class MoodleInternalSniff implements Sniff
      *
      * @param File $file The file being scanned.
      * @param int $pointer The position in the stack.
+     * @return int|null
      */
     public function process(File $file, $pointer) {
         // Guess moodle root, so we can do better dispensations below.
