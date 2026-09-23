@@ -94,6 +94,9 @@ abstract class Docblocks
         'uses' => true, // Also used by PHPUnit.
         'var' => true,
         'version' => false,
+
+        // PHPStorm tags.
+        'noinspection' => true,
     ];
 
     /**
