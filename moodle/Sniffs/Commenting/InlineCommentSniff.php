@@ -97,6 +97,7 @@ class InlineCommentSniff implements Sniff
                 T_PRIVATE,
                 T_PROTECTED,
                 T_FINAL,
+                T_READONLY,
                 T_STATIC,
                 T_ABSTRACT,
                 T_CONST,

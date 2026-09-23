@@ -29,6 +29,7 @@ use MoodleHQ\MoodleCS\moodle\Util\MoodleUtil;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
+use PHPCSUtils\Tokens\Collections;
 
 class MoodleInternalSniff implements Sniff
 {
@@ -347,30 +348,37 @@ class MoodleInternalSniff implements Sniff
         $conditions = [T_IF => T_IF, T_ELSE   => T_ELSE, T_ELSEIF => T_ELSEIF];
 
         for ($i = $start; $i <= $end; $i++) {
+            $token = $tokens[$i];
+
             // Ignore whitespace and comments.
-            if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
+            if (isset(Tokens::$emptyTokens[$token['code']]) === true) {
                 continue;
             }
 
-            // Ignore function/class prefixes.
-            if (isset(Tokens::$methodPrefixes[$tokens[$i]['code']]) === true) {
+            // Ignore class prefixes.
+            if (isset(Collections::classModifierKeywords()[$token['code']]) === true) {
+                continue;
+            }
+
+            // Ignore method prefixes.
+            if (isset(Tokens::$methodPrefixes[$token['code']]) === true) {
                 continue;
             }
 
             // Ignore anon classes.
-            if ($tokens[$i]['code'] === T_ANON_CLASS) {
-                $i = $tokens[$i]['scope_closer'];
+            if ($token['code'] === T_ANON_CLASS) {
+                $i = $token['scope_closer'];
                 continue;
             }
 
-            switch ($tokens[$i]['code']) {
+            switch ($token['code']) {
                 case T_NAMESPACE:
                 case T_USE:
                 case T_DECLARE:
                 case T_CONST:
                     // Ignore entire namespace, declare, const and use statements.
-                    if (isset($tokens[$i]['scope_opener']) === true) {
-                        $i = $tokens[$i]['scope_closer'];
+                    if (isset($token['scope_opener']) === true) {
+                        $i = $token['scope_closer'];
                     } else {
                         $semicolon = $file->findNext(T_SEMICOLON, ($i + 1));
                         if ($semicolon !== false) {
@@ -379,14 +387,14 @@ class MoodleInternalSniff implements Sniff
                     }
                     continue 2;
                 case T_STRING:
-                    if (isset($tokens[$i]['content']) === true) {
+                    if (isset($token['content']) === true) {
                         // Ignore class_alias as this is no different to declaring a class.
                         // This will be in the format `class_alias(source, target);` and represented by:
                         // - T_STRING['content'] = 'class_alias'
                         // - T_OPEN_PARENTHESIS
                         // - ...
                         // - T_CLOSE_PARENTHESIS
-                        if ($tokens[$i]['content'] === 'class_alias') {
+                        if ($token['content'] === 'class_alias') {
                             $paren = $file->findNext(T_OPEN_PARENTHESIS, ($i + 1));
                             if ($paren !== false) {
                                 $i = $tokens[$paren]['parenthesis_closer'] + 1;
@@ -397,10 +405,10 @@ class MoodleInternalSniff implements Sniff
             }
 
             // Detect and skip over symbols.
-            if (isset($symbols[$tokens[$i]['code']]) === true && isset($tokens[$i]['scope_closer']) === true) {
-                $i = $tokens[$i]['scope_closer'];
+            if (isset($symbols[$token['code']]) === true && isset($token['scope_closer']) === true) {
+                $i = $token['scope_closer'];
                 continue;
-            } elseif ($tokens[$i]['code'] === T_STRING && strtolower($tokens[$i]['content']) === 'define') {
+            } elseif ($token['code'] === T_STRING && strtolower($token['content']) === 'define') {
                 $prev = $file->findPrevious(T_WHITESPACE, ($i - 1), null, true);
                 if ($tokens[$prev]['code'] !== T_OBJECT_OPERATOR) {
                     $semicolon = $file->findNext(T_SEMICOLON, ($i + 1));
@@ -415,17 +423,17 @@ class MoodleInternalSniff implements Sniff
             // Conditional statements are allowed in symbol files as long as the
             // contents is only a symbol definition. So don't count these as effects
             // in this case.
-            if (isset($conditions[$tokens[$i]['code']]) === true) {
-                if (isset($tokens[$i]['scope_opener']) === false) {
+            if (isset($conditions[$token['code']]) === true) {
+                if (isset($token['scope_opener']) === false) {
                     // Probably an "else if", so just ignore.
                     continue;
                 }
 
-                if ($this->codeChangesGlobalState($file, ($tokens[$i]['scope_opener'] + 1), ($tokens[$i]['scope_closer'] - 1))) {
+                if ($this->codeChangesGlobalState($file, ($token['scope_opener'] + 1), ($token['scope_closer'] - 1))) {
                     return true;
                 }
 
-                $i = $tokens[$i]['scope_closer'];
+                $i = $token['scope_closer'];
                 continue;
             }
 
