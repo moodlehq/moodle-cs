@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Changed
+- Unit test locations were standardised to match the location of code under test.
 
 ## [v3.7.0] - 2025-12-02
 ### Removed
