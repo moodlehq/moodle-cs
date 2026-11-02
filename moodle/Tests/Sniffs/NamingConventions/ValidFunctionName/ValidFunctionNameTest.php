@@ -34,6 +34,14 @@ class ValidFunctionNameTest extends MoodleCSBaseTestCase
      */
     public function providerNamingConventionsValidFunctionName() {
         return [
+            'Anonymous class methods' => [
+                'fixture' => 'anonymous',
+                'errors' => [
+                    4 => 'moodle.NamingConventions.ValidFunctionName.LowercaseMethod',
+                    5 => 'moodle.NamingConventions.ValidFunctionName.MagicLikeMethod',
+                ],
+                'warnings' => [],
+            ],
             'Correct' => [
                 'fixture' => 'validfunctionname_correct',
                 'errors' => [],

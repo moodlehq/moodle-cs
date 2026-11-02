@@ -91,13 +91,9 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
     protected function processTokenWithinScope(File $phpcsfile, $stackptr, $currscope) {
         $tokens = $phpcsfile->getTokens();
 
-        // The T_ANON_CLASS is part of the OO scope tokens, but anonymous classes
-        // have no name and therefore the class name cannot (and need not) be checked.
-        if ($tokens[$currscope]['code'] === T_ANON_CLASS) {
-            return;
-        }
-
-        $classname  = $phpcsfile->getDeclarationName($currscope);
+        $classname = $tokens[$currscope]['code'] === T_ANON_CLASS
+            ? 'anonymous class'
+            : $phpcsfile->getDeclarationName($currscope);
         $methodname = $phpcsfile->getDeclarationName($stackptr);
 
         // Is this a magic method. IE. is prefixed with "__".
