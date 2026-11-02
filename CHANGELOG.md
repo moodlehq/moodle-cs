@@ -12,6 +12,12 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - `moodle.Files.RequireLogin`: recognise fully qualified global login calls and exemption definitions.
 - `moodle.Files.BoilerplateComment`: reject code between the opening tag and boilerplate, including on the opening line.
 
+### Fixed
+- Preserve Moodle header spacing and class naming exclusions with the PHPCS 4 error codes.
+- `moodle.NamingConventions.ValidFunctionName`: continue checking methods in anonymous classes.
+- `moodle.Files.RequireLogin`: recognise fully qualified global login calls and exemption definitions.
+- `moodle.Files.BoilerplateComment`: reject code between the opening tag and boilerplate, including on the opening line.
+
 ### Changed
 - Unit test locations were standardised to match the location of code under test.
 - Support for PHP_CodeSniffer version 4.
