@@ -23,7 +23,7 @@
         <exclude name="Generic.Files.LineLength.TooLong"/>
 
         <!-- Moodle has a header manager and places its copyright on the first line after the opening tag -->
-        <exclude name="PSR12.Files.FileHeader.SpacingAfterBlock"/>
+        <exclude name="PSR12.Files.FileHeader.SpacingAfterTagBlock"/>
 
         <!-- Moodle doesn't mandate (nor support) namespaces everywhere, so remove this for now -->
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
@@ -41,7 +41,7 @@
         <exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed"/>
 
         <!-- Moodle casing rules do not allow camel case at all -->
-        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
+        <exclude name="Squiz.Classes.ValidClassName.NotPascalCase"/>
 
         <!-- Moodle currently places the brace in the same line -->
         <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>

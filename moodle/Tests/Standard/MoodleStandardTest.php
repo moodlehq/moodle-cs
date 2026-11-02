@@ -32,6 +32,39 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 class MoodleStandardTest extends MoodleCSBaseTestCase
 {
     /**
+     * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\BoilerplateCommentSniff
+     * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff
+     */
+    public function testHeaderRulesAgreeOnBoilerplatePosition(): void {
+        $config = new \PHP_CodeSniffer\Config();
+        $config->standards = ['moodle'];
+        $config->sniffs = ['moodle.Files.BoilerplateComment', 'PSR12.Files.FileHeader'];
+        $ruleset = new \PHP_CodeSniffer\Ruleset($config);
+        $file = new \PHP_CodeSniffer\Files\LocalFile(
+            __DIR__ . '/../Sniffs/Files/fixtures/BoilerplateComment/ok.php',
+            $ruleset,
+            $config
+        );
+        $file->process();
+
+        $this->assertSame([], $file->getErrors());
+        $this->assertSame([], $file->getWarnings());
+        $this->assertSame(0, $file->getFixableCount());
+    }
+
+    /**
+     * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\ValidClassNameSniff
+     */
+    public function testMoodleClassNamingExclusion(): void {
+        $this->setStandard('moodle');
+        $this->setSniff('Squiz.Classes.ValidClassName');
+        $this->setFixture(__DIR__ . '/../Sniffs/NamingConventions/fixtures/ValidFunctionName/validfunctionname_correct.php');
+        $this->setErrors([]);
+        $this->setWarnings([]);
+        $this->verifyCsResults();
+    }
+
+    /**
      * Test the PSR12.Functions.ReturnTypeDeclaration sniff.
      *
      * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Functions\ReturnTypeDeclarationSniff
