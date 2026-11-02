@@ -1,6 +1,6 @@
 # Agent Instructions: moodle-cs
 
-This repository is the Moodle Coding Style, implemented as PHP_CodeSniffer (PHPCS 3.x, currently requiring `^3.13.2`) standards. It is a PHPCS *standard* package, not an application.
+This repository is the Moodle Coding Style, implemented as PHP_CodeSniffer (PHPCS 4.x, currently requiring `^4.0.4`) standards. It is a PHPCS *standard* package, not an application.
 
 - `moodle/ruleset.xml` – the `moodle` standard (custom sniffs + selected PSR12/Generic/Squiz/PHPCSExtra rules).
 - `moodle-extra/ruleset.xml` – the `moodle-extra` standard (stricter, extends `moodle`).

@@ -66,8 +66,8 @@ jobs:
       - name: Integration tests
         if: ${{ !cancelled() && matrix.os == 'ubuntu-latest' }}
         run: |
-          # There is one failure (exit with error 2, because some are fixable).
-          expectedcode=2
+          # There is one failure (exit with error 1, because some are fixable).
+          expectedcode=1
           vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
           exitcode="${PIPESTATUS[0]}"
           if [[ "${exitcode}" = "${expectedcode}" ]]; then
@@ -78,8 +78,8 @@ jobs:
           fi
           grep -q  "PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY" output.txt
 
-          # The failure is fixed (exit with error 1, because all fixable ones were fixed).
-          expectedcode=1
+          # The failure is fixed.
+          expectedcode=0
           vendor/bin/phpcbf --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
           exitcode="${PIPESTATUS[0]}"
           if [[ "${exitcode}" = "${expectedcode}" ]]; then

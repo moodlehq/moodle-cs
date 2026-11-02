@@ -24,7 +24,7 @@ Two coding styles are included:
 - `moodle-extra` - extended ruleset which includes recommended best practices
   - extends the main `moodle` ruleset
 
-Currently this only includes the configuration for PHP Coding style, but this may be extended to include custom rules for JavaScript, and any other supported languages or syntaxes.
+PHP_CodeSniffer 4 dropped the JavaScript and CSS tokenizers, so this project only supports scanning PHP code.
 
 ## Installation
 

@@ -26,6 +26,26 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  */
 class RequireLoginSniffTest extends MoodleCSBaseTestCase
 {
+    /**
+     * @dataProvider qualifiedCallsProvider
+     */
+    public function testQualifiedCalls(string $fixture, array $warnings): void {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.RequireLogin');
+        $this->setFixture(__DIR__ . '/../fixtures/RequireLogin/' . $fixture . '.php');
+        $this->setErrors([]);
+        $this->setWarnings($warnings);
+        $this->verifyCsResults();
+    }
+
+    public static function qualifiedCallsProvider(): array {
+        return [
+            'global login' => ['qualified_login', []],
+            'global CLI definition' => ['qualified_define', []],
+            'namespaced login is not global' => ['namespaced_login', [2 => 'None found.']],
+        ];
+    }
+
     public function testNoConfigInclusionDoesNotRequireLogin(): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');

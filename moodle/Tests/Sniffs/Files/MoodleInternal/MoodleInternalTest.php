@@ -99,6 +99,26 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
      */
     public static function moodleFilesMoodleInternalProvider(): array {
         return [
+            'conditional symbol declarations' => [
+                'conditional_symbols',
+                [],
+                [],
+            ],
+            'conditional executable side effects' => [
+                'conditional_side_effects',
+                [],
+                [3 => 'MoodleInternalGlobalState'],
+            ],
+            'declarations after the first symbol' => [
+                'later_declarations',
+                [],
+                [],
+            ],
+            'anonymous class instantiation changes global state' => [
+                'anonymous_side_effect',
+                [],
+                [3 => 'MoodleInternalGlobalState'],
+            ],
             [
                 'problem',
                 [],

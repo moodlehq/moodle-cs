@@ -273,7 +273,7 @@ class AttributesTest extends MoodleCSBaseTestCase
                 '<?php
                 protected $example;
                 function exampleFunction(string $param): void {}',
-                T_PROPERTY,
+                T_VARIABLE,
                 false,
             ],
             'Not in a class' => [
