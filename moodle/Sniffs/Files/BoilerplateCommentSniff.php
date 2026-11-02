@@ -149,13 +149,18 @@ class BoilerplateCommentSniff implements Sniff
         //
         // The T_OPEN_TAG token includes no trailing whitespace (newline), so we cannot
         // rely on the comment being at $expectedafter + 1. Instead we verify that the
-        // first comment starts on the line immediately following the opening tag/annotation.
-        if ($tokens[$firstcommentptr]['line'] !== ($tokens[$expectedafter]['line'] + 1)) {
+        // first comment starts on the next line, with only whitespace in between.
+        $interveningcode = $phpcsFile->findNext(T_WHITESPACE, $expectedafter + 1, $firstcommentptr, true);
+        if ($interveningcode !== false || $tokens[$firstcommentptr]['line'] !== ($tokens[$expectedafter]['line'] + 1)) {
             // Report the error on the line immediately following the opening tag/annotation.
             // The whitespace following the T_OPEN_TAG is tokenized separately and may carry
             // the opening tag's line number, so look for a token on the next line.
             $errorPtr = $expectedafter + 1;
-            while (isset($tokens[$errorPtr]) && $tokens[$errorPtr]['line'] <= $tokens[$expectedafter]['line']) {
+            while (
+                $errorPtr !== $interveningcode &&
+                isset($tokens[$errorPtr]) &&
+                $tokens[$errorPtr]['line'] <= $tokens[$expectedafter]['line']
+            ) {
                 $errorPtr++;
             }
             $fix = $phpcsFile->addFixableError(

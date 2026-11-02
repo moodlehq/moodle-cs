@@ -29,6 +29,15 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  */
 class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
 {
+    public function testCodeBeforeBoilerplateOnOpeningLine(): void {
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.BoilerplateComment');
+        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/code_before_header.php');
+        $this->setErrors([1 => 'NotAtFirstLine']);
+        $this->setWarnings([]);
+        $this->verifyCsResults();
+    }
+
     public function testMoodleFilesBoilerplateCommentOk() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
