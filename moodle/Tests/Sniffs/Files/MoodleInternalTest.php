@@ -27,6 +27,54 @@ namespace MoodleHQ\MoodleCS\moodle\Tests\Files;
  */
 class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase
 {
+    protected function tearDown(): void {
+        $this->resetMoodleRootCache();
+        parent::tearDown();
+    }
+
+    /**
+     * The sniff also has special cases which only apply when a Moodle root is detected.
+     *
+     * @dataProvider moodleRootPathDispensationsProvider
+     */
+    public function testMoodleRootPathDispensations(string $relativepath): void {
+        $this->resetMoodleRootCache();
+
+        $root = realpath(__DIR__ . '/../../Util/fixtures/moodleutil/good');
+        $this->assertNotFalse($root);
+        $this->addCustomConfig('moodleRoot', $root);
+        $this->assertSame($root, \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::getMoodleRoot(null, false));
+
+        $this->setStandard('moodle');
+        $this->setSniff('moodle.Files.MoodleInternal');
+        $this->setFixture(
+            __DIR__ . '/fixtures/moodleinternal/problem.php',
+            $root . '/' . $relativepath
+        );
+        $this->setWarnings([]);
+        $this->setErrors([]);
+
+        $this->verifyCsResults();
+    }
+
+    private function resetMoodleRootCache(): void {
+        $reflection = new \ReflectionClass(\MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::class);
+        $moodleroot = $reflection->getProperty('moodleRoot');
+        $moodleroot->setAccessible(true);
+        $moodleroot->setValue(null, false);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function moodleRootPathDispensationsProvider(): array {
+        return [
+            'nested behat tests' => ['mod/example/tests/behat/steps/behat_example.php'],
+            'nested behat library' => ['mod/example/lib/behat/steps/behat_example.php'],
+            'nested language files' => ['mod/example/lang/en/subdirectory/example.php'],
+        ];
+    }
+
     /**
      * @dataProvider moodleFilesMoodleInternalProvider
      */
