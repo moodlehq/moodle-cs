@@ -199,6 +199,18 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
                 'warnings' => [
                 ],
             ],
+            'With imported Override attribute' => [
+                'fixture' => 'with_imported_override',
+                'fixtureFilename' => null,
+                'errors' => [
+                    1 => 'Missing docblock for file with_imported_override.php',
+                    10 => 'Missing docblock for function has_override',
+                    12 => 'Missing docblock for function no_override',
+                    22 => 'Missing docblock for function no_override',
+                ],
+                'warnings' => [
+                ],
+            ],
             'Anonymous class as only class in file (documented)' => [
                 'fixture' => 'entire_anonymous_class_documented',
                 'fixtureFilename' => null,
