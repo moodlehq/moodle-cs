@@ -38,7 +38,7 @@ class ValidTagsSniffTest extends MoodleCSBaseTestCase
         array $errors,
         array $warnings
     ): void {
-        $fixtureSource = sprintf("%s/../fixtures/ValidTags/%s.php", __DIR__, $fixtureSource);
+        $fixtureSource = sprintf("%s/fixtures/%s.php", __DIR__, $fixtureSource);
 
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.ValidTags');

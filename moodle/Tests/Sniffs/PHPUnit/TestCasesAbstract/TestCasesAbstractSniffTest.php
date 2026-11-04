@@ -55,7 +55,7 @@ class TestCasesAbstractSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.TestCasesAbstract');
-        $this->setFixture(sprintf("%s/../fixtures/TestCasesAbstract/%s.php", __DIR__, $fixture));
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
         $this->setWarnings($warnings);
         $this->setErrors($errors);
 

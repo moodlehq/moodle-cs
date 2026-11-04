@@ -78,7 +78,7 @@ class ParentSetUpTearDownSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.ParentSetUpTearDown');
-        $this->setFixture(sprintf("%s/../fixtures/ParentSetUpTearDown/%s.php", __DIR__, $fixture));
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
         $this->setWarnings($warnings);
         $this->setErrors($errors);
 

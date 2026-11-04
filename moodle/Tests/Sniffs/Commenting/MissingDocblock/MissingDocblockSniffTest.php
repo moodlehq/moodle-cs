@@ -40,7 +40,7 @@ class MissingDocblockSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.MissingDocblock');
-        $this->setFixture(sprintf("%s/../fixtures/MissingDocblock/%s.php", __DIR__, $fixture), $fixtureFilename);
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture), $fixtureFilename);
         $this->setWarnings($warnings);
         $this->setErrors($errors);
         $this->setComponentMapping([

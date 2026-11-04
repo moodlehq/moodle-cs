@@ -27,7 +27,7 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\PHPUnit\TestCaseNamesSniff
  */
-class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
+class TestCaseNamesTest extends MoodleCSBaseTestCase
 {
     /**
      * Data provider for self::testPHPUnitTestCaseNamesProvider
@@ -35,7 +35,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
     public function phpunitTestCaseNamesProvider() {
         return [
             'Missing' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_missing.php',
+                'fixture' => 'testcasenames_missing.php',
                 'errors' => [
                     7 => '@Message: PHPUnit test file missing any valid testcase class',
                     14 => 'Missing',
@@ -43,26 +43,26 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'Irregular' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_test_testcase_irregular.php',
+                'fixture' => 'testcasenames_test_testcase_irregular.php',
                 'errors' => [
                     8 => '@Message: PHPUnit irregular testcase name found: testcasenames_test_testcase_irregular',
                 ],
                 'warnings' => [],
             ],
             'Abstract methods in a testcase' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_with_abstract_test.php',
+                'fixture' => 'testcasenames_with_abstract_test.php',
                 'errors' => [],
                 'warnings' => [],
             ],
             'NoMatch' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_nomatch.php',
+                'fixture' => 'testcasenames_nomatch.php',
                 'errors' => [],
                 'warnings' => [
                     8 => '"testcasenames_nomatch_test" does not match file name "testcasenames_nomatch"',
                 ],
             ],
             'UnexpectedNS' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_unexpected_ns.php',
+                'fixture' => 'testcasenames_unexpected_ns.php',
                 'errors' => [
                     2 => 'namespace "local_wrong" does not match expected file namespace "local_codechecker"',
                     8 => 1,
@@ -70,7 +70,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'UnexpectedLevel2NS' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_unexpected_level2ns.php',
+                'fixture' => 'testcasenames_unexpected_level2ns.php',
                 'errors' => [
                     8 => 1,
                 ],
@@ -79,7 +79,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 ],
             ],
             'CorrectLevel2NS' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_correct_level2ns.php',
+                'fixture' => 'testcasenames_correct_level2ns.php',
                 'errors' => [
                     8 => 1,
                 ],
@@ -87,7 +87,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 'filename' => 'tests/fixtures/phpunit/testcasenames_correct_level2ns.php',
             ],
             'MismatchedLevel2NSLocation' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_correct_level2ns.php',
+                'fixture' => 'testcasenames_correct_level2ns.php',
                 'errors' => [
                     8 => 1,
                 ],
@@ -97,7 +97,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 'filename' => 'tests/other/testcasenames_correct_level2ns.php',
             ],
             'MissingNS' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_missing_ns.php',
+                'fixture' => 'testcasenames_missing_ns.php',
                 'errors' => [
                     7 => 1,
                 ],
@@ -106,7 +106,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 ],
             ],
             'DuplicateExists' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_duplicate_exists.php',
+                'fixture' => 'testcasenames_duplicate_exists.php',
                 'errors' => [
                     8 => [
                         'irregular testcase name found',
@@ -116,7 +116,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'ProposedExists' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_proposed_exists.php',
+                'fixture' => 'testcasenames_proposed_exists.php',
                 'errors' => [
                     8 => [
                         'irregular testcase name found',
@@ -126,7 +126,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 'warnings' => [],
             ],
             'DuplicateProposed' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_duplicate_proposed.php',
+                'fixture' => 'testcasenames_duplicate_proposed.php',
                 'errors' => [
                     7 => [
                         'irregular testcase name found',
@@ -138,7 +138,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
                 ],
             ],
             'ExistsProposed' => [
-                'fixture' => 'fixtures/TestCaseNames/testcasenames_exists_proposed.php',
+                'fixture' => 'testcasenames_exists_proposed.php',
                 'errors' => [
                     7 => [
                         'irregular testcase name found',
@@ -167,7 +167,7 @@ class PHPUnitTestCaseNamesTest extends MoodleCSBaseTestCase
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.TestCaseNames');
         $fixtureFileName = $filename !== null ? dirname(__DIR__, 4) . '/' . $filename : null;
-        $this->setFixture(dirname(__DIR__) . '/' . $fixture, $fixtureFileName);
+        $this->setFixture(__DIR__ . '/fixtures/' . $fixture, $fixtureFileName);
         $this->setComponentMapping([
             'local_codechecker' => dirname(__DIR__, 4),
         ]);

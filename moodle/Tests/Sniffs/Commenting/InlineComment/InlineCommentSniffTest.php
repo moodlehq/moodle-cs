@@ -40,7 +40,7 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.InlineComment');
-        $this->setFixture(sprintf("%s/../fixtures/InlineComment/%s.php", __DIR__, $fixture), $fixtureFilename);
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture), $fixtureFilename);
         $this->setWarnings($warnings);
         $this->setErrors($errors);
         $this->setComponentMapping([

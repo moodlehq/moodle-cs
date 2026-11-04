@@ -155,7 +155,7 @@ class TestCaseCoversTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.TestCaseCovers');
-        $this->setFixture(sprintf("%s/../fixtures/TestCaseCovers/%s.php", __DIR__, $fixture));
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or

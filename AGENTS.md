@@ -6,7 +6,7 @@ This repository is the Moodle Coding Style, implemented as PHP_CodeSniffer (PHPC
 - `moodle-extra/ruleset.xml` – the `moodle-extra` standard (stricter, extends `moodle`).
 - `moodle/Sniffs/<Category>/<Name>Sniff.php` – custom sniffs (namespace `MoodleHQ\MoodleCS\moodle\Sniffs\<Category>`).
 - `moodle/Util/` – shared helpers (`MoodleUtil`, `TokenUtil`, `Docblocks`, `TypeUtil`, ...). Reuse these before writing new token-walking code.
-- `moodle/Tests/Sniffs/<Category>/<Name>/<Name>Test.php` with fixtures under `moodle/Tests/Sniffs/<Category>/fixtures/<Name>/`.
+- `moodle/Tests/Sniffs/<Category>/<Name>/<Name>Test.php` with fixtures under `moodle/Tests/Sniffs/<Category>/<Name>/fixtures/<fixtureName>`.
 - `moodle/Tests/Standard/` – whole-standard tests. `moodle/Tests/fixtures/integration_test_ci.php` is used by CI integration checks.
 - `phpcs.xml.dist` – ruleset used to lint this repo itself. `CHANGELOG.md` – Keep a Changelog format. `docs/ReleaseNewVersion.md` – release process.
 

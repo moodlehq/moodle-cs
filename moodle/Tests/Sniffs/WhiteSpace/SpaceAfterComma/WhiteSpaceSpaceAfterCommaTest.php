@@ -33,7 +33,7 @@ class WhiteSpaceSpaceAfterCommaTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.WhiteSpace.SpaceAfterComma');
-        $this->setFixture(__DIR__ . '/../fixtures/SpaceAfterComma/spaceaftercomma.php');
+        $this->setFixture(__DIR__ . '/fixtures/spaceaftercomma.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or

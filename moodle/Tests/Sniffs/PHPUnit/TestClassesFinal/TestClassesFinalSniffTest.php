@@ -57,7 +57,7 @@ class TestclassesFinalSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHPUnit.TestClassesFinal');
-        $this->setFixture(sprintf("%s/../fixtures/TestClassesFinal/%s.php", __DIR__, $fixture));
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
         $this->setWarnings($warnings);
         $this->setErrors($errors);
 

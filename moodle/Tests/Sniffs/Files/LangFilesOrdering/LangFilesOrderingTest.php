@@ -39,7 +39,7 @@ class LangFilesOrderingTest extends MoodleCSBaseTestCase
     ) {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.LangFilesOrdering');
-        $this->setFixture(__DIR__ . '/../fixtures/LangFilesOrdering/' . $fixture);
+        $this->setFixture(__DIR__ . '/fixtures/' . $fixture);
         $this->setWarnings($warnings);
         $this->setErrors($errors);
 

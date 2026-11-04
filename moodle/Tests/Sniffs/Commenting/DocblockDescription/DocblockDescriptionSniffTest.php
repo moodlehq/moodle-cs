@@ -43,7 +43,7 @@ class DocblockDescriptionSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.DocblockDescription');
-        $this->setFixture(sprintf("%s/../fixtures/DocblockDescription/%s.php", __DIR__, $fixture), $fixtureFilename);
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture), $fixtureFilename);
         $this->setWarnings($warnings);
         $this->setErrors($errors);
 
