@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ## [Unreleased]
 ### Added
 - New `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect deprecated `$CFG` properties, such as `$CFG->httpswwwroot`
+- New Deprecation for `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect `$CFG->admin`
 
 ### Fixed
 - Avoid deprecated reflection `setAccessible()` calls on PHP 8.5 while retaining PHP 8.0 test compatibility.

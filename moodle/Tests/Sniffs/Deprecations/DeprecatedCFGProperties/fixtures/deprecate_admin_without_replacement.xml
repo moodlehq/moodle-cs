@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="MoodleDeprecatedCFGPropertiesTest">
+    <!-- Import the main moodle standard ruleset -->
+    <rule ref="moodle"/>
+
+    <!-- Configure your specific sniff with the associative array -->
+    <rule ref="moodle.Deprecations.DeprecatedCFGProperties">
+        <properties>
+            <property name="deprecatedProperties" type="array">
+                <element key="admin" value="" />
+                <!-- Add other test properties here -->
+            </property>
+        </properties>
+    </rule>
+</ruleset>

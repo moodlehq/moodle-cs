@@ -201,6 +201,7 @@
         <properties>
             <property name="deprecatedProperties" type="array">
                 <element key="httpswwwroot" value="wwwroot" />
+                <element key="admin" value="" />
             </property>
         </properties>
     </rule>
