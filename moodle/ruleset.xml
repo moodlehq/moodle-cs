@@ -196,4 +196,13 @@
     <rule ref="PSR12.Properties.ConstantVisibility.NotFound">
         <severity>0</severity>
     </rule>
+
+    <rule ref="moodle.Deprecations.DeprecatedCFGProperties">
+        <properties>
+            <property name="deprecatedProperties" type="array">
+                <element key="httpswwwroot" value="wwwroot" />
+            </property>
+        </properties>
+    </rule>
+
 </ruleset>

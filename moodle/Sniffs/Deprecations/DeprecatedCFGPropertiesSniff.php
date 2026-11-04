@@ -41,9 +41,7 @@ class DeprecatedCFGPropertiesSniff extends AbstractVariableSniff
      *
      * @var array<string, string|null>
      */
-    public $deprecatedProperties = [
-        'httpswwwroot' => 'wwwroot',
-    ];
+    public $deprecatedProperties = [];
 
     /**
      * Processes class member variables.

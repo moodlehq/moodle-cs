@@ -412,4 +412,55 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         }
         return $normalized;
     }
+
+    /**
+     * Parse the expectations from the fixture file.
+     *
+     * Expectations are in the form:
+     *
+     * // @[warning|error] <message>
+     *
+     * Example:
+     *
+     * // @warning $CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead
+     *
+     * @param string $path
+     * @return array{errors: array, warnings: array<int|string>|array{errors: array, warnings: array}}
+     */
+    protected function parseExpectationsFromFixture(string $path): array {
+        $errors = [];
+        $sniffs = [];
+        $errors = [];
+        $warnings = [];
+        $lines = file($path);
+
+        foreach ($lines as $index => $line) {
+            $lineNumber = $index + 1;
+
+            // Check for any @sniff comment on the preceding line.
+            if (preg_match('/\/\/\s*@sniff\s+(.+)/', $line, $matches)) {
+                $sniffs[] = trim($matches[1]);
+            }
+
+            // Check for @warning comment on the preceding line.
+            if (preg_match('/\/\/\s*@warning\s+(.+)/', $line, $matches)) {
+                // The expectation is for the NEXT line down
+                $expectedLine = $lineNumber + 1;
+                $warnings[$expectedLine] = is_numeric($matches[1]) ? (int)$matches[1] : trim($matches[1]);
+            }
+
+            // And for @error comment on the preceding line.
+            if (preg_match('/\/\/\s*@error\s+(.+)/', $line, $matches)) {
+                // The expectation is for the NEXT line down
+                $expectedLine = $lineNumber + 1;
+                $errors[$expectedLine] = is_numeric($matches[1]) ? (int)$matches[1] : trim($matches[1]);
+            }
+        }
+
+        return [
+            'sniffs' => $sniffs,
+            'errors' => $errors,
+            'warnings' => $warnings,
+        ];
+    }
 }
