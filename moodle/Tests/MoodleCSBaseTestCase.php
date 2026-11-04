@@ -48,10 +48,10 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
     protected ?string $standard = null;
 
     /**
-     * @var string|null code of the sniff to be tested. Must be part of the standard definition.
-     *             See {@see ::set_sniff()} for more information.
+     * @var array|null codes of the sniffs to be tested. Must be part of the standard definition.
+     *             See {@see ::setSniffs()} for more information.
      */
-    protected ?string $sniff = null;
+    protected ?array $sniffs = null;
 
     /**
      * @var string|null full path to the file used as input (fixture).
@@ -85,7 +85,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
     protected function tearDown(): void {
         // Reset all the internal properties.
         $this->standard = null;
-        $this->sniff = null;
+        $this->sniffs = null;
         $this->errors = null;
         $this->warnings = null;
         $this->fixture = null;
@@ -153,7 +153,11 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *                        - PEAR.WhiteSpace.ScopeIndent
      */
     protected function setSniff($sniff) {
-        $this->sniff = $sniff;
+        $this->sniffs = [$sniff];
+    }
+
+    protected function setSniffs(array $sniffs): void {
+        $this->sniffs = $sniffs;
     }
 
     /**
@@ -223,7 +227,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         $config = new \PHP_CodeSniffer\Config();
         $config->cache     = false;
         $config->standards = [$this->standard];
-        $config->sniffs    = [$this->sniff];
+        $config->sniffs    = $this->sniffs;
         $config->ignored   = [];
         $ruleset = new \PHP_CodeSniffer\Ruleset($config);
 
