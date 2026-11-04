@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Added
+- New `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect deprecated `$CFG` properties, such as `$CFG->httpswwwroot`
+
 ### Fixed
 - Preserve Moodle header spacing and class naming exclusions with the PHPCS 4 error codes.
 - `moodle.NamingConventions.ValidFunctionName`: continue checking methods in anonymous classes.
