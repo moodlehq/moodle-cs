@@ -48,10 +48,10 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
     protected ?string $standard = null;
 
     /**
-     * @var string|null code of the sniff to be tested. Must be part of the standard definition.
-     *             See {@see ::set_sniff()} for more information.
+     * @var array|null codes of the sniffs to be tested. Must be part of the standard definition.
+     *             See {@see ::setSniffs()} for more information.
      */
-    protected ?string $sniff = null;
+    protected ?array $sniffs = null;
 
     /**
      * @var string|null full path to the file used as input (fixture).
@@ -85,7 +85,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
     protected function tearDown(): void {
         // Reset all the internal properties.
         $this->standard = null;
-        $this->sniff = null;
+        $this->sniffs = null;
         $this->errors = null;
         $this->warnings = null;
         $this->fixture = null;
@@ -153,7 +153,11 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      *                        - PEAR.WhiteSpace.ScopeIndent
      */
     protected function setSniff($sniff) {
-        $this->sniff = $sniff;
+        $this->sniffs = [$sniff];
+    }
+
+    protected function setSniffs(array $sniffs): void {
+        $this->sniffs = $sniffs;
     }
 
     /**
@@ -223,7 +227,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         $config = new \PHP_CodeSniffer\Config();
         $config->cache     = false;
         $config->standards = [$this->standard];
-        $config->sniffs    = [$this->sniff];
+        $config->sniffs    = $this->sniffs;
         $config->ignored   = [];
         $ruleset = new \PHP_CodeSniffer\Ruleset($config);
 
@@ -411,5 +415,56 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
             }
         }
         return $normalized;
+    }
+
+    /**
+     * Parse the expectations from the fixture file.
+     *
+     * Expectations are in the form:
+     *
+     * // @[warning|error] <message>
+     *
+     * Example:
+     *
+     * // @warning $CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead
+     *
+     * @param string $path
+     * @return array{errors: array, warnings: array<int|string>|array{errors: array, warnings: array}}
+     */
+    protected function parseExpectationsFromFixture(string $path): array {
+        $errors = [];
+        $sniffs = [];
+        $errors = [];
+        $warnings = [];
+        $lines = file($path);
+
+        foreach ($lines as $index => $line) {
+            $lineNumber = $index + 1;
+
+            // Check for any @sniff comment on the preceding line.
+            if (preg_match('/\/\/\s*@sniff\s+(.+)/', $line, $matches)) {
+                $sniffs[] = trim($matches[1]);
+            }
+
+            // Check for @warning comment on the preceding line.
+            if (preg_match('/\/\/\s*@warning\s+(.+)/', $line, $matches)) {
+                // The expectation is for the NEXT line down
+                $expectedLine = $lineNumber + 1;
+                $warnings[$expectedLine] = is_numeric($matches[1]) ? (int)$matches[1] : trim($matches[1]);
+            }
+
+            // And for @error comment on the preceding line.
+            if (preg_match('/\/\/\s*@error\s+(.+)/', $line, $matches)) {
+                // The expectation is for the NEXT line down
+                $expectedLine = $lineNumber + 1;
+                $errors[$expectedLine] = is_numeric($matches[1]) ? (int)$matches[1] : trim($matches[1]);
+            }
+        }
+
+        return [
+            'sniffs' => $sniffs,
+            'errors' => $errors,
+            'warnings' => $warnings,
+        ];
     }
 }

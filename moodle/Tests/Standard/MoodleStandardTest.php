@@ -977,4 +977,39 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
 
         $this->verifyCsResults();
     }
+
+    /**
+     * @dataProvider provider
+     */
+    public function testSniff(
+        string $fixtureName,
+    ): void {
+        $fixturePath = sprintf("%s/fixtures/MoodleStandard/iterated/%s.php", __DIR__, $fixtureName);
+
+        $this->setStandard('moodle');
+        [
+            'errors'   => $errors,
+            'warnings' => $warnings,
+            'sniffs'   => $sniffs,
+        ] = $this->parseExpectationsFromFixture($fixturePath);
+
+        $this->setSniffs($sniffs);
+        $this->setFixture($fixturePath);
+        $this->setWarnings($warnings);
+        $this->setErrors($errors);
+
+        $this->verifyCsResults();
+    }
+
+    public static function provider(): array {
+        $iterator = new \DirectoryIterator(__DIR__ . '/fixtures/MoodleStandard/iterated');
+        $fixtures = [];
+        foreach ($iterator as $fileinfo) {
+            if ($fileinfo->isFile() && $fileinfo->getExtension() === 'php') {
+                $fixtures[] = $fileinfo->getBasename('.php');
+            }
+        }
+
+        return array_map(fn($fixture) => ['fixtureName' => $fixture], $fixtures);
+    }
 }

@@ -29,26 +29,38 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  */
 class DeprecatedCFGPropertiesSniffTest extends MoodleCSBaseTestCase
 {
-    public function testMoodlePHPDeprecatedCFGProperties() {
-        // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
+    /**
+     * @dataProvider provider
+     */
+    public function testSniff(
+        string $fixtureName,
+    ): void {
+        $fixturePath = sprintf("%s/fixtures/%s.php", __DIR__, $fixtureName);
+        $rulesetPath = sprintf("%s/fixtures/%s.xml", __DIR__, $fixtureName);
+
+        $this->setStandard($rulesetPath);
         $this->setSniff('moodle.Deprecations.DeprecatedCFGProperties');
-        $this->setFixture(__DIR__ . '/../fixtures/DeprecatedCFGProperties/moodle_php_deprecated_cfg_properties.php');
+        [
+            'errors'   => $errors,
+            'warnings' => $warnings
+        ] = $this->parseExpectationsFromFixture($fixturePath);
 
-        // Define expected results (errors and warnings). Format, array of:
-        // - line => number of problems,  or
-        // - line => array of contents for message / source problem matching.
-        // - line => string of contents for message / source problem matching (only 1).
-        $this->setErrors([]);
-        $this->setWarnings([
-            13 => '$CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead',
-            14 => '$CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead',
-            15 => '$CFG->httpswwwroot is deprecated; use $CFG->wwwroot instead',
-            16 => 0,
-            27 => 0,
-        ]);
+        $this->setFixture($fixturePath);
+        $this->setWarnings($warnings);
+        $this->setErrors($errors);
 
-        // Let's do all the hard work!
         $this->verifyCsResults();
+    }
+
+    public static function provider(): array {
+        $iterator = new \DirectoryIterator(__DIR__ . '/fixtures');
+        $fixtures = [];
+        foreach ($iterator as $fileinfo) {
+            if ($fileinfo->isFile() && $fileinfo->getExtension() === 'php') {
+                $fixtures[] = $fileinfo->getBasename('.php');
+            }
+        }
+
+        return array_map(fn($fixture) => ['fixtureName' => $fixture], $fixtures);
     }
 }
