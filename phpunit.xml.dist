@@ -9,6 +9,9 @@
     <testsuite name="Coding Style Test Suite for Moodle 5.x and earlier">
       <directory suffix="Test.php">Standards/moodle/Tests</directory>
     </testsuite>
+    <testsuite name="Coding Style Test Suite for Moodle 6.0">
+      <directory suffix="Test.php">Standards/moodle600/Tests</directory>
+    </testsuite>
   </testsuites>
   <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
     <include>

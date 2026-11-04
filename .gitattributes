@@ -9,7 +9,7 @@ CHANGELOG.md     export-ignore
 phpunit.xml.dist export-ignore
 README.md        export-ignore
 /.github         export-ignore
-/moodle/Tests    export-ignore
+/moodle*/Tests    export-ignore
 
 # The generic_files_linendings test is checking for crlf line endings and warns about them.
 # This must be specified as a .gitattribute to prevent git updating it to be LF on commit.
