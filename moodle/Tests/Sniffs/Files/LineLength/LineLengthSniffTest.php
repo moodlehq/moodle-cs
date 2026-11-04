@@ -30,7 +30,7 @@ class LineLengthSniffTest extends MoodleCSBaseTestCase
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.LineLength');
         $this->setFixture(
-            __DIR__ . '/../fixtures/LineLength/longlines.php',
+            __DIR__ . '/fixtures/longlines.php',
             '/moodle/lang/en/longlines.php'
         );
 

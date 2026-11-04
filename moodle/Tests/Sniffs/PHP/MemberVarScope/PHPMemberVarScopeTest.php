@@ -33,7 +33,7 @@ class PHPMemberVarScopeTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.PHP.MemberVarScope');
-        $this->setFixture(__DIR__ . '/../fixtures/MemberVarScope/membervarscope.php');
+        $this->setFixture(__DIR__ . '/fixtures/membervarscope.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or

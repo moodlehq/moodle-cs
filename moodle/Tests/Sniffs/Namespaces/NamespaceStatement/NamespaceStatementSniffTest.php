@@ -63,7 +63,7 @@ class NamespaceStatementSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Namespaces.NamespaceStatement');
-        $this->setFixture(sprintf("%s/../fixtures/NamespaceStatement/%s.php", __DIR__, $fixture));
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
         $this->setWarnings($warnings);
         $this->setErrors($errors);
 

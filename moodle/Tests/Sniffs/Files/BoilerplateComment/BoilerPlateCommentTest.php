@@ -27,12 +27,12 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
  *
  * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\BoilerplateCommentSniff
  */
-class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
+class BoilerPlateCommentTest extends MoodleCSBaseTestCase
 {
     public function testCodeBeforeBoilerplateOnOpeningLine(): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/code_before_header.php');
+        $this->setFixture(__DIR__ . '/fixtures/code_before_header.php');
         $this->setErrors([1 => 'NotAtFirstLine']);
         $this->setWarnings([]);
         $this->verifyCsResults();
@@ -41,7 +41,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentOk() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/ok.php');
+        $this->setFixture(__DIR__ . '/fixtures/ok.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or
@@ -53,7 +53,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
 
         // Also try with the <?php line having some // phpcs:xxxx annotations.
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/ok2.php');
+        $this->setFixture(__DIR__ . '/fixtures/ok2.php');
 
         $this->setErrors([]);
         $this->setWarnings([]);
@@ -61,7 +61,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
         $this->verifyCsResults();
 
         // Finally, try with another comments block after the boilerplate.
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/ok3.php');
+        $this->setFixture(__DIR__ . '/fixtures/ok3.php');
 
         $this->setErrors([]);
         $this->setWarnings([]);
@@ -72,7 +72,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentNoPHP() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/nophp.php');
+        $this->setFixture(__DIR__ . '/fixtures/nophp.php');
 
         $this->setErrors([
             1 => 'moodle.Files.BoilerplateComment.NoPHP',
@@ -85,7 +85,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentBlank() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/blank.php');
+        $this->setFixture(__DIR__ . '/fixtures/blank.php');
 
         $this->setErrors([
             2 => 'not found at first line',
@@ -98,7 +98,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentShort() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/short.php');
+        $this->setFixture(__DIR__ . '/fixtures/short.php');
 
         $this->setErrors([
             14 => 'CommentEndedTooSoon',
@@ -111,7 +111,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentShortEmpty() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/short_empty.php');
+        $this->setFixture(__DIR__ . '/fixtures/short_empty.php');
 
         $this->setErrors([
             1 => 'NoBoilerplateComment',
@@ -124,7 +124,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentShortNotEof() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/short_not_eof.php');
+        $this->setFixture(__DIR__ . '/fixtures/short_not_eof.php');
 
         $this->setErrors([
             15 => 'CommentEndedTooSoon',
@@ -137,7 +137,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentWrongLine() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/wrongline.php');
+        $this->setFixture(__DIR__ . '/fixtures/wrongline.php');
 
         $this->setErrors([
             6 => 'version 3',
@@ -152,7 +152,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
 
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/gnu_http.php');
+        $this->setFixture(__DIR__ . '/fixtures/gnu_http.php');
 
         $this->setErrors([]);
         $this->setWarnings([]);
@@ -167,7 +167,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
 
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/gnu_https.php');
+        $this->setFixture(__DIR__ . '/fixtures/gnu_https.php');
 
         $this->setErrors([]);
         $this->setWarnings([]);
@@ -181,7 +181,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentWrongPlace() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/wrong_place.php');
+        $this->setFixture(__DIR__ . '/fixtures/wrong_place.php');
 
         $this->setErrors([
             2 => 'not found at first line',
@@ -198,7 +198,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentTrailingWhitespace() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/trailing_whitespace.php');
+        $this->setFixture(__DIR__ . '/fixtures/trailing_whitespace.php');
 
         $this->setErrors([
             16 => 'SingleTrailingNewLine',
@@ -214,7 +214,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentTrailingWhitespaceMissing() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/trailing_whitespace_missing.php');
+        $this->setFixture(__DIR__ . '/fixtures/trailing_whitespace_missing.php');
 
         $this->setErrors([
             16 => 'SingleTrailingNewLine',
@@ -231,7 +231,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentShortEmptyMultiline() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/short_empty_multiline.php');
+        $this->setFixture(__DIR__ . '/fixtures/short_empty_multiline.php');
 
         $this->setErrors([
             1 => 'moodle.Files.BoilerplateComment.NoBoilerplateComment',
@@ -248,7 +248,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentWithPhpcsTagShifted() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/with_phpcs_tag_shifted.php');
+        $this->setFixture(__DIR__ . '/fixtures/with_phpcs_tag_shifted.php');
 
         $this->setErrors([
             2 => 'not found at first line',
@@ -261,7 +261,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentFirstlineComment() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/firstline_comment.php');
+        $this->setFixture(__DIR__ . '/fixtures/firstline_comment.php');
 
         $this->setErrors([
             1 => 'NoBoilerplateComment',
@@ -275,7 +275,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentWithPhpcsTag() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/with_phpcs_tag.php');
+        $this->setFixture(__DIR__ . '/fixtures/with_phpcs_tag.php');
 
         $this->setErrors([
             1 => 'NoBoilerplateComment',
@@ -289,7 +289,7 @@ class FilesBoilerPlateCommentTest extends MoodleCSBaseTestCase
     public function testMoodleFilesBoilerplateCommentMissingLines() {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.BoilerplateComment');
-        $this->setFixture(__DIR__ . '/../fixtures/BoilerplateComment/missing_lines.php');
+        $this->setFixture(__DIR__ . '/fixtures/missing_lines.php');
 
         $this->setErrors([
             3 => 'moodle.Files.BoilerplateComment.WrongLine',

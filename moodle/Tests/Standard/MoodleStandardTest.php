@@ -41,7 +41,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
         $config->sniffs = ['moodle.Files.BoilerplateComment', 'PSR12.Files.FileHeader'];
         $ruleset = new \PHP_CodeSniffer\Ruleset($config);
         $file = new \PHP_CodeSniffer\Files\LocalFile(
-            __DIR__ . '/../Sniffs/Files/fixtures/BoilerplateComment/ok.php',
+            __DIR__ . '/../Sniffs/Files/BoilerplateComment/fixtures/ok.php',
             $ruleset,
             $config
         );
@@ -58,7 +58,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     public function testMoodleClassNamingExclusion(): void {
         $this->setStandard('moodle');
         $this->setSniff('Squiz.Classes.ValidClassName');
-        $this->setFixture(__DIR__ . '/../Sniffs/NamingConventions/fixtures/ValidFunctionName/validfunctionname_correct.php');
+        $this->setFixture(__DIR__ . '/../Sniffs/NamingConventions/ValidFunctionName/fixtures/validfunctionname_correct.php');
         $this->setErrors([]);
         $this->setWarnings([]);
         $this->verifyCsResults();

@@ -33,7 +33,7 @@ class MethodDeclarationSpacingSniffTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.Methods.MethodDeclarationSpacing');
-        $this->setFixture(__DIR__ . '/../fixtures/MethodDeclarationSpacing/MethodDeclarationSpacing.php');
+        $this->setFixture(__DIR__ . '/fixtures/MethodDeclarationSpacing.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or

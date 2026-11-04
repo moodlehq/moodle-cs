@@ -33,7 +33,7 @@ class WhiteSpaceWhiteSpaceInStringsTest extends MoodleCSBaseTestCase
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('moodle.WhiteSpace.WhiteSpaceInStrings');
-        $this->setFixture(__DIR__ . '/../fixtures/WhiteSpaceInStrings/whitespaceinstrings.php');
+        $this->setFixture(__DIR__ . '/fixtures/whitespaceinstrings.php');
 
         // Define expected results (errors and warnings). Format, array of:
         // - line => number of problems,  or

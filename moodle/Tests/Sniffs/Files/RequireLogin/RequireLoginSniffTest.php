@@ -32,7 +32,7 @@ class RequireLoginSniffTest extends MoodleCSBaseTestCase
     public function testQualifiedCalls(string $fixture, array $warnings): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
-        $this->setFixture(__DIR__ . '/../fixtures/RequireLogin/' . $fixture . '.php');
+        $this->setFixture(__DIR__ . '/fixtures/' . $fixture . '.php');
         $this->setErrors([]);
         $this->setWarnings($warnings);
         $this->verifyCsResults();
@@ -49,7 +49,7 @@ class RequireLoginSniffTest extends MoodleCSBaseTestCase
     public function testNoConfigInclusionDoesNotRequireLogin(): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
-        $this->setFixture(__DIR__ . '/../fixtures/RequireLogin/no_config.php');
+        $this->setFixture(__DIR__ . '/fixtures/no_config.php');
 
         $this->setErrors([]);
         $this->setWarnings([]);
@@ -60,7 +60,7 @@ class RequireLoginSniffTest extends MoodleCSBaseTestCase
     public function testNonConfigIncludesBeforeConfigDoNotSkipLoginCheck(): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
-        $this->setFixture(__DIR__ . '/../fixtures/RequireLogin/other_include.php');
+        $this->setFixture(__DIR__ . '/fixtures/other_include.php');
 
         $this->setErrors([]);
         $this->setWarnings([
@@ -73,7 +73,7 @@ class RequireLoginSniffTest extends MoodleCSBaseTestCase
     public function testAbortAfterConfigDisablesLoginCheck(): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.RequireLogin');
-        $this->setFixture(__DIR__ . '/../fixtures/RequireLogin/abortafterconfig.php');
+        $this->setFixture(__DIR__ . '/fixtures/abortafterconfig.php');
 
         $this->setErrors([]);
         $this->setWarnings([]);

@@ -48,7 +48,7 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.MoodleInternal');
         $this->setFixture(
-            __DIR__ . '/../fixtures/MoodleInternal/problem.php',
+            __DIR__ . '/fixtures/problem.php',
             $root . '/' . $relativepath
         );
         $this->setWarnings([]);
@@ -86,7 +86,7 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
         // Contains class_alias, which is not a side-effect.
         $this->setStandard('moodle');
         $this->setSniff('moodle.Files.MoodleInternal');
-        $this->setFixture(__DIR__ . '/../fixtures/MoodleInternal/' . $fixture . '.php');
+        $this->setFixture(__DIR__ . '/fixtures/' . $fixture . '.php');
         $this->setWarnings($warnings);
         $this->setErrors($errors);
 

@@ -35,7 +35,7 @@ class PackageSniffTest extends MoodleCSBaseTestCase
     public function testPackageOnMissingComponent(): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.Package');
-        $this->setFixture(__DIR__ . '/../fixtures/Package/package_tags_nocheck.php');
+        $this->setFixture(__DIR__ . '/fixtures/package_tags_nocheck.php');
         $this->setComponentMapping([]); // No components available.
 
         $this->setWarnings([]);
@@ -54,7 +54,7 @@ class PackageSniffTest extends MoodleCSBaseTestCase
     ): void {
         $this->setStandard('moodle');
         $this->setSniff('moodle.Commenting.Package');
-        $this->setFixture(sprintf("%s/../fixtures/Package/%s.php", __DIR__, $fixture));
+        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
         $this->setWarnings($warnings);
         $this->setErrors($errors);
         $this->setComponentMapping([
