@@ -9,6 +9,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ### Added
 - New `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect deprecated `$CFG` properties, such as `$CFG->httpswwwroot`
 - New Deprecation for `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect `$CFG->admin`
+- The new `moodle600` standard has been introduced for Moodle 6.0
 
 ### Fixed
 - Avoid deprecated reflection `setAccessible()` calls on PHP 8.5 while retaining PHP 8.0 test compatibility.
@@ -18,6 +19,8 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - `moodle.Files.BoilerplateComment`: reject code between the opening tag and boilerplate, including on the opening line.
 
 ### Changed
+- Coding standards have been moved to a new location in the `Standards` directory for easier maintenance.
+  These changes should be automatically applied after a `composer install`.
 - Unit test locations were standardised to match the location of code under test.
 - The `MoodleCSBAseTestCase` now supports testing multiple sniffs. This allows testing of Sniff interactions.
 - Support for PHP_CodeSniffer version 4.
