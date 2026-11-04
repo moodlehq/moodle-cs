@@ -60,7 +60,9 @@ class MoodleInternalTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTes
     private function resetMoodleRootCache(): void {
         $reflection = new \ReflectionClass(\MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::class);
         $moodleroot = $reflection->getProperty('moodleRoot');
-        $moodleroot->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $moodleroot->setAccessible(true);
+        }
         $moodleroot->setValue(null, false);
     }
 
