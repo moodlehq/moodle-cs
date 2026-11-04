@@ -30,6 +30,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
   - Updated the test suite for PHPCS 4 (instance-based `Config::setConfigData()`, removed JS-specific test, tab/namespace handling).
   - Updated the GitHub Actions integration tests to expect the new PHPCS 4 exit codes.
 
+### Removed
+- Removed phpcd from repository as is no longer supported.
+
 ## [v3.7.0] - 2025-12-02
 ### Removed
 - Support for PHPCompatibility until moodle-cs is upgraded to support PHP_CodeSniffer version 4.
