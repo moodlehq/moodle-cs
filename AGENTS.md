@@ -29,7 +29,7 @@ vendor/bin/phpunit moodle/Tests/Sniffs/<Category>/<Name>   # focused run
 xmllint --noout moodle/ruleset.xml moodle-extra/ruleset.xml   # if rulesets were edited
 ```
 
-CI additionally enforces: phpcpd duplicate detection (`vendor/bin/phpcpd --exclude moodle/Tests moodle`), >= 80% coverage, and an integration test (`phpcs`/`phpcbf` on `moodle/Tests/fixtures/integration_test_ci.php` with fixed expected exit codes and output). If you change fixable behaviour or ruleset inclusion, check whether that integration fixture still behaves as the workflow expects.
+CI additionally enforces: >= 80% coverage, and an integration test (`phpcs`/`phpcbf` on `moodle/Tests/fixtures/integration_test_ci.php` with fixed expected exit codes and output). If you change fixable behaviour or ruleset inclusion, check whether that integration fixture still behaves as the workflow expects.
 
 ## Writing a new sniff
 
