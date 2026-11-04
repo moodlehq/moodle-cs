@@ -66,12 +66,16 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
 
         // Let's run calculateAllComponents() and evaluate results.
         $method = new \ReflectionMethod(MoodleUtil::class, 'calculateAllComponents');
-        $method->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
         $method->invokeArgs(null, [$moodleRoot]);
 
         // Let's inspect which components have been loaded.
         $property = new \ReflectionProperty(MoodleUtil::class, 'moodleComponents');
-        $property->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
         $loadedComponents = $property->getValue();
 
         $this->assertCount(2, $loadedComponents);
@@ -464,25 +468,35 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     protected function cleanMoodleUtilCaches() {
         $moodleUtil = new \ReflectionClass(MoodleUtil::class);
         $moodleRoot = $moodleUtil->getProperty('moodleRoot');
-        $moodleRoot->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $moodleRoot->setAccessible(true);
+        }
         $moodleUtil->setStaticPropertyValue('moodleRoot', false);
 
         $moodleUtil = new \ReflectionClass(MoodleUtil::class);
         $moodleBranch = $moodleUtil->getProperty('moodleBranch');
-        $moodleBranch->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $moodleBranch->setAccessible(true);
+        }
         $moodleUtil->setStaticPropertyValue('moodleBranch', false);
 
         $moodleUtil = new \ReflectionClass(MoodleUtil::class);
         $moodleComponents = $moodleUtil->getProperty('moodleComponents');
-        $moodleComponents->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $moodleComponents->setAccessible(true);
+        }
         $moodleUtil->setStaticPropertyValue('moodleComponents', []);
 
         $apiCache = $moodleUtil->getProperty('apis');
-        $apiCache->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $apiCache->setAccessible(true);
+        }
         $apiCache->setValue(null, []);
 
         $apiCache = $moodleUtil->getProperty('mockedApisList');
-        $apiCache->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $apiCache->setAccessible(true);
+        }
         $apiCache->setValue(null, []);
     }
 

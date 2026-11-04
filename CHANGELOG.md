@@ -10,6 +10,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - New `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect deprecated `$CFG` properties, such as `$CFG->httpswwwroot`
 
 ### Fixed
+- Avoid deprecated reflection `setAccessible()` calls on PHP 8.5 while retaining PHP 8.0 test compatibility.
 - Preserve Moodle header spacing and class naming exclusions with the PHPCS 4 error codes.
 - `moodle.NamingConventions.ValidFunctionName`: continue checking methods in anonymous classes.
 - `moodle.Files.RequireLogin`: recognise fully qualified global login calls and exemption definitions.
