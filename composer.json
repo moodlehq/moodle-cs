@@ -58,7 +58,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MoodleHQ\\MoodleCS\\moodle\\": "moodle/"
+            "MoodleHQ\\MoodleCS\\": "Standards"
         }
     }
 }

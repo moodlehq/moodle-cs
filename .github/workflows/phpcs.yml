@@ -33,7 +33,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ matrix.extensions }}
-          ini-values: pcov.directory=moodle, error_reporting=-1, display_errors=On
+          ini-values: pcov.directory=Standards, error_reporting=-1, display_errors=On
           coverage: pcov
           tools: composer
 
@@ -64,7 +64,7 @@ jobs:
         run: |
           # There is one failure (exit with error 1, because some are fixable).
           expectedcode=1
-          vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
+          vendor/bin/phpcs --standard=moodle Standards/moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
           exitcode="${PIPESTATUS[0]}"
           if [[ "${exitcode}" = "${expectedcode}" ]]; then
               echo "Ok, got expected ${exitcode} exit code."
@@ -76,7 +76,7 @@ jobs:
 
           # The failure is fixed.
           expectedcode=0
-          vendor/bin/phpcbf --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
+          vendor/bin/phpcbf --standard=moodle Standards/moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
           exitcode="${PIPESTATUS[0]}"
           if [[ "${exitcode}" = "${expectedcode}" ]]; then
               echo "Ok, got expected ${exitcode} exit code."
@@ -88,7 +88,7 @@ jobs:
 
           # So, there isn't any failure any more (exit without error, aka, 0)
           expectedcode=0
-          vendor/bin/phpcs --standard=moodle moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
+          vendor/bin/phpcs --standard=moodle Standards/moodle/Tests/fixtures/integration_test_ci.php | tee output.txt
           exitcode="${PIPESTATUS[0]}"
           if [[ "${exitcode}" = "${expectedcode}" ]]; then
               echo "Ok, got expected ${exitcode} exit code."
