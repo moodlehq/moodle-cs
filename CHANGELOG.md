@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+
+## [v3.9.0] - 2026-11-05
 ### Added
 - New `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect deprecated `$CFG` properties, such as `$CFG->httpswwwroot`
 - New Deprecation for `moodle.Deprecations.DeprecatedCFGProperties` sniff to detect `$CFG->admin`
