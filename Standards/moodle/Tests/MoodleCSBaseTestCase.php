@@ -110,7 +110,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * @param string|null $value The value to set. If null, the config entry is deleted.
      */
     protected function setConfigData(string $key, ?string $value): void {
-        $config = new Config();
+        $config = new Config([], false);
         $config->setConfigData($key, $value, true);
     }
 
@@ -224,7 +224,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
      * defined expectations.
      */
     protected function verifyCsResults() {
-        $config = new \PHP_CodeSniffer\Config();
+        $config = new \PHP_CodeSniffer\Config([], false);
         $config->cache     = false;
         $config->standards = [$this->standard];
         $config->sniffs    = $this->sniffs;

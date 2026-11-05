@@ -3,6 +3,42 @@ name: Moodle Coding Style Tests
 on: [push, pull_request]
 
 jobs:
+  phpcs-compatibility:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        phpcs:
+          - ^3
+          - ^4
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v7
+
+      - name: Setup PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          ini-values: pcov.directory=Standards, error_reporting=-1, display_errors=On
+          coverage: pcov
+          tools: composer
+
+      - name: Install Composer dependencies with PHPCS ${{ matrix.phpcs }}
+        run: composer update --with squizlabs/php_codesniffer:${{ matrix.phpcs }} --no-interaction
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: Upload coverage
+        if: ${{ !cancelled() && github.repository == 'moodlehq/moodle-cs' }}
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: clover.xml
+          verbose: true
+
   test:
     runs-on: ${{ matrix.os }}
 

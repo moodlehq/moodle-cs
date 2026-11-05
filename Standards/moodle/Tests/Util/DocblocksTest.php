@@ -44,7 +44,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
      * @dataProvider getNullDocBlockPointerProvider
      */
     public function testGetNullDocBlockPointer(string $fixture): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
             __DIR__ . '/fixtures/docblocks/' . $fixture,
@@ -60,7 +60,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
     }
 
     public function testGetDocBlockTags(): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
             __DIR__ . '/fixtures/docblocks/class_docblock.php',
@@ -108,7 +108,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
     }
 
     public function testGetDocBlockClassOnly(): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
             __DIR__ . '/fixtures/docblocks/class_docblock_only.php',
@@ -138,7 +138,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
      * and not the class.
      */
     public function testGetDocBlockClassWithoutDocblock(): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
             __DIR__ . '/fixtures/docblocks/file_followed_by_class_without_docblock.php',
@@ -162,7 +162,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
      * and not the class when the class has an Attribute.
      */
     public function testGetDocBlockClassWithAttribute(): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
             __DIR__ . '/fixtures/docblocks/file_followed_by_class_with_attribute.php',
@@ -189,7 +189,7 @@ class DocblocksTest extends MoodleCSBaseTestCase
         string $content,
         bool $expected
     ): void {
-        $config = new Config([]);
+        $config = new Config([], false);
         $ruleset = new Ruleset($config);
         $content = <<<EOF
         phpcs_input_file: {$filename}

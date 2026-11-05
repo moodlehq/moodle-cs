@@ -32,11 +32,26 @@ use MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase;
 class MoodleStandardTest extends MoodleCSBaseTestCase
 {
     /**
+     * @covers \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase::setConfigData
+     */
+    public function testCustomConfigAcceptsPhpunitCoverageArguments(): void {
+        $argv = $_SERVER['argv'];
+        try {
+            $_SERVER['argv'] = ['phpunit', '--coverage-text'];
+            $this->addCustomConfig('moodleTodoCommentRegex', 'CUSTOM-[0-9]+');
+
+            $this->assertSame('CUSTOM-[0-9]+', \PHP_CodeSniffer\Config::getConfigData('moodleTodoCommentRegex'));
+        } finally {
+            $_SERVER['argv'] = $argv;
+        }
+    }
+
+    /**
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\BoilerplateCommentSniff
      * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff
      */
     public function testHeaderRulesAgreeOnBoilerplatePosition(): void {
-        $config = new \PHP_CodeSniffer\Config();
+        $config = new \PHP_CodeSniffer\Config([], false);
         $config->standards = ['moodle'];
         $config->sniffs = ['moodle.Files.BoilerplateComment', 'PSR12.Files.FileHeader'];
         $ruleset = new \PHP_CodeSniffer\Ruleset($config);

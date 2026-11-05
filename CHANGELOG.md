@@ -12,6 +12,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - The new `moodle600` standard has been introduced for Moodle 6.0
 
 ### Fixed
+- Ignore PHPUnit coverage options in test configurations without enabling PHPCS 3 test mode, which bypasses ruleset properties and exclusions.
 - Avoid deprecated reflection `setAccessible()` calls on PHP 8.5 while retaining PHP 8.0 test compatibility.
 - Preserve Moodle header spacing and class naming exclusions with the PHPCS 4 error codes.
 - `moodle.NamingConventions.ValidFunctionName`: continue checking methods in anonymous classes.
@@ -19,6 +20,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - `moodle.Files.BoilerplateComment`: reject code between the opening tag and boilerplate, including on the opening line.
 
 ### Changed
+- Support both PHP_CodeSniffer 3.13.6 and 4.0.4 or newer.
 - Coding standards have been moved to a new location in the `Standards` directory for easier maintenance.
   These changes should be automatically applied after a `composer install`.
 - Unit test locations were standardised to match the location of code under test.
