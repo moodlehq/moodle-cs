@@ -194,7 +194,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
             foreach ($config as $key => $value) {
                 if ($key === 'file') {
                     // We are passing a real File, prepare it.
-                    $phpcsConfig = new Config();
+                    $phpcsConfig = new Config([], false);
                     $phpcsRuleset = new Ruleset($phpcsConfig);
                     $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
@@ -295,7 +295,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
             foreach ($config as $key => $value) {
                 if ($key === 'file') {
                     // We are passing a real File, prepare it.
-                    $phpcsConfig = new Config();
+                    $phpcsConfig = new Config([], false);
                     $phpcsRuleset = new Ruleset($phpcsConfig);
                     $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
@@ -426,7 +426,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
             foreach ($config as $key => $value) {
                 if ($key === 'file') {
                     // We are passing a real File, prepare it.
-                    $phpcsConfig = new Config();
+                    $phpcsConfig = new Config([], false);
                     $phpcsRuleset = new Ruleset($phpcsConfig);
                     $file = new File($value, $phpcsRuleset, $phpcsConfig);
                 } else {
@@ -542,7 +542,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         string $filepath,
         bool $expected
     ): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($filepath, $phpcsRuleset, $phpcsConfig);
 
@@ -603,7 +603,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         string $filepath,
         bool $expected
     ): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($filepath, $phpcsRuleset, $phpcsConfig);
 
@@ -658,7 +658,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         string $testClassName,
         bool $expected
     ): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
 
         if (file_exists($filepath)) {
@@ -732,7 +732,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     ): void {
         $this->setConfigData('moodleBranch', $moodleVersion);
 
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File('/path/to/tests/file.php', $phpcsRuleset, $phpcsConfig);
 
@@ -797,7 +797,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         string $methodName,
         bool $found
     ): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
             __DIR__ . '/fixtures/moodleutil/test_with_methods_to_find.php',
@@ -822,7 +822,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
     }
 
     public function testGetTokensOnLine(): void {
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $phpcsFile = new \PHP_CodeSniffer\Files\LocalFile(
             __DIR__ . '/fixtures/moodleutil/test_with_methods_to_find.php',
@@ -880,7 +880,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         );
 
         // We are passing a real File, prepare it.
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 
@@ -899,7 +899,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         vfsStream::copyFromFileSystem(__DIR__ . '/fixtures/moodleutil/complete', $vfs);
 
         // We are passing a real File, prepare it.
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 
@@ -927,7 +927,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         );
 
         // We are passing a real File, prepare it.
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 
@@ -972,7 +972,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         );
 
         // We are passing a real File, prepare it.
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 
@@ -1013,7 +1013,7 @@ class MoodleUtilTest extends MoodleCSBaseTestCase
         $this->setApiMappings($apis);
 
         // We are passing a real File, prepare it.
-        $phpcsConfig = new Config();
+        $phpcsConfig = new Config([], false);
         $phpcsRuleset = new Ruleset($phpcsConfig);
         $file = new File($vfs->url() . '/lib/lib.php', $phpcsRuleset, $phpcsConfig);
 

@@ -42,7 +42,7 @@ class TokenUtilTest extends MoodleCSBaseTestCase
         ?string $expectedType,
         ?string $expectedName
     ): void {
-        $config = new Config([]);
+        $config = new Config([], false);
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);
@@ -130,7 +130,7 @@ class TokenUtilTest extends MoodleCSBaseTestCase
         string $content,
         int $expectedCount
     ): void {
-        $config = new Config([]);
+        $config = new Config([], false);
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile($content, $ruleset, $config);
@@ -182,7 +182,7 @@ class TokenUtilTest extends MoodleCSBaseTestCase
     }
 
     public function testObjectPropertiesInvalidPointer(): void {
-        $config = new Config([]);
+        $config = new Config([], false);
         $ruleset = new Ruleset($config);
 
         $phpcsFile = new DummyFile('<?php', $ruleset, $config);

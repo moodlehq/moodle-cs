@@ -255,9 +255,8 @@ class BoilerplateCommentSniff implements Sniff
         $paddedComment = implode("\n", $this->fullComment()) . "\n";
 
         if ($tokens[$stackptr]['code'] === T_OPEN_TAG) {
-            // The T_OPEN_TAG token contains no trailing newline. Remove any whitespace
-            // (on the same line) following the open tag so that the  boilerplate starts
-            // on the expected line and we don't end up with a double newline.
+            // PHPCS versions differ on whether trailing whitespace belongs to T_OPEN_TAG.
+            // Remove same-line whitespace so the boilerplate starts immediately after it.
             for ($i = ($stackptr + 1); isset($tokens[$i]); $i++) {
                 if ($tokens[$i]['code'] !== T_WHITESPACE) {
                     break;
@@ -289,9 +288,11 @@ class BoilerplateCommentSniff implements Sniff
             foreach (range($target + 1, $start - 1) as $whitespaceptr) {
                 $file->fixer->replaceToken($whitespaceptr, '');
             }
-            // The T_OPEN_TAG token contains no trailing newline, so add it back after
-            // removing the (now redundant) whitespace tokens.
-            if ($tokens[$target]['code'] === T_OPEN_TAG) {
+            // Add a newline only when it is not already part of T_OPEN_TAG.
+            if (
+                $tokens[$target]['code'] === T_OPEN_TAG &&
+                substr($tokens[$target]['content'], -1) !== "\n"
+            ) {
                 $file->fixer->addContent($target, "\n");
             }
             $file->fixer->endChangeset();
@@ -309,10 +310,11 @@ class BoilerplateCommentSniff implements Sniff
         }
 
         if ($tokens[$target]['code'] === T_OPEN_TAG) {
-            // The T_OPEN_TAG token contains no trailing newline.
+            $openTag = $tokens[$target]['content'];
+            $trailingWhitespace = substr($openTag, strlen(rtrim($openTag, " \t")));
             $file->fixer->replaceToken(
                 $target,
-                trim($tokens[$target]['content']) . "\n" . implode('', $existingboilerplate) . "\n"
+                trim($openTag) . "\n" . implode('', $existingboilerplate) . "\n" . $trailingWhitespace
             );
         } else {
             $file->fixer->addContent($target, implode('', $existingboilerplate) . "\n");

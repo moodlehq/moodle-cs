@@ -50,6 +50,22 @@ class ValidTagsSniffTest extends MoodleCSBaseTestCase
     }
 
     public static function provider(): array {
+        $standardfileerrors = [
+            27 => 'Invalid docblock tag "@codingStandardsIgnoreLine"',
+            28 => 'Invalid docblock tag "@covers"',
+            29 => 'Invalid docblock tag "@dataProvider"',
+            30 => 'Invalid docblock tag "@group"',
+            31 => 'Invalid docblock tag "@small"',
+            32 => 'Invalid docblock tag "@zzzing"',
+            33 => 'Invalid docblock tag "@inheritdoc"',
+            42 => 'Invalid docblock tag "@void" is not supported.',
+            51 => 'Incorrect docblock tag "@returns". Should be "@return"',
+        ];
+        if (version_compare(\PHP_CodeSniffer\Config::VERSION, '4.0.0', '<')) {
+            // PHPCS 3 consumes this legacy tag as an instruction before sniffs see it.
+            unset($standardfileerrors[27]);
+        }
+
         return [
             'Unit test file' => [
                 'fixturePath' => 'lib/tests/example_test.php',
@@ -66,17 +82,7 @@ class ValidTagsSniffTest extends MoodleCSBaseTestCase
             'Standard file' => [
                 'fixturePath' => 'lib/classes/example.php',
                 'fixtureSource' => 'general',
-                'errors' => [
-                    27 => 'Invalid docblock tag "@codingStandardsIgnoreLine"',
-                    28 => 'Invalid docblock tag "@covers"',
-                    29 => 'Invalid docblock tag "@dataProvider"',
-                    30 => 'Invalid docblock tag "@group"',
-                    31 => 'Invalid docblock tag "@small"',
-                    32 => 'Invalid docblock tag "@zzzing"',
-                    33 => 'Invalid docblock tag "@inheritdoc"',
-                    42 => 'Invalid docblock tag "@void" is not supported.',
-                    51 => 'Incorrect docblock tag "@returns". Should be "@return"',
-                ],
+                'errors' => $standardfileerrors,
                 'warnings' => [
                     52 => 'Docblock tag "@version" is not recommended.',
                 ],

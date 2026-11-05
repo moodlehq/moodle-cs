@@ -45,6 +45,19 @@ class NamespaceStatementSniff implements Sniff
 
         if ($token['code'] === T_NAME_FULLY_QUALIFIED) {
             $fqdn = $token['content'];
+        } elseif ($token['code'] === T_NS_SEPARATOR) {
+            $fqdn = '';
+            for ($ptr = $checkPtr; isset($tokens[$ptr]); $ptr++) {
+                if ($tokens[$ptr]['code'] !== T_NS_SEPARATOR && $tokens[$ptr]['code'] !== T_STRING) {
+                    break;
+                }
+                $fqdn .= $tokens[$ptr]['content'];
+            }
+        } else {
+            return;
+        }
+
+        if ($fqdn !== '' && $fqdn[0] === '\\') {
             $fix = $file->addFixableError(
                 'Namespace should not start with a slash: %s',
                 $checkPtr,
@@ -53,10 +66,12 @@ class NamespaceStatementSniff implements Sniff
             );
 
             if ($fix) {
-                $file->fixer->replaceToken($checkPtr, ltrim($fqdn, '\\'));
+                if ($token['code'] === T_NAME_FULLY_QUALIFIED) {
+                    $file->fixer->replaceToken($checkPtr, ltrim($fqdn, '\\'));
+                } else {
+                    $file->fixer->replaceToken($checkPtr, '');
+                }
             }
-
-            return;
         }
     }
 }

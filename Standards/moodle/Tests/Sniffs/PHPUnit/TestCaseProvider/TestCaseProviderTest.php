@@ -106,6 +106,7 @@ class TestCaseProviderTest extends MoodleCSBaseTestCase
                     30 => 'Data provider method "unfixable_provider" will need to be converted to static in future.',
                     41 => 'Data provider method "partially_fixable_provider" will need to be converted to static in future.',
                 ],
+                'autofix' => true,
             ],
             'Provider Return Type checks' => [
                 'fixture' => 'provider_returntype_test',
@@ -134,6 +135,7 @@ class TestCaseProviderTest extends MoodleCSBaseTestCase
                 'warnings' => [
                     20 => 'Data provider method "second_provider" will need to be converted to static in future.',
                 ],
+                'autofix' => true,
             ],
         ];
     }
@@ -144,15 +146,17 @@ class TestCaseProviderTest extends MoodleCSBaseTestCase
      * @param string $fixture relative path to fixture to use.
      * @param array $errors array of errors expected.
      * @param array $warnings array of warnings expected.
+     * @param bool $autofix Whether static provider fixes are enabled.
      * @dataProvider phpunitTestCaseProviderProvider
      */
     public function testPHPUnitTestCaseProvider(
         string $fixture,
         array $errors,
-        array $warnings
+        array $warnings,
+        bool $autofix = false
     ): void {
         // Define the standard, sniff and fixture to use.
-        $this->setStandard('moodle');
+        $this->setStandard($autofix ? 'moodle-extra' : 'moodle');
         $this->setSniff('moodle.PHPUnit.TestCaseProvider');
         $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture));
 

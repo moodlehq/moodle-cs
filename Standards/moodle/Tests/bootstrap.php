@@ -18,4 +18,14 @@ $ds = DIRECTORY_SEPARATOR;
 $root = dirname(__DIR__, 3);
 
 require_once("{$root}/vendor/autoload.php");
-require_once("{$root}/vendor/squizlabs/php_codesniffer/tests/bootstrap.php");
+require_once("{$root}/vendor/squizlabs/php_codesniffer/autoload.php");
+
+$tokens = new \PHP_CodeSniffer\Util\Tokens();
+
+if (!defined('PHP_CODESNIFFER_CBF')) {
+    define('PHP_CODESNIFFER_CBF', getenv('PHP_CODESNIFFER_CBF') === '1');
+}
+
+if (!defined('PHP_CODESNIFFER_VERBOSITY')) {
+    define('PHP_CODESNIFFER_VERBOSITY', 0);
+}
