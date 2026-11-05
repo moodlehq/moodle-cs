@@ -61,6 +61,9 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
     /** @var string|null A path name to mock for the fixture */
     protected ?string $fixtureFileName = null;
 
+    /** @var string|null Fixture contents with test expectations removed. */
+    protected ?string $fixtureSource = null;
+
     /**
      * @var array custom config elements to setup before running phpcs. name => value.
      */
@@ -90,6 +93,7 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
         $this->warnings = null;
         $this->fixture = null;
         $this->fixtureFileName = null;
+        $this->fixtureSource = null;
         // Reset any mocked component mappings.
         \MoodleHQ\MoodleCS\moodle\Util\MoodleUtil::setMockedComponentMappings([]);
         // If there is any custom config setup, remove it.
@@ -238,12 +242,12 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
 
         // Let's process the fixture.
         try {
-            if ($this->fixtureFileName !== null) {
-                $fixtureFilename = $this->fixtureFileName;
+            if ($this->fixtureFileName !== null || $this->fixtureSource !== null) {
+                $fixtureFilename = $this->fixtureFileName ?? $this->fixture;
                 if (DIRECTORY_SEPARATOR !== '/') {
                     $fixtureFilename = str_replace('/', DIRECTORY_SEPARATOR, $fixtureFilename);
                 }
-                $fixtureSource = file_get_contents($this->fixture);
+                $fixtureSource = $this->fixtureSource ?? file_get_contents($this->fixture);
                 $fixtureContent = <<<EOF
                 phpcs_input_file: {$fixtureFilename}
                 {$fixtureSource}
@@ -466,5 +470,55 @@ abstract class MoodleCSBaseTestCase extends \PHPUnit\Framework\TestCase
             'errors' => $errors,
             'warnings' => $warnings,
         ];
+    }
+
+    /**
+     * Run a set of tests from the fixture, loading expectations from the fixture.
+     *
+     * Expectation marker lines are removed from the PHPCS input and line numbers are adjusted.
+     *
+     * @param string $fixturePath
+     * @param string $standard
+     * @param string $sniff
+     * @return void
+     */
+    protected function runTestsFromFixtureWithExpectations(
+        string $fixturePath,
+        string $standard,
+        string $sniff
+    ): void {
+        [
+            'errors' => $errors,
+            'warnings' => $warnings,
+        ] = $this->parseExpectationsFromFixture($fixturePath);
+        $this->setFixture($fixturePath);
+
+        $fixtureLines = file($fixturePath);
+        $lineMap = [];
+        $sourceLine = 0;
+        foreach ($fixtureLines as $index => $line) {
+            if (preg_match('/\/\/\s*@(error|warning|sniff)\b/', $line)) {
+                unset($fixtureLines[$index]);
+            } else {
+                $sourceLine++;
+            }
+            $lineMap[$index + 1] = $sourceLine;
+        }
+
+        $mappedErrors = [];
+        foreach ($errors as $line => $expectation) {
+            $mappedErrors[$lineMap[$line]] = $expectation;
+        }
+        $mappedWarnings = [];
+        foreach ($warnings as $line => $expectation) {
+            $mappedWarnings[$lineMap[$line]] = $expectation;
+        }
+
+        $this->setStandard($standard);
+        $this->setSniff($sniff);
+        $this->fixtureSource = implode('', $fixtureLines);
+        $this->setErrors($mappedErrors);
+        $this->setWarnings($mappedWarnings);
+        $this->verifyCsResults();
     }
 }

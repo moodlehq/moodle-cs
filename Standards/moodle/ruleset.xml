@@ -105,6 +105,10 @@
     <rule ref="Squiz.Commenting.DocCommentAlignment"/>
     <rule ref="Squiz.Commenting.EmptyCatchComment"/>
 
+    <!-- Remaining PHPDoc checks migrated from local_moodlecheck. -->
+    <rule ref="moodle.Commenting.InlineTags"/>
+    <rule ref="moodle.Commenting.FunctionArguments"/>
+
     <rule ref="Squiz.ControlStructures.ElseIfDeclaration"/>
     <rule ref="Squiz.ControlStructures.ForEachLoopDeclaration"/>
     <rule ref="Squiz.ControlStructures.ForLoopDeclaration"/>

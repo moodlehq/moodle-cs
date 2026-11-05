@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
 ## [Unreleased]
+### Added
+- `moodle.Commenting.InlineTags` replaces moodlecheck's `phpdocsinvalidinlinetag`, `phpdocsuncurlyinlinetag`, and `phpdoccontentsinlinetag` rules, checking inline tag names, braces, URLs and structural references.
+- `moodle.Commenting.FunctionArguments` replaces moodlecheck's `functionarguments` rule, checking documented parameter counts, names and types, and rejecting empty or placeholder return types.
+
+### Fixed
+- `moodle.Commenting.InlineComment`: reject triple-slash comments after closing braces while ignoring block-comment continuations.
+- `moodle.Commenting.InlineTags`: do not consume a standalone tag as the missing target of an unfinished inline tag.
+- `moodle.Commenting.InlineTags`: accept structural references containing all decimal digits.
 
 ## [v3.9.2] - 2026-11-20
 ### Added

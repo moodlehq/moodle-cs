@@ -32,49 +32,23 @@ class InlineCommentSniffTest extends MoodleCSBaseTestCase
     /**
      * @dataProvider commentsProvider
      */
-    public function testComments(
-        string $fixture,
-        ?string $fixtureFilename,
-        array $errors,
-        array $warnings
-    ): void {
-        $this->setStandard('moodle');
-        $this->setSniff('moodle.Commenting.InlineComment');
-        $this->setFixture(sprintf("%s/fixtures/%s.php", __DIR__, $fixture), $fixtureFilename);
-        $this->setWarnings($warnings);
-        $this->setErrors($errors);
+    public function testComments(string $fixture): void {
         $this->setComponentMapping([
             'local_codechecker' => dirname(__DIR__),
         ]);
-
-        $this->verifyCsResults();
+        $this->runTestsFromFixtureWithExpectations(
+            __DIR__ . '/fixtures/' . $fixture . '.php',
+            'moodle',
+            'moodle.Commenting.InlineComment'
+        );
     }
 
-    public static function commentsProvider(): \Generator {
-        yield '' => [
-            'fixture' => 'attributes',
-            'fixtureFilename' => null,
-            'errors' => [],
-            'warnings' => [],
-        ];
-        yield 'Closing punctuation behaves correctly' => [
-            'fixture' => 'punctuation',
-            'fixtureFilename' => null,
-            'errors' => [
-            ],
-            'warnings' => [
-                38 => 'Inline comments must end in ',
-                54 => 'Inline comments must end in ',
-                61 => 'Inline comments must end in ',
-                63 => 'Inline comments must end in ',
-                65 => 'Inline comments must end in ',
-            ],
-        ];
-        yield 'End-of-block comment after match closing brace is allowed' => [
-            'fixture' => 'end_of_block',
-            'fixtureFilename' => null,
-            'errors' => [],
-            'warnings' => [],
+    public static function commentsProvider(): array {
+        return [
+            'Attributes' => ['attributes'],
+            'Closing punctuation behaves correctly' => ['punctuation'],
+            'End-of-block comment after match closing brace is allowed' => ['end_of_block'],
+            'Triple-slash comments are rejected' => ['triple_slash'],
         ];
     }
 }
