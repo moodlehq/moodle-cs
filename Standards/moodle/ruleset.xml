@@ -121,6 +121,9 @@
         </properties>
     </rule>
 
+    <!-- Suggest core_text alternatives for PHP string functions. -->
+    <rule ref="moodle.Strings.PreferCoreText"/>
+
     <rule ref="Squiz.Scope.StaticThisUsage"/>
 
     <rule ref="Squiz.WhiteSpace.OperatorSpacing">
