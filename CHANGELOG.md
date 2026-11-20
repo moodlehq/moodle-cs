@@ -7,6 +7,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+## [v3.9.2] - 2026-11-20
 ### Added
 - Added PHP 8.6 to the test matrix
 
