@@ -7,6 +7,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+### Fixed
+- Added back support for PHP 7.4
+
 ## [v3.9.1] - 2026-11-19
 ### Fixed
 - Stop exporting Tests in releases
