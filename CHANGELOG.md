@@ -7,6 +7,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+### Added
+- Added PHP 8.6 to the test matrix
+
 ### Fixed
 - Added back support for PHP 7.4
 
