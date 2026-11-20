@@ -34,7 +34,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     /**
      * @covers \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase::setConfigData
      */
-    public function testCustomConfigAcceptsPhpunitCoverageArguments(): void {
+    public function testCustomConfigAcceptsPhpunitCoverageArguments() {
         $argv = $_SERVER['argv'];
         try {
             $_SERVER['argv'] = ['phpunit', '--coverage-text'];
@@ -50,7 +50,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @covers \MoodleHQ\MoodleCS\moodle\Sniffs\Files\BoilerplateCommentSniff
      * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Files\FileHeaderSniff
      */
-    public function testHeaderRulesAgreeOnBoilerplatePosition(): void {
+    public function testHeaderRulesAgreeOnBoilerplatePosition() {
         $config = new \PHP_CodeSniffer\Config([], false);
         $config->standards = ['moodle'];
         $config->sniffs = ['moodle.Files.BoilerplateComment', 'PSR12.Files.FileHeader'];
@@ -70,7 +70,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
     /**
      * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\ValidClassNameSniff
      */
-    public function testMoodleClassNamingExclusion(): void {
+    public function testMoodleClassNamingExclusion() {
         $this->setStandard('moodle');
         $this->setSniff('Squiz.Classes.ValidClassName');
         $this->setFixture(__DIR__ . '/../Sniffs/NamingConventions/ValidFunctionName/fixtures/validfunctionname_correct.php');
@@ -304,7 +304,7 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      *
      * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
      */
-    public function testGenericArraysDisallowLongArraySyntax(): void {
+    public function testGenericArraysDisallowLongArraySyntax() {
         // Define the standard, sniff and fixture to use.
         $this->setStandard('moodle');
         $this->setSniff('Generic.Arrays.DisallowLongArraySyntax');
@@ -997,8 +997,8 @@ class MoodleStandardTest extends MoodleCSBaseTestCase
      * @dataProvider provider
      */
     public function testSniff(
-        string $fixtureName,
-    ): void {
+        string $fixtureName
+    ) {
         $fixturePath = sprintf("%s/fixtures/MoodleStandard/iterated/%s.php", __DIR__, $fixtureName);
 
         $this->setStandard('moodle');

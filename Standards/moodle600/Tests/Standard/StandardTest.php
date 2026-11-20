@@ -31,8 +31,8 @@ class StandardTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase
      * @dataProvider provider
      */
     public function testFixture(
-        string $fixtureName,
-    ): void {
+        string $fixtureName
+    ) {
         $fixturePath = sprintf("%s/%s.php", self::FIXTURE_PATH, $fixtureName);
 
         $this->setStandard('moodle600');
@@ -50,7 +50,7 @@ class StandardTest extends \MoodleHQ\MoodleCS\moodle\Tests\MoodleCSBaseTestCase
         $this->verifyCsResults();
     }
 
-    public static function provider(): array {
+    public static function provider() {
         $iterator = new \DirectoryIterator(self::FIXTURE_PATH);
         $fixtures = [];
         foreach ($iterator as $fileinfo) {
