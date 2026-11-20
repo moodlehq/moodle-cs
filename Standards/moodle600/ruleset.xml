@@ -7,7 +7,9 @@
     <description>Coding Style Standard for Moodle 6.0</description>
 
     <!-- Extend the standard Moodle coding style -->
-    <rule ref="moodle"/>
+    <rule ref="moodle">
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+    </rule>
 
     <rule ref="moodle.Deprecations.DeprecatedCFGProperties">
         <properties>
@@ -17,5 +19,15 @@
                 <element key="loginhttps" value="" />
             </property>
         </properties>
+    </rule>
+
+    <!-- MDLSITE-8442 moves to Opening Braces on new lines -->
+    <rule ref="PSR2.Classes.ClassDeclaration.OpenBraceNewLine">
+        <severity>5</severity>
+        <type>warning</type>
+    </rule>
+    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine">
+        <severity>5</severity>
+        <type>warning</type>
     </rule>
 </ruleset>
