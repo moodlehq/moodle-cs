@@ -33,8 +33,8 @@ class DeprecatedCFGPropertiesSniffTest extends MoodleCSBaseTestCase
      * @dataProvider provider
      */
     public function testSniff(
-        string $fixtureName,
-    ): void {
+        string $fixtureName
+    ) {
         $fixturePath = sprintf("%s/fixtures/%s.php", __DIR__, $fixtureName);
         $rulesetPath = sprintf("%s/fixtures/%s.xml", __DIR__, $fixtureName);
 
