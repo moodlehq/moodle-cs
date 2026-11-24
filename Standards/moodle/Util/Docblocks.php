@@ -328,7 +328,7 @@ abstract class Docblocks
     ): bool {
         $tokens = $phpcsFile->getTokens();
         $tag = ltrim($tokens[$tagPtr]['content'], '@');
-        if (array_key_exists($tag, self::$validTags)) {
+        if (self::isKnownTag($tag)) {
             if (array_key_exists($tag, self::$pathRestrictedTags)) {
                 $file = MoodleUtil::getStandardisedFilename($phpcsFile);
                 foreach (self::$pathRestrictedTags[$tag] as $path) {
@@ -342,6 +342,16 @@ abstract class Docblocks
         }
 
         return false;
+    }
+
+    /**
+     * Whether a tag name is known, irrespective of path restrictions.
+     *
+     * @param string $tagname
+     * @return bool
+     */
+    public static function isKnownTag(string $tagname): bool {
+        return array_key_exists($tagname, self::$validTags);
     }
 
     /**

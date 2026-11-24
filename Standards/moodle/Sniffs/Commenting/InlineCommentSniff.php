@@ -60,10 +60,31 @@ class InlineCommentSniff implements Sniff
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *
-     * @return void
+     * @return int|null
      */
     public function process(File $phpcsFile, $stackPtr) {
         $tokens = $phpcsFile->getTokens();
+
+        if ($tokens[$stackPtr]['code'] === T_COMMENT) {
+            if (strpos($tokens[$stackPtr]['content'], '/*') === 0) {
+                // Skip comment tokens within a multi-line block so /// in its text is not reported.
+                while (
+                    strpos($tokens[$stackPtr]['content'], '*/') === false
+                    && isset($tokens[$stackPtr + 1])
+                    && $tokens[$stackPtr + 1]['code'] === T_COMMENT
+                ) {
+                    $stackPtr++;
+                }
+                return $stackPtr + 1;
+            }
+
+            // Check before positional early-returns below, so triple slashes are rejected anywhere.
+            if (strpos($tokens[$stackPtr]['content'], '///') === 0) {
+                $slashCount = strspn($tokens[$stackPtr]['content'], '/');
+                $error = '%s slashes comments are not allowed; use "// Comment." instead';
+                $phpcsFile->addError($error, $stackPtr, 'WrongStyle', [$slashCount]);
+            }
+        }
 
         // If this is a function/class/interface doc block comment, skip it.
         // We are only interested in inline doc block comments, which are
@@ -332,9 +353,10 @@ class InlineCommentSniff implements Sniff
             $comment = rtrim($rawComment);
 
             // Count slashes.
-            $slashCount = strlen(preg_replace('!^(/*).*!', '\\1', trim($comment)));
+            $slashCount = strspn(trim($comment), '/');
 
-            if ($slashCount > 2) {
+            // The current token was already reported above; avoid reporting it twice here.
+            if ($slashCount > 2 && $lastCommentToken !== $stackPtr) {
                 $error = '%s slashes comments are not allowed; use "// Comment." instead';
                 $data = [$slashCount];
                 $phpcsFile->addError($error, $lastCommentToken, 'WrongStyle', $data);

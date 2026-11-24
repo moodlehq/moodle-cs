@@ -35,6 +35,7 @@ class Example {
      * Do something without punctuation
      */
     public function doSomething() {
+        // @warning Inline comments must end in
         // Do something without punctuation
     }
 
@@ -51,6 +52,7 @@ class Example {
      */
     public function doSomething() {
         // Do something with punctuation
+        // @warning Inline comments must end in
         // over multiple lines
     }
 
@@ -58,10 +60,13 @@ class Example {
      * Do things with invalid closing punctuation,
      */
     public function doSomething() {
+        // @warning Inline comments must end in
         // Do things with invalid closing punctuation,
 
+        // @warning Inline comments must end in
         // Do things with invalid closing punctuation-
 
+        // @warning Inline comments must end in
         // Do things with invalid closing punctuation=
     }
 }
